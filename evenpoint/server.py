@@ -554,9 +554,15 @@ class Handler(BaseHTTPRequestHandler):
             case ("GET", ["projects", name, "results"]):
                 return results(ws.config(name))
             case ("GET", ["projects", name, "report"]):
-                f = ws.config(name).output_path / "report.html"
-                if not f.exists():
-                    raise ApiError(404, "No report yet. Run the analysis first.")
+                # Rendered on every request so the report always uses the current template and assumptions.
+                cfg = ws.config(name)
+                con = db.connect(cfg.project_dir)
+                try:
+                    if not con.execute("SELECT count(*) FROM roi").fetchone()[0]:
+                        raise ApiError(404, "No report yet. Run the analysis first.")
+                    f = render.render(con, db.latest_run(con), cfg, cfg.output_path / "report.html")
+                finally:
+                    con.close()
                 return ("text/html; charset=utf-8", f.read_bytes(), f"{name}-report.html"
                         if query.get("download") else None)
             case ("GET", ["projects", name, "review"]):

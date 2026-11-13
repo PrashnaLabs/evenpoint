@@ -34,6 +34,7 @@ def api(tmp_path, monkeypatch):
         except urllib.error.HTTPError as e:
             return e.code, json.loads(e.read())
 
+    call.base = base
     yield call
     httpd.shutdown()
 
@@ -47,7 +48,7 @@ def wait_job(call):
     raise AssertionError("job did not finish")
 
 
-def test_ui_api_flow(api):
+def test_ui_api_flow(api, tmp_path):
     status, p = api("POST", "/projects", {"name": "Support Q3"})
     assert status == 200 and p["name"] == "support-q3"
     assert api("POST", "/projects", {"name": "support-q3"})[0] == 409
@@ -81,6 +82,10 @@ def test_ui_api_flow(api):
     _, res = api("GET", "/projects/support-q3/results")
     assert res["run"] and res["best"] and res["summaries"] and res["assumptions"]["hourly_rate"] == 35
 
+    out = tmp_path / "support-q3" / "output" / "report.html"
+    out.write_text("stale")
+    with urllib.request.urlopen(urllib.request.Request(api.base + "/projects/support-q3/report", headers={"X-Evenpoint": "1"})) as r:
+        assert b"what to automate" in r.read()  # re-rendered, not the stale file
     _, items = api("GET", "/projects/support-q3/review?n=2")
     assert len(items) == 4 and {"input", "expected", "output", "auto_pass"} <= items[0].keys()
     grades = [{"task_id": i["task_id"], "model": i["model"], "pass": False} for i in items]
