@@ -110,6 +110,15 @@ def test_sample_data_into_project(api):
     assert api("POST", "/projects/mine/sample-data", {"example": "nope"})[0] == 404
 
 
+def test_delete_project(api, tmp_path):
+    api("POST", "/projects", {"name": "old"})
+    assert api("DELETE", "/projects/old", {"confirm": "nope"})[0] == 400
+    assert (tmp_path / "old").exists()
+    assert api("DELETE", "/projects/old", {"confirm": "old"}) == (200, {"deleted": "old"})
+    assert not (tmp_path / "old").exists()
+    assert api("DELETE", "/projects/old", {"confirm": "old"})[0] == 404
+
+
 def test_api_guards(api):
     assert api("POST", "/projects", {"name": "x"}, headers={"X-Evenpoint": "0"})[0] == 403
     assert api("GET", "/projects/..%2Fetc")[0] == 400

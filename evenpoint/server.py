@@ -159,7 +159,7 @@ def start_job(project: str, kind: str, work) -> Job:
 
 class Workspace:
     def __init__(self, root: Path):
-        self.root = root
+        self.root = root.resolve()
         root.mkdir(parents=True, exist_ok=True)
 
     def dir(self, name: str) -> Path:
@@ -467,7 +467,15 @@ class Handler(BaseHTTPRequestHandler):
                 (d / "evenpoint.yaml").write_text(yaml.safe_dump(cfg, sort_keys=False, allow_unicode=True))
                 return {"config": cfg}
             case ("DELETE", ["projects", name]):
-                raise ApiError(405, "Delete projects from your file manager; Evenpoint never deletes data.")
+                d = ws.dir(name)
+                if self.body().get("confirm") != name:
+                    raise ApiError(400, "Type the project name to confirm.")
+                if _job and _job.project == name and _job.state in ("running", "confirm"):
+                    raise ApiError(409, "Stop the run in progress before deleting this project.")
+                if d.resolve().parent != ws.root:  # only ever a direct child of the workspace
+                    raise ApiError(400, "This project isn't inside the projects folder.")
+                shutil.rmtree(d)
+                return {"deleted": name}
             case ("POST", ["projects", name, "sample-data"]):
                 # Copy an example's export into this project; the UI applies the returned mapping and steps.
                 example = self.body().get("example") or "support-triage"

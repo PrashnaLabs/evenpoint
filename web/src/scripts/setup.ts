@@ -43,6 +43,7 @@ export async function renderSetup(el: HTMLElement, ctx: Ctx) {
         ${modelsSection()}
         ${assumptionsSection()}
       </div>
+      ${deleteSection()}
       <div class="savebar" id="savebar" ${dirty ? "" : "hidden"}>
         <span>${icon("Info")}You have unsaved changes</span>
         <div class="row">
@@ -291,6 +292,20 @@ export async function renderSetup(el: HTMLElement, ctx: Ctx) {
       </div>`;
   }
 
+  function deleteSection(): Raw {
+    return html`
+      <div class="panel danger-zone">
+        <div class="settings-row">
+          <header><h2>Delete this project</h2><p>Removes the project folder from this computer: uploaded exports, test results, grades and reports. This can't be undone.</p></header>
+          <form class="stack" id="delete-form" autocomplete="off">
+            <div class="field"><label for="delete-confirm">Type <code>${ctx.name}</code> to confirm</label>
+              <input class="input" id="delete-confirm" spellcheck="false" data-ignore-dirty /></div>
+            <div><button class="btn danger" type="submit" id="delete-btn" disabled>${icon("X")}Delete project</button></div>
+          </form>
+        </div>
+      </div>`;
+  }
+
   // ---------- read form back into cfg
   function collect() {
     const s = source();
@@ -481,6 +496,22 @@ export async function renderSetup(el: HTMLElement, ctx: Ctx) {
       setDirty(true);
       draw();
     });
+    const confirmInput = $<HTMLInputElement>("#delete-confirm", el)!;
+    const deleteBtn = $<HTMLButtonElement>("#delete-btn", el)!;
+    confirmInput.addEventListener("input", () => (deleteBtn.disabled = confirmInput.value.trim() !== ctx.name));
+    $("#delete-form", el)!.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      if (confirmInput.value.trim() !== ctx.name) return;
+      busy(deleteBtn, true, "Deleting");
+      try {
+        await api(`/projects/${encodeURIComponent(ctx.name)}`, { method: "DELETE", body: { confirm: ctx.name } });
+        el.dataset.dirty = "false";
+        location.href = "/?deleted=" + encodeURIComponent(ctx.name);
+      } catch (err) {
+        toast((err as Error).message, "error");
+        busy(deleteBtn, false);
+      }
+    });
     $("#save", el)?.addEventListener("click", () => save(false));
     $("#save-run", el)?.addEventListener("click", () => save(true));
     $("#discard", el)?.addEventListener("click", () => {
@@ -491,9 +522,11 @@ export async function renderSetup(el: HTMLElement, ctx: Ctx) {
   }
 
   // Any edit marks the form dirty (listeners live on the tab root, which survives redraws).
-  el.oninput = () => setDirty(true);
+  const counts = (e: Event) => !(e.target as HTMLElement).closest("[data-ignore-dirty], #delete-form");
+  el.oninput = (e) => counts(e) && setDirty(true);
   el.onchange = (e) => {
-    if ((e.target as HTMLElement).id !== "file-input" && (e.target as HTMLElement).id !== "existing") setDirty(true);
+    const id = (e.target as HTMLElement).id;
+    if (counts(e) && id !== "file-input" && id !== "existing") setDirty(true);
   };
   draw();
 }
@@ -545,6 +578,10 @@ fieldset.field legend { display: grid; gap: 2px; margin-bottom: 6px; padding: 0;
 .model-option:hover { background: var(--subtle); }
 .model-option input { accent-color: var(--accent); width: 16px; height: 16px; }
 .model-option > span:nth-child(2) { display: grid; gap: 1px; }
+.danger-zone { border-color: #f1cfcb; }
+.danger-zone h2 { color: var(--bad); }
+.danger-zone .btn.danger:not([disabled]) { --b: var(--bad); --c: #fff; --bd: var(--bad); }
+.danger-zone .btn.danger:not([disabled]):hover { --b: #9a1d14; --bd: #9a1d14; }
 .savebar { position: sticky; bottom: 16px; margin-top: 16px; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 10px 12px 10px 16px; background: var(--text); color: #fff; border-radius: var(--radius); box-shadow: var(--shadow-3); animation: toast-in 240ms var(--ease); }
 .savebar > span { display: inline-flex; gap: 8px; align-items: center; font-weight: 500; }
 .savebar .btn.ghost { color: #d5d8de; }

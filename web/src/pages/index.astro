@@ -141,6 +141,11 @@ import Shell from "../layouts/Shell.astro";
     try {
       const [status, projects] = await Promise.all([api<Status>("/status"), api<ProjectSummary[]>("/projects")]);
       keyPanel(status);
+      const deleted = new URLSearchParams(location.search).get("deleted");
+      if (deleted) {
+        toast(`Deleted ${deleted}.`);
+        history.replaceState(null, "", "/");
+      }
       if (!projects.length && !new URLSearchParams(location.search).has("settings")) {
         location.replace("/start/");  // first visit: straight into the guided start
         return;
