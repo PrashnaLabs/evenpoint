@@ -132,7 +132,7 @@ export function wireAdvancedRun(el: HTMLElement, ctx: Ctx) {
 const css = raw(`
 .run-card { padding: 28px; display: grid; gap: 18px; }
 .run-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; }
-.run-top h2 { font-size: 20px; letter-spacing: -0.02em; }
+.run-top h2 { font-size: 19px; letter-spacing: -0.02em; }
 .run-top p { margin-top: 6px; }
 .run-bar { height: 8px; border-radius: 999px; background: var(--subtle); overflow: hidden; }
 .run-bar span { display: block; height: 100%; border-radius: 999px; background: var(--accent); transform-origin: left; transition: transform 500ms var(--ease); }
@@ -140,7 +140,7 @@ const css = raw(`
 .run-bar.is-cancelled span { background: var(--border-strong); }
 .run-note { font-size: 13px; }
 .log summary { color: var(--text-3); font-size: 13px; font-weight: 600; }
-.log pre { margin: 12px 0 0; padding: 14px 16px; max-height: 260px; overflow: auto; font: 12.5px/1.6 var(--mono); color: var(--text-2); background: var(--subtle); border-radius: var(--radius-sm); white-space: pre-wrap; }
+.log pre { margin: 12px 0 0; padding: 14px 16px; max-height: 260px; overflow: auto; font: 13px/1.6 var(--mono); color: var(--text-2); background: var(--subtle); border-radius: var(--radius-sm); white-space: pre-wrap; }
 .confirm { border-color: color-mix(in srgb, var(--warn) 35%, var(--surface)); background: var(--warn-soft); }
 .confirm .panel-body { display: flex; justify-content: space-between; align-items: center; gap: 20px; flex-wrap: wrap; padding: 20px 24px; }
 `);

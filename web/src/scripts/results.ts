@@ -203,7 +203,7 @@ const css = raw(`
 .step-name { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
 .step-name strong { font-size: 15px; font-weight: 600; }
 .step-why { margin-top: 4px; color: var(--text-3); font-size: 14px; }
-.step-why code { font-size: 12.5px; color: var(--text-2); }
+.step-why code { font-size: 13px; color: var(--text-2); }
 .step-figures { display: grid; justify-items: end; gap: 1px; white-space: nowrap; }
 .step-figures strong { font-size: 19px; font-weight: 600; letter-spacing: -0.01em; }
 .step-figures span { color: var(--text-3); font-size: 13px; }
@@ -213,15 +213,15 @@ const css = raw(`
 .step-detail { grid-column: 1 / -1; display: grid; gap: 12px; padding-top: 6px; }
 .step-detail p { color: var(--text-2); max-width: 80ch; }
 .step-detail .table-wrap, .more .table-wrap { border: 1px solid var(--border); border-radius: var(--radius-sm); }
-.range { position: relative; height: 8px; border-radius: 6px; background: var(--hover); }
+.range { position: relative; height: 8px; border-radius: 8px; background: var(--hover); }
 .range-zero { position: absolute; top: -4px; bottom: -4px; width: 1px; background: var(--border-strong); }
-.range-span { position: absolute; top: 0; bottom: 0; border-radius: 6px; background: var(--c-soft); }
+.range-span { position: absolute; top: 0; bottom: 0; border-radius: 8px; background: var(--c-soft); }
 .range-point { position: absolute; top: 50%; width: 12px; height: 12px; margin: -6px 0 0 -6px; border-radius: 50%; background: var(--c); box-shadow: 0 0 0 2px var(--surface); }
 .range.automate { --c: var(--good); }
 .range.review { --c: var(--warn); }
 .range.dont_automate { --c: var(--quiet); }
 .range-span { background: color-mix(in srgb, var(--c) 28%, var(--surface)) !important; }
-.range-text { display: block; margin-top: 6px; font-size: 12px; color: var(--text-3); }
+.range-text { display: block; margin-top: 6px; font-size: 13px; color: var(--text-3); }
 .table.compact td, .table.compact th { padding: 8px 12px; }
 .firm-up { display: inline-flex; align-items: center; gap: 10px; padding: 6px 0; border: 0; background: none; font: inherit; color: var(--text-2); cursor: pointer; }
 .firm-up > span { text-align: left; }

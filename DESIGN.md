@@ -45,6 +45,16 @@ typography:
     fontSize: "15px"
     fontWeight: 400
     lineHeight: 1.6
+  figure:
+    fontFamily: "Plus Jakarta Sans Variable, ui-sans-serif, system-ui, sans-serif"
+    fontSize: "19px"
+    fontWeight: 600
+    letterSpacing: "-0.01em"
+  small:
+    fontFamily: "Plus Jakarta Sans Variable, ui-sans-serif, system-ui, sans-serif"
+    fontSize: "14px"
+    fontWeight: 400
+    lineHeight: 1.55
   label:
     fontFamily: "Plus Jakarta Sans Variable, ui-sans-serif, system-ui, sans-serif"
     fontSize: "13px"
