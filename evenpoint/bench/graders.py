@@ -78,42 +78,53 @@ def grade_all(con, run_id: str, judge_model: str, workers: int) -> int:
     return len(grades)
 
 
-def export_review(con, run_id: str, per_model: int, path: Path, seed: int = 0) -> int:
-    rows = con.execute(
+def review_items(con, run_id: str, per_model: int, seed: int = 0) -> list[dict]:
+    """A random sample of successful outputs per model, with any human grade already given."""
+    cur = con.execute(
         """
-        SELECT r.task_id, r.model, t.input, t.expected, r.output, g.passed
+        SELECT r.task_id, r.model, t.activity, t.task_type, t.input, t.expected, r.output,
+          bool_or(g.passed) FILTER (WHERE g.grader <> 'human') AS auto_pass,
+          bool_or(g.passed) FILTER (WHERE g.grader = 'human') AS human_pass,
+          any_value(g.note) FILTER (WHERE g.grader <> 'human') AS note
         FROM runs r JOIN tasks t USING (run_id, task_id)
         LEFT JOIN grades g ON g.run_id = r.run_id AND g.task_id = r.task_id AND g.model = r.model
-          AND g.grader <> 'human'
         WHERE r.run_id = ? AND r.kind = 'task' AND r.error IS NULL
-        ORDER BY r.model, r.task_id
+        GROUP BY ALL ORDER BY r.model, r.task_id
         """,
         [run_id],
-    ).fetchall()
+    )
+    cols = [d[0] for d in cur.description]
     by_model: dict[str, list] = {}
-    for r in rows:
-        by_model.setdefault(r[1], []).append(r)
+    for r in cur.fetchall():
+        by_model.setdefault(r[1], []).append(dict(zip(cols, r)))
     rng = random.Random(seed)
-    picked = [r for rs in by_model.values() for r in rng.sample(rs, min(per_model, len(rs)))]
+    return [r for rs in by_model.values() for r in rng.sample(rs, min(per_model, len(rs)))]
+
+
+def save_human_grades(con, run_id: str, marks: list[tuple[str, str, bool]]) -> int:
+    """Store (task_id, model, passed) human grades, replacing earlier ones for the same output."""
+    for task_id, model, _ in marks:
+        con.execute("DELETE FROM grades WHERE run_id = ? AND task_id = ? AND model = ? AND grader = 'human'",
+                    [run_id, task_id, model])
+    db.insert(con, "grades", [_grade(run_id, t, m, "human", ok, float(ok), None) for t, m, ok in marks])
+    return len(marks)
+
+
+def export_review(con, run_id: str, per_model: int, path: Path, seed: int = 0) -> int:
+    items = review_items(con, run_id, per_model, seed)
     with open(path, "w", newline="") as f:
         w = csv.writer(f)
         w.writerow(["task_id", "model", "input", "expected", "output", "auto_pass", "pass"])
-        for tid, model, inp, expected, output, passed in picked:
-            w.writerow([tid, model, inp, expected, output, passed, ""])
-    return len(picked)
+        for r in items:
+            w.writerow([r["task_id"], r["model"], r["input"], r["expected"], r["output"], r["auto_pass"], ""])
+    return len(items)
 
 
 def import_review(con, run_id: str, path: Path) -> int:
-    grades = []
+    marks = []
     with open(path, newline="") as f:
         for row in csv.DictReader(f):
             mark = (row.get("pass") or "").strip().lower()
-            if mark not in YES | NO:
-                continue
-            grades.append(_grade(run_id, row["task_id"], row["model"], "human", mark in YES, float(mark in YES),
-                                 None))
-    for g in grades:
-        con.execute("DELETE FROM grades WHERE run_id = ? AND task_id = ? AND model = ? AND grader = 'human'",
-                    [run_id, g["task_id"], g["model"]])
-    db.insert(con, "grades", grades)
-    return len(grades)
+            if mark in YES | NO:
+                marks.append((row["task_id"], row["model"], mark in YES))
+    return save_human_grades(con, run_id, marks)
