@@ -6,6 +6,7 @@ ponytail: polls file mtimes every 0.5 s with the stdlib; switch to watchfiles if
 
 import os
 import shutil
+import signal
 import subprocess
 import sys
 import threading
@@ -49,6 +50,8 @@ def _build_web() -> bool:
 
 def run(argv: list[str], port: int, open_browser: bool) -> None:
     """Supervise `evenpoint ui` children; `argv` are the child's arguments (without --reload)."""
+    # `kill` (SIGTERM) must stop the server child too, not orphan it on the port.
+    signal.signal(signal.SIGTERM, lambda *_: sys.exit(0))
     env = {**os.environ, "EVENPOINT_RELOAD": "1"}
     cmd = [sys.executable, "-m", "evenpoint.cli", *argv, "--no-open"]
     py_watch = [PKG]
@@ -90,4 +93,8 @@ def run(argv: list[str], port: int, open_browser: bool) -> None:
         pass
     finally:
         child.terminate()
+        try:
+            child.wait(5)
+        except subprocess.TimeoutExpired:
+            child.kill()
         print(flush=True)
