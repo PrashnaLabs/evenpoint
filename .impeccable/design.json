@@ -1,0 +1,540 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-13T08:55:11.846023+00:00",
+  "title": "Design System: Evenpoint",
+  "extensions": {
+    "colorMeta": {
+      "ground": {
+        "role": "neutral",
+        "displayName": "Cool Ground",
+        "canonical": "#f4f5f7",
+        "tonalRamp": [
+          "#0b0b0c",
+          "#242526",
+          "#414243",
+          "#606163",
+          "#818284",
+          "#a4a5a7",
+          "#c8c9cb",
+          "#eeeef0"
+        ]
+      },
+      "surface": {
+        "role": "neutral",
+        "displayName": "Paper White",
+        "canonical": "#ffffff",
+        "tonalRamp": [
+          "#0b0b0b",
+          "#252525",
+          "#424242",
+          "#616161",
+          "#828282",
+          "#a5a5a5",
+          "#c9c9c9",
+          "#eeeeee"
+        ]
+      },
+      "subtle": {
+        "role": "neutral",
+        "displayName": "Subtle",
+        "canonical": "#f8f9fa",
+        "tonalRamp": [
+          "#0b0b0c",
+          "#242526",
+          "#414243",
+          "#606162",
+          "#818283",
+          "#a4a5a6",
+          "#c8c9ca",
+          "#eeeeef"
+        ]
+      },
+      "hover": {
+        "role": "neutral",
+        "displayName": "Hover Grey",
+        "canonical": "#f1f3f5",
+        "tonalRamp": [
+          "#0a0b0c",
+          "#242527",
+          "#414244",
+          "#606163",
+          "#818284",
+          "#a3a5a7",
+          "#c7c9cb",
+          "#edeef0"
+        ]
+      },
+      "hairline": {
+        "role": "neutral",
+        "displayName": "Hairline",
+        "canonical": "#e3e6ea",
+        "tonalRamp": [
+          "#0a0b0d",
+          "#232528",
+          "#404245",
+          "#5f6165",
+          "#808286",
+          "#a2a5a9",
+          "#c6c9cd",
+          "#edeff1"
+        ]
+      },
+      "hairline-strong": {
+        "role": "neutral",
+        "displayName": "Hairline Strong",
+        "canonical": "#cdd2d9",
+        "tonalRamp": [
+          "#090b0e",
+          "#22252b",
+          "#3e4248",
+          "#5d6268",
+          "#7e8389",
+          "#a1a5ac",
+          "#c5cad0",
+          "#eceff3"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Ink",
+        "canonical": "#14171c",
+        "tonalRamp": [
+          "#0a0b0e",
+          "#22252b",
+          "#3f4248",
+          "#5e6168",
+          "#7f8389",
+          "#a1a5ac",
+          "#c5c9d0",
+          "#eceff3"
+        ]
+      },
+      "ink-2": {
+        "role": "neutral",
+        "displayName": "Ink 2",
+        "canonical": "#464d58",
+        "tonalRamp": [
+          "#080b10",
+          "#1f252f",
+          "#3c424d",
+          "#5a626d",
+          "#7b838f",
+          "#9ea6b2",
+          "#c1cad7",
+          "#eaeff7"
+        ]
+      },
+      "ink-3": {
+        "role": "neutral",
+        "displayName": "Ink 3",
+        "canonical": "#636a75",
+        "tonalRamp": [
+          "#080b10",
+          "#1f252f",
+          "#3c424d",
+          "#5b626d",
+          "#7c838e",
+          "#9ea6b2",
+          "#c2cad6",
+          "#eaeff6"
+        ]
+      },
+      "accent": {
+        "role": "primary",
+        "displayName": "Ledger Blue",
+        "canonical": "#3451d1",
+        "tonalRamp": [
+          "#02042e",
+          "#0c1567",
+          "#23388b",
+          "#405ab0",
+          "#5f7cd6",
+          "#80a0fd",
+          "#a2c5ff",
+          "#d6edff"
+        ]
+      },
+      "accent-hover": {
+        "role": "primary",
+        "displayName": "Ledger Blue Deep",
+        "canonical": "#2a43b4",
+        "tonalRamp": [
+          "#02042e",
+          "#0c1567",
+          "#23388b",
+          "#405ab0",
+          "#5f7cd6",
+          "#80a0fd",
+          "#a2c5ff",
+          "#d6edff"
+        ]
+      },
+      "accent-soft": {
+        "role": "primary",
+        "displayName": "Blue Wash",
+        "canonical": "#edf0fc",
+        "tonalRamp": [
+          "#0a0b0f",
+          "#23252d",
+          "#3f414b",
+          "#5e616b",
+          "#7f828c",
+          "#a2a4b0",
+          "#c6c9d4",
+          "#eceef5"
+        ]
+      },
+      "accent-tint": {
+        "role": "primary",
+        "displayName": "Periwinkle",
+        "canonical": "#8ea2f0",
+        "tonalRamp": [
+          "#040628",
+          "#151a5c",
+          "#2e3a7e",
+          "#4b5ba2",
+          "#6b7dc8",
+          "#8ca0ee",
+          "#afc4ff",
+          "#deedff"
+        ]
+      },
+      "good": {
+        "role": "status",
+        "displayName": "Automate Green",
+        "canonical": "#0a7347",
+        "tonalRamp": [
+          "#001202",
+          "#00330c",
+          "#005329",
+          "#0c7448",
+          "#3c9668",
+          "#62ba8a",
+          "#87e0ad",
+          "#cafddd"
+        ]
+      },
+      "good-soft": {
+        "role": "status",
+        "displayName": "Automate Green Soft",
+        "canonical": "#e3f4eb",
+        "tonalRamp": [
+          "#070d0a",
+          "#1b2822",
+          "#38463f",
+          "#57655e",
+          "#77877f",
+          "#9aaaa1",
+          "#bdcec5",
+          "#e7f1ec"
+        ]
+      },
+      "warn": {
+        "role": "status",
+        "displayName": "Review Amber",
+        "canonical": "#8f5200",
+        "tonalRamp": [
+          "#1d0200",
+          "#480f00",
+          "#6a3000",
+          "#8d5000",
+          "#b17230",
+          "#d79555",
+          "#feb979",
+          "#ffe5c0"
+        ]
+      },
+      "warn-soft": {
+        "role": "status",
+        "displayName": "Review Amber Soft",
+        "canonical": "#fdf1dc",
+        "tonalRamp": [
+          "#0f0a04",
+          "#2d2413",
+          "#4a412f",
+          "#6a604e",
+          "#8c816e",
+          "#afa490",
+          "#d3c8b3",
+          "#f5eee1"
+        ]
+      },
+      "quiet": {
+        "role": "status",
+        "displayName": "Don't-automate Grey",
+        "canonical": "#474e59",
+        "tonalRamp": [
+          "#080b10",
+          "#1f252f",
+          "#3c424d",
+          "#5a626d",
+          "#7b838f",
+          "#9ea6b2",
+          "#c1cad7",
+          "#eaeff7"
+        ]
+      },
+      "quiet-soft": {
+        "role": "status",
+        "displayName": "Don't-automate Grey Soft",
+        "canonical": "#eceef1",
+        "tonalRamp": [
+          "#0a0b0c",
+          "#242527",
+          "#404244",
+          "#606164",
+          "#818285",
+          "#a3a5a8",
+          "#c7c9cc",
+          "#edeef0"
+        ]
+      },
+      "bad": {
+        "role": "status",
+        "displayName": "Error Red",
+        "canonical": "#b42318",
+        "tonalRamp": [
+          "#250000",
+          "#570000",
+          "#7c130b",
+          "#a23a2e",
+          "#c85d4e",
+          "#f08070",
+          "#ffa493",
+          "#ffdace"
+        ]
+      },
+      "bad-soft": {
+        "role": "status",
+        "displayName": "Error Red Soft",
+        "canonical": "#fcebea",
+        "tonalRamp": [
+          "#100909",
+          "#2e2221",
+          "#4c3e3e",
+          "#6c5d5c",
+          "#8d7e7d",
+          "#b1a1a0",
+          "#d5c5c4",
+          "#f6eceb"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Page titles, one per page."
+      },
+      "answer": {
+        "displayName": "Answer",
+        "purpose": "The results headline sentence."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Panel headings."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Default text, table cells, inputs."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Form labels, small buttons, disclosure summaries."
+      },
+      "meta": {
+        "displayName": "Meta",
+        "purpose": "Table and column headers, fact labels; sentence case."
+      },
+      "mono": {
+        "displayName": "Mono",
+        "purpose": "Model names, ids, logs, API keys only."
+      }
+    },
+    "shadows": [
+      {
+        "name": "shadow-1",
+        "value": "0 1px 2px rgb(16 24 40 / 0.06), 0 1px 1px rgb(16 24 40 / 0.03)",
+        "purpose": "Rest: panels and secondary buttons."
+      },
+      {
+        "name": "shadow-2",
+        "value": "0 6px 16px -4px rgb(16 24 40 / 0.12), 0 2px 4px -1px rgb(16 24 40 / 0.06)",
+        "purpose": "Raised: in-flow panel demanding attention (spend confirmation)."
+      },
+      {
+        "name": "shadow-3",
+        "value": "0 18px 40px -12px rgb(16 24 40 / 0.22), 0 4px 10px -4px rgb(16 24 40 / 0.08)",
+        "purpose": "Floating: toasts, savebar, mobile drawer."
+      },
+      {
+        "name": "focus-ring",
+        "value": "0 0 0 3px rgb(52 81 209 / 0.32)",
+        "purpose": "Input focus halo; elsewhere 2px solid accent outline, 2px offset."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease",
+        "value": "cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "Drawer, toast/savebar entrance, disclosure chevrons, meters."
+      },
+      {
+        "name": "state",
+        "value": "120ms",
+        "purpose": "Hover/border/background transitions on controls."
+      },
+      {
+        "name": "enter",
+        "value": "240-280ms",
+        "purpose": "Toast, savebar and drawer entrances."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "compact-recs",
+        "value": "1100px"
+      },
+      {
+        "name": "mobile-shell",
+        "value": "900px"
+      },
+      {
+        "name": "narrow",
+        "value": "600px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The one main action in a page head (Run, New project).",
+      "html": "<button class=\"ds-btn ds-btn-primary\"><svg viewBox=\"0 0 24 24\" width=\"16\" height=\"16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.75\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M6 3l14 9-14 9V3z\"/></svg>Run again</button>",
+      "css": ":host{--font:'Geist Variable',ui-sans-serif,system-ui,sans-serif;--mono:'Geist Mono Variable',ui-monospace,Menlo,monospace;--bg:#f4f5f7;--surface:#fff;--subtle:#f8f9fa;--hover:#f1f3f5;--border:#e3e6ea;--border-strong:#cdd2d9;--text:#14171c;--text-2:#464d58;--text-3:#636a75;--accent:#3451d1;--accent-hover:#2a43b4;--accent-soft:#edf0fc;--accent-ring:rgb(52 81 209/.32);--good:#0a7347;--good-soft:#e3f4eb;--warn:#8f5200;--warn-soft:#fdf1dc;--quiet:#474e59;--quiet-soft:#eceef1;--bad:#b42318;--bad-soft:#fcebea;--radius:8px;--radius-sm:6px;--shadow-1:0 1px 2px rgb(16 24 40/.06),0 1px 1px rgb(16 24 40/.03);--ease:cubic-bezier(0.16,1,0.3,1)} .ds-btn{display:inline-flex;align-items:center;gap:7px;height:34px;padding:0 13px;border-radius:var(--radius-sm);border:1px solid var(--border-strong);background:var(--surface);color:var(--text);font:500 13.5px/1 var(--font);box-shadow:var(--shadow-1);cursor:pointer;transition:background 120ms,border-color 120ms,transform 120ms}.ds-btn:hover{background:var(--subtle)}.ds-btn:active{transform:translateY(.5px)}.ds-btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}.ds-btn-primary{background:var(--accent);border-color:var(--accent);color:#fff;box-shadow:0 1px 2px rgb(52 81 209/.3),inset 0 1px 0 rgb(255 255 255/.12)}.ds-btn-primary:hover{background:var(--accent-hover);border-color:var(--accent-hover)}"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button",
+      "description": "Default white button for secondary actions.",
+      "html": "<button class=\"ds-btn\">Download report</button>",
+      "css": ":host{--font:'Geist Variable',ui-sans-serif,system-ui,sans-serif;--mono:'Geist Mono Variable',ui-monospace,Menlo,monospace;--bg:#f4f5f7;--surface:#fff;--subtle:#f8f9fa;--hover:#f1f3f5;--border:#e3e6ea;--border-strong:#cdd2d9;--text:#14171c;--text-2:#464d58;--text-3:#636a75;--accent:#3451d1;--accent-hover:#2a43b4;--accent-soft:#edf0fc;--accent-ring:rgb(52 81 209/.32);--good:#0a7347;--good-soft:#e3f4eb;--warn:#8f5200;--warn-soft:#fdf1dc;--quiet:#474e59;--quiet-soft:#eceef1;--bad:#b42318;--bad-soft:#fcebea;--radius:8px;--radius-sm:6px;--shadow-1:0 1px 2px rgb(16 24 40/.06),0 1px 1px rgb(16 24 40/.03);--ease:cubic-bezier(0.16,1,0.3,1)} .ds-btn{display:inline-flex;align-items:center;gap:7px;height:34px;padding:0 13px;border-radius:var(--radius-sm);border:1px solid var(--border-strong);background:var(--surface);color:var(--text);font:500 13.5px/1 var(--font);box-shadow:var(--shadow-1);cursor:pointer;transition:background 120ms,border-color 120ms,transform 120ms}.ds-btn:hover{background:var(--subtle)}.ds-btn:active{transform:translateY(.5px)}.ds-btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}"
+    },
+    {
+      "name": "Ghost Button",
+      "kind": "button",
+      "refersTo": "button-ghost",
+      "description": "Cancel and toolbar actions.",
+      "html": "<button class=\"ds-btn ds-btn-ghost\">Cancel</button>",
+      "css": ":host{--font:'Geist Variable',ui-sans-serif,system-ui,sans-serif;--mono:'Geist Mono Variable',ui-monospace,Menlo,monospace;--bg:#f4f5f7;--surface:#fff;--subtle:#f8f9fa;--hover:#f1f3f5;--border:#e3e6ea;--border-strong:#cdd2d9;--text:#14171c;--text-2:#464d58;--text-3:#636a75;--accent:#3451d1;--accent-hover:#2a43b4;--accent-soft:#edf0fc;--accent-ring:rgb(52 81 209/.32);--good:#0a7347;--good-soft:#e3f4eb;--warn:#8f5200;--warn-soft:#fdf1dc;--quiet:#474e59;--quiet-soft:#eceef1;--bad:#b42318;--bad-soft:#fcebea;--radius:8px;--radius-sm:6px;--shadow-1:0 1px 2px rgb(16 24 40/.06),0 1px 1px rgb(16 24 40/.03);--ease:cubic-bezier(0.16,1,0.3,1)} .ds-btn{display:inline-flex;align-items:center;gap:7px;height:34px;padding:0 13px;border-radius:var(--radius-sm);border:1px solid var(--border-strong);background:var(--surface);color:var(--text);font:500 13.5px/1 var(--font);box-shadow:var(--shadow-1);cursor:pointer;transition:background 120ms,border-color 120ms,transform 120ms}.ds-btn:hover{background:var(--subtle)}.ds-btn:active{transform:translateY(.5px)}.ds-btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}.ds-btn-ghost{background:transparent;border-color:transparent;box-shadow:none;color:var(--text-2)}.ds-btn-ghost:hover{background:var(--hover);color:var(--text)}"
+    },
+    {
+      "name": "Text Input",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "34px field with label and hint; blue border and ring on focus.",
+      "html": "<label class=\"ds-field\"><span class=\"ds-label\">Project name</span><input class=\"ds-input\" placeholder=\"e.g. Support tickets Q3\"><span class=\"ds-hint\">You can rename it later.</span></label>",
+      "css": ":host{--font:'Geist Variable',ui-sans-serif,system-ui,sans-serif;--mono:'Geist Mono Variable',ui-monospace,Menlo,monospace;--bg:#f4f5f7;--surface:#fff;--subtle:#f8f9fa;--hover:#f1f3f5;--border:#e3e6ea;--border-strong:#cdd2d9;--text:#14171c;--text-2:#464d58;--text-3:#636a75;--accent:#3451d1;--accent-hover:#2a43b4;--accent-soft:#edf0fc;--accent-ring:rgb(52 81 209/.32);--good:#0a7347;--good-soft:#e3f4eb;--warn:#8f5200;--warn-soft:#fdf1dc;--quiet:#474e59;--quiet-soft:#eceef1;--bad:#b42318;--bad-soft:#fcebea;--radius:8px;--radius-sm:6px;--shadow-1:0 1px 2px rgb(16 24 40/.06),0 1px 1px rgb(16 24 40/.03);--ease:cubic-bezier(0.16,1,0.3,1)} .ds-field{display:grid;gap:6px;font-family:var(--font);width:280px}.ds-label{font-size:13px;font-weight:500;color:var(--text)}.ds-hint{font-size:12.5px;color:var(--text-3)}.ds-input{height:34px;padding:0 10px;border:1px solid var(--border-strong);border-radius:var(--radius-sm);background:var(--surface);color:var(--text);font:400 14px/1.4 var(--font);box-shadow:inset 0 1px 1px rgb(16 24 40/.03);transition:border-color 120ms,box-shadow 120ms}.ds-input::placeholder{color:#8a909a}.ds-input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-ring)}"
+    },
+    {
+      "name": "Sidebar Nav",
+      "kind": "nav",
+      "refersTo": "nav-item",
+      "description": "Sidebar items; current page in Blue Wash.",
+      "html": "<nav class=\"ds-nav\"><span class=\"ds-nav-label\">kaggle-support-tickets</span><a href=\"#\" aria-current=\"page\">Results</a><a href=\"#\">Setup</a><a href=\"#\">Run</a></nav>",
+      "css": ":host{--font:'Geist Variable',ui-sans-serif,system-ui,sans-serif;--mono:'Geist Mono Variable',ui-monospace,Menlo,monospace;--bg:#f4f5f7;--surface:#fff;--subtle:#f8f9fa;--hover:#f1f3f5;--border:#e3e6ea;--border-strong:#cdd2d9;--text:#14171c;--text-2:#464d58;--text-3:#636a75;--accent:#3451d1;--accent-hover:#2a43b4;--accent-soft:#edf0fc;--accent-ring:rgb(52 81 209/.32);--good:#0a7347;--good-soft:#e3f4eb;--warn:#8f5200;--warn-soft:#fdf1dc;--quiet:#474e59;--quiet-soft:#eceef1;--bad:#b42318;--bad-soft:#fcebea;--radius:8px;--radius-sm:6px;--shadow-1:0 1px 2px rgb(16 24 40/.06),0 1px 1px rgb(16 24 40/.03);--ease:cubic-bezier(0.16,1,0.3,1)} .ds-nav{display:flex;flex-direction:column;gap:1px;width:216px;padding:10px;background:var(--surface);font:400 14px/1.5 var(--font)}.ds-nav-label{font-size:12px;font-weight:500;color:var(--text-3);padding:4px 10px 6px}.ds-nav a{padding:7px 10px;border-radius:var(--radius-sm);color:var(--text-2);text-decoration:none;font-weight:500;transition:background 120ms,color 120ms}.ds-nav a:hover{background:var(--hover);color:var(--text)}.ds-nav a[aria-current=page]{background:var(--accent-soft);color:var(--accent)}.ds-nav a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}"
+    },
+    {
+      "name": "Verdict Badges",
+      "kind": "chip",
+      "refersTo": "badge-automate",
+      "description": "Verdict pills: color, icon and words together.",
+      "html": "<div class=\"ds-badges\"><span class=\"ds-badge ds-automate\">Automate</span><span class=\"ds-badge ds-review\">Automate with review</span><span class=\"ds-badge ds-dont\">Don&#39;t automate</span></div>",
+      "css": ":host{--font:'Geist Variable',ui-sans-serif,system-ui,sans-serif;--mono:'Geist Mono Variable',ui-monospace,Menlo,monospace;--bg:#f4f5f7;--surface:#fff;--subtle:#f8f9fa;--hover:#f1f3f5;--border:#e3e6ea;--border-strong:#cdd2d9;--text:#14171c;--text-2:#464d58;--text-3:#636a75;--accent:#3451d1;--accent-hover:#2a43b4;--accent-soft:#edf0fc;--accent-ring:rgb(52 81 209/.32);--good:#0a7347;--good-soft:#e3f4eb;--warn:#8f5200;--warn-soft:#fdf1dc;--quiet:#474e59;--quiet-soft:#eceef1;--bad:#b42318;--bad-soft:#fcebea;--radius:8px;--radius-sm:6px;--shadow-1:0 1px 2px rgb(16 24 40/.06),0 1px 1px rgb(16 24 40/.03);--ease:cubic-bezier(0.16,1,0.3,1)} .ds-badges{display:flex;gap:8px;font-family:var(--font)}.ds-badge{display:inline-flex;align-items:center;height:22px;padding:0 8px;border-radius:999px;font-size:12px;font-weight:550}.ds-automate{background:var(--good-soft);color:var(--good)}.ds-review{background:var(--warn-soft);color:var(--warn)}.ds-dont{background:var(--quiet-soft);color:var(--quiet)}"
+    },
+    {
+      "name": "Panel",
+      "kind": "card",
+      "refersTo": "panel",
+      "description": "White hairline panel with head and body.",
+      "html": "<section class=\"ds-panel\"><header class=\"ds-panel-head\"><h2>Recommendations</h2><p>The best option for each tested step.</p></header><div class=\"ds-panel-body\">Body content</div></section>",
+      "css": ":host{--font:'Geist Variable',ui-sans-serif,system-ui,sans-serif;--mono:'Geist Mono Variable',ui-monospace,Menlo,monospace;--bg:#f4f5f7;--surface:#fff;--subtle:#f8f9fa;--hover:#f1f3f5;--border:#e3e6ea;--border-strong:#cdd2d9;--text:#14171c;--text-2:#464d58;--text-3:#636a75;--accent:#3451d1;--accent-hover:#2a43b4;--accent-soft:#edf0fc;--accent-ring:rgb(52 81 209/.32);--good:#0a7347;--good-soft:#e3f4eb;--warn:#8f5200;--warn-soft:#fdf1dc;--quiet:#474e59;--quiet-soft:#eceef1;--bad:#b42318;--bad-soft:#fcebea;--radius:8px;--radius-sm:6px;--shadow-1:0 1px 2px rgb(16 24 40/.06),0 1px 1px rgb(16 24 40/.03);--ease:cubic-bezier(0.16,1,0.3,1)} .ds-panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow-1);font:400 14px/1.5 var(--font);color:var(--text);width:420px}.ds-panel-head{padding:14px 18px;border-bottom:1px solid var(--border)}.ds-panel-head h2{margin:0;font-size:15px;font-weight:600}.ds-panel-head p{margin:2px 0 0;font-size:13px;color:var(--text-3)}.ds-panel-body{padding:18px}"
+    },
+    {
+      "name": "Range Bar",
+      "kind": "custom",
+      "refersTo": "panel",
+      "description": "Signature: point estimate as a dot on its plausible-range band, with zero line.",
+      "html": "<div class=\"ds-rangewrap\"><div class=\"ds-range\"><span class=\"ds-zero\" style=\"left:35%\"></span><span class=\"ds-span\" style=\"left:39%;right:0\"></span><span class=\"ds-point\" style=\"left:70%\"></span></div><div class=\"ds-rtext\"><strong>69 h</strong>10 h to 129 h</div></div>",
+      "css": ":host{--font:'Geist Variable',ui-sans-serif,system-ui,sans-serif;--mono:'Geist Mono Variable',ui-monospace,Menlo,monospace;--bg:#f4f5f7;--surface:#fff;--subtle:#f8f9fa;--hover:#f1f3f5;--border:#e3e6ea;--border-strong:#cdd2d9;--text:#14171c;--text-2:#464d58;--text-3:#636a75;--accent:#3451d1;--accent-hover:#2a43b4;--accent-soft:#edf0fc;--accent-ring:rgb(52 81 209/.32);--good:#0a7347;--good-soft:#e3f4eb;--warn:#8f5200;--warn-soft:#fdf1dc;--quiet:#474e59;--quiet-soft:#eceef1;--bad:#b42318;--bad-soft:#fcebea;--radius:8px;--radius-sm:6px;--shadow-1:0 1px 2px rgb(16 24 40/.06),0 1px 1px rgb(16 24 40/.03);--ease:cubic-bezier(0.16,1,0.3,1)} .ds-rangewrap{width:240px;font:400 14px/1.5 var(--font)}.ds-range{position:relative;height:10px;border-radius:6px;background:var(--hover)}.ds-zero{position:absolute;top:-4px;bottom:-4px;width:1px;background:var(--border-strong)}.ds-span{position:absolute;top:0;bottom:0;border-radius:6px;background:#f6d9a6}.ds-point{position:absolute;top:50%;width:12px;height:12px;margin:-6px 0 0 -6px;border-radius:50%;background:#c27a00;box-shadow:0 0 0 2px var(--surface),var(--shadow-1)}.ds-rtext{margin-top:6px;font-size:12.5px;color:var(--text-3)}.ds-rtext strong{color:var(--text);font-weight:600;margin-right:4px}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Defensible Ledger",
+    "overview": "\n**Creative North Star: \"The Defensible Ledger\"**\n\nEvenpoint is the category-standard analytics dashboard, executed at Stripe-dashboard clarity and nothing more decorative than that. An operations lead sets up an export, runs it, and reads an answer they can defend to a manager. The system's job is to make numbers, ranges and verdicts legible; it refuses novelty styling and refuses to hide uncertainty.\n\nThe world is a light, cool neutral ground with white panels sitting on it, separated by hairline borders and the softest of shadows. One blue accent marks action, selection and focus. Green, amber and grey appear only as verdict meaning (automate, automate with review, don't automate), never as decoration. Density is moderate and table-led: 14px body, tabular numerals everywhere numbers sit in columns, generous row padding.\n\nType is a single family, Geist, at a tight ramp; Geist Mono is reserved for the machine's voice (logs, ids, model names, API keys). Icons are Lucide line icons at 16px, stroke 1.75.",
+    "keyCharacteristics": [
+      "Cool grey ground, white hairline panels, soft ambient shadow",
+      "One blue accent for action, selection, focus and progress",
+      "Verdict colors as meaning only, always paired with an icon and a label",
+      "Every result shown with its range, not just a point",
+      "Single sans family with a compact ramp; mono only for machine values",
+      "Left sidebar shell, page title with primary action top right"
+    ],
+    "rules": [
+      {
+        "name": "The Meaning-Only Rule",
+        "body": "Green, amber and grey appear only where they encode a verdict or status. A green that is decorative is a lie on this product.",
+        "section": "colors"
+      },
+      {
+        "name": "The Gentle No Rule",
+        "body": "\"Don't automate\" is grey, never red. Red is for things that broke.",
+        "section": "colors"
+      },
+      {
+        "name": "The One Blue Rule",
+        "body": "The accent is the only chromatic color outside verdicts and errors. It marks what you can act on and where you are; it is not a fill for large areas.",
+        "section": "colors"
+      },
+      {
+        "name": "The Machine Voice Rule",
+        "body": "Geist Mono is for values the machine produced or consumes verbatim (model names, ids, logs, keys). Never for headings, labels or numbers.",
+        "section": "typography"
+      },
+      {
+        "name": "The Tabular Rule",
+        "body": "Any number in a column or a fact row uses tabular numerals; tables set it on the whole table.",
+        "section": "typography"
+      },
+      {
+        "name": "The Sentence Case Rule",
+        "body": "Headers and labels are sentence case at normal tracking. The system has no uppercase tracked labels.",
+        "section": "typography"
+      },
+      {
+        "name": "The Hairline First Rule",
+        "body": "Separation comes from a 1px hairline before it comes from shadow. A panel without its border is not a panel.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do put every money and hours result with its range, the point in ink and the range in ink-3.",
+      "Do pair every verdict color with its icon and its words; color alone never carries the verdict.",
+      "Do keep one primary (blue) button per page head, at the right end of the actions.",
+      "Do set model names, ids and logs in Geist Mono at 12.5px, and everything else in Geist.",
+      "Do separate surfaces with 1px hairlines (hairline) and seat panels with the Rest shadow only.",
+      "Do use Lucide line icons at 16px (14px small, 20px large), stroke 1.75.",
+      "Do honour prefers-reduced-motion; motion is limited to short state transitions (100-240ms) and toast/drawer entrances."
+    ],
+    "donts": [
+      "Don't use green, amber or grey for anything that is not a verdict or status.",
+      "Don't make \"Don't automate\" red or alarming; red is reserved for errors and failures.",
+      "Don't introduce a second accent hue or fill large areas with Ledger Blue.",
+      "Don't use mono for headings, labels or figures.",
+      "Don't add uppercase tracked labels or eyebrows above titles; headers are sentence case.",
+      "Don't use hard offset shadows, gradients or decorative backgrounds; the only gradient is the loading skeleton shimmer.",
+      "Don't show a single number where a range exists."
+    ]
+  }
+}
