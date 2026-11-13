@@ -61,17 +61,52 @@ function answer(d: Row): Raw {
   const tested = d.best.length;
   const sum = (f: (r: Row) => number) => worth.reduce((a, r) => a + (f(r) || 0), 0);
   const q = d.quality;
-  const sentence = worth.length
-    ? html`Automating <strong>${worth.length} of ${tested}</strong> tested ${tested === 1 ? "step" : "steps"} would save about
-        <strong>${hrs(sum((r) => r.net_hours_month))} a month</strong>, worth <strong>${usd(sum((r) => r.net_value_month))}</strong>.`
-    : tested
-      ? html`Nothing is worth automating yet: none of the ${tested} tested steps saves more than it costs.`
-      : html`No step could be tested yet.`;
-  const range = worth.length ? `Likely ${usd(sum((r) => r.net_value_low))} to ${usd(sum((r) => valueAt(d, r, r.net_hours_high)))} · ` : "";
+  const perStep = Math.max(0, ...(d.summaries as Row[]).map((s) => s.n));  // each model saw this many cases per step
+  const facts = html`
+    <dl class="answer-facts num">
+      <div><dt>Steps worth automating</dt><dd>${worth.length} of ${tested}</dd></div>
+      <div><dt>Cases analysed</dt><dd>${num(q.cases)} <span>${dateShort(q.first_ts)} to ${dateShort(q.last_ts)}</span></dd></div>
+      <div><dt>Cost of this analysis</dt><dd>${usd(d.total_cost, 2)}</dd></div>
+    </dl>`;
+
+  if (!worth.length) {
+    return html`
+      <section class="answer-card">
+        <div class="answer-main">
+          <p class="answer-label">Estimated savings</p>
+          <p class="answer-none">Nothing worth automating yet</p>
+          <p class="answer-sub">${tested
+            ? `None of the ${tested} tested ${tested === 1 ? "step saves" : "steps save"} more than it costs with these models and your numbers.`
+            : "No step could be tested yet."}</p>
+        </div>
+        ${facts}
+      </section>`;
+  }
+
+  const value = sum((r) => r.net_value_month);
+  const low = sum((r) => r.net_value_low);
+  const high = sum((r) => valueAt(d, r, r.net_hours_high));
+  const lo = Math.min(0, low), hi = Math.max(high, 1);
+  const pos = (v: number) => ((v - lo) / (hi - lo)) * 100;
   return html`
-    <section class="answer">
-      <p class="answer-text">${sentence}</p>
-      <p class="answer-meta">${range}${num(q.cases)} cases from ${dateShort(q.first_ts)} to ${dateShort(q.last_ts)} · cost ${usd(d.total_cost, 2)}</p>
+    <section class="answer-card">
+      <div class="answer-grid">
+        <div class="answer-main">
+          <p class="answer-label">Estimated savings</p>
+          <p class="answer-value num">${usd(value)}<span> / month</span></p>
+          <p class="answer-sub">${hrs(sum((r) => r.net_hours_month))} of team time a month, after AI costs and checking its work</p>
+        </div>
+        <div class="answer-range">
+          <p class="answer-label">Could be anywhere from</p>
+          <p class="range-figures num"><strong>${usd(low)}</strong> to <strong>${usd(high)}</strong> <span>a month</span></p>
+          <div class="answer-bar" role="img" aria-label="${`Estimate ${usd(value)} a month, could be between ${usd(low)} and ${usd(high)}`}">
+            <span class="answer-band" style="left:${pos(low)}%;width:${pos(high) - pos(low)}%"></span>
+            <span class="answer-dot" style="left:${pos(value)}%"></span>
+          </div>
+          <p class="answer-why">Because the AI was tested on ${num(perStep)} past cases per step, not all of them. More test cases narrow this range.</p>
+        </div>
+      </div>
+      ${facts}
     </section>`;
 }
 
@@ -190,12 +225,28 @@ function details(d: Row): Raw {
 }
 
 const css = raw(`
-.answer { padding: 4px 0 8px; }
-.answer-text { font-size: 24px; line-height: 1.45; letter-spacing: -0.015em; max-width: 46ch; color: var(--text); text-wrap: pretty; }
-.answer-text strong { font-weight: 620; }
-.answer .soft { display: block; margin-top: 6px; font-size: 15px; letter-spacing: 0; }
-.soft { color: var(--text-3); }
-.answer-meta { margin-top: 10px; color: var(--text-3); font-size: 13px; font-variant-numeric: tabular-nums; }
+.answer-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+.answer-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+.answer-main, .answer-range { padding: 28px; display: grid; gap: 6px; align-content: start; }
+.answer-range { border-left: 1px solid var(--border); background: var(--subtle); }
+.answer-label { font-size: 13px; font-weight: 600; color: var(--text-3); }
+.answer-value { font-size: 28px; font-weight: 700; letter-spacing: -0.025em; line-height: 1.2; color: var(--text); }
+.answer-value span { font-size: 16px; font-weight: 500; color: var(--text-3); letter-spacing: 0; }
+.answer-sub { font-size: 14px; color: var(--text-2); }
+.answer-none { font-size: 24px; font-weight: 700; letter-spacing: -0.02em; }
+.range-figures { font-size: 19px; color: var(--text-2); }
+.range-figures strong { color: var(--text); font-weight: 700; }
+.range-figures span { font-size: 14px; color: var(--text-3); }
+.answer-bar { position: relative; height: 8px; margin: 10px 0 6px; border-radius: 999px; background: var(--border); }
+.answer-band { position: absolute; top: 0; bottom: 0; border-radius: 999px; background: color-mix(in srgb, var(--accent) 35%, var(--surface)); }
+.answer-dot { position: absolute; top: 50%; width: 14px; height: 14px; margin: -7px 0 0 -7px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 3px var(--surface); }
+.answer-why { font-size: 13px; color: var(--text-3); }
+.answer-facts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin: 0; border-top: 1px solid var(--border); }
+.answer-facts div { padding: 16px 28px; }
+.answer-facts div + div { border-left: 1px solid var(--border); }
+.answer-facts dt { font-size: 13px; color: var(--text-3); }
+.answer-facts dd { margin: 2px 0 0; font-size: 16px; font-weight: 650; }
+.answer-facts dd span { font-size: 13px; font-weight: 400; color: var(--text-3); margin-left: 4px; }
 .step-list { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); }
 .step-row { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(160px, 1fr) 110px 32px; gap: 8px 28px; align-items: center; padding: 18px 20px; }
 .step-row + .step-row { border-top: 1px solid var(--border); }
@@ -239,7 +290,11 @@ const css = raw(`
 .kv dt { color: var(--text-2); }
 .kv dd { margin: 0; text-align: right; font-weight: 550; font-variant-numeric: tabular-nums; }
 @media (max-width: 900px) {
-  .answer-text { font-size: 19px; }
+  .answer-grid, .answer-facts { grid-template-columns: 1fr; }
+  .answer-range { border-left: 0; border-top: 1px solid var(--border); }
+  .answer-main, .answer-range { padding: 22px; }
+  .answer-facts div { padding: 12px 22px; }
+  .answer-facts div + div { border-left: 0; border-top: 1px solid var(--border); }
   .step-row { grid-template-columns: minmax(0, 1fr) auto; gap: 12px 20px; }
   .step-main { grid-column: 1; grid-row: 1; }
   .step-toggle { grid-column: 2; grid-row: 1; align-self: start; }

@@ -34,6 +34,7 @@
 
   /* Hero: the answer */
   .hero { margin-top: 28px; padding: 32px; border-radius: 20px; background: radial-gradient(120% 140% at 100% 0%, #1e3a8a 0%, var(--ink) 55%); color: #fff; break-inside: avoid; }
+  .hero-label { color: #93c5fd; font-size: 13px; font-weight: 600; margin-bottom: 8px; }
   .hero-figure { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
   .hero-figure strong { font-size: 52px; font-weight: 750; letter-spacing: -0.04em; line-height: 1; }
   .hero-figure span { color: #cbd5e1; font-size: 16px; }
@@ -133,16 +134,17 @@
 
   <header class="title">
     <h1>{{ cfg.project }}: what to automate</h1>
-    <p>{{ quality.cases | num }} cases{% if quality.first_ts %} from {{ quality.first_ts.strftime("%-d %b %Y") }} to {{ quality.last_ts.strftime("%-d %b %Y") }}{% endif %}, tested on {{ n_cases.values() | sum | num }} real past cases</p>
+    <p>{{ quality.cases | num }} cases{% if quality.first_ts %} from {{ quality.first_ts.strftime("%-d %b %Y") }} to {{ quality.last_ts.strftime("%-d %b %Y") }}{% endif %}, tested on {{ n_cases.values() | max | num }} real past cases per step</p>
   </header>
 
   {% if worth %}
   <div class="hero">
-    <div class="hero-figure num"><strong>{{ totals.net_value_month | usd }}</strong><span>a month, likely {{ totals.net_value_low | usd }} to {{ totals.value_high | usd }}</span></div>
+    <p class="hero-label">Estimated savings</p>
+    <div class="hero-figure num"><strong>{{ totals.net_value_month | usd }}</strong><span>a month · could be anywhere from {{ totals.net_value_low | usd }} to {{ totals.value_high | usd }}</span></div>
     <p class="hero-text">Automating <b>{{ worth | length }} of {{ best | length }}</b> tested {{ "step" if best | length == 1 else "steps" }} would save about <b>{{ totals.net_hours_month | hrs }} of the team's time a month</b>.</p>
     <dl class="hero-stats num">
       <div class="stat"><dt>Steps worth automating</dt><dd>{{ worth | length }} of {{ best | length }}</dd></div>
-      <div class="stat"><dt>Past cases tested</dt><dd>{{ n_cases.values() | sum | num }}</dd></div>
+      <div class="stat"><dt>Test cases per step</dt><dd>{{ n_cases.values() | max | num }}</dd></div>
       <div class="stat"><dt>Cost of this analysis</dt><dd>{{ total_cost | usd(2) }}</dd></div>
     </dl>
   </div>
@@ -172,11 +174,11 @@
               <span class="band" style="left: {{ r.bar.left }}%; width: {{ r.bar.width }}%"></span>
               <span class="dot" style="left: {{ r.bar.point }}%"></span>
             </div>
-            <div class="bar-text num"><span>Low {{ r.net_hours_low | hrs }}</span><span>Likely <b>{{ r.net_hours_month | hrs }}</b></span><span>High {{ r.net_hours_high | hrs }}</span></div>
+            <div class="bar-text num"><span>Low {{ r.net_hours_low | hrs }}</span><span>Estimate <b>{{ r.net_hours_month | hrs }}</b></span><span>High {{ r.net_hours_high | hrs }}</span></div>
           </div>
           <div class="figures num">
             <strong>{{ r.net_value_month | usd }}<span style="display:inline;font-size:14px;font-weight:500"> / mo</span></strong>
-            <span>{{ r.net_value_low | usd }} to {{ r.value_high | usd }}</span>
+            <span>could be {{ r.net_value_low | usd }} to {{ r.value_high | usd }}</span>
             <span>{% if r.net_hours_month >= 0 %}{{ r.net_hours_month | hrs }} saved a month{% else %}{{ (-r.net_hours_month) | hrs }} lost a month{% endif %}{% if r.payback_months is not none %} · pays back in {{ r.payback_months | num(1) }} mo{% endif %}</span>
           </div>
         </div>
@@ -198,7 +200,7 @@
   <section>
     <div class="section-title"><h2>How this was measured</h2></div>
     <div class="method">
-      <p class="prose">Evenpoint read {{ quality.cases | num }} cases from the team's own export and measured how often each step happens. It then gave real past cases to AI models and compared every answer with what the team actually did. The share of correct answers, the team's time and the assumptions below give the hours and money. Ranges come from the size of the test sample: more test cases make them narrower.</p>
+      <p class="prose">Evenpoint read {{ quality.cases | num }} cases from the team's own export and measured how often each step happens. It then gave real past cases to AI models and compared every answer with what the team actually did. The share of correct answers, the team's time and the assumptions below give the hours and money. Each "could be" range shows how far the savings could move because the AI was tested on a sample of cases rather than all of them; the hourly cost and minutes below are taken as given. More test cases make the ranges narrower.</p>
       <dl class="assume num">
         <div><dt>Hourly cost of a team member</dt><dd>{{ cfg.hourly_rate | usd }}</dd></div>
         <div><dt>Minutes to check one AI answer</dt><dd>{{ cfg.review_minutes.draft_review | num(1) }}</dd></div>
