@@ -1,0 +1,52 @@
+# Kaggle multilingual customer support tickets (synthetic, English + German).
+# 1. Download: https://www.kaggle.com/datasets/tobiasbueck/multilingual-customer-support-tickets
+#    and unzip into exports/kaggle-support-tickets/raw/
+# 2. python bizbench/kaggle-support-tickets/prepare.py exports/kaggle-support-tickets/raw/aa_dataset-tickets-multi-lang-5-2-50-version.csv
+# 3. uv run evenpoint -c bizbench/kaggle-support-tickets/evenpoint.yaml run
+#
+# The dataset has no timestamps: prepare.py spreads tickets over one year (about 2,400 a month),
+# and the minutes per step below are assumptions, not measurements.
+project: kaggle-support-tickets
+hourly_rate: 30
+
+sources:
+  - adapter: csv
+    path: ../../exports/kaggle-support-tickets/tickets.csv
+    mapping:
+      case_id: Id
+      timestamps:
+        created: Created at
+        routed: Routed at
+        prioritized: Prioritized at
+        answered: Answered at
+      fields:
+        text: Text
+        queue: Queue
+        priority: Priority
+        type: Type
+        language: Language
+        answer: Answer
+
+steps:
+  created:     { minutes: 0 }    # the customer opens the ticket; no staff time
+  routed:      { minutes: 2, task_type: classify, input: text, expected: queue }
+  prioritized: { minutes: 1, task_type: classify, input: text, expected: priority }
+  answered:    { minutes: 10, task_type: draft, input: text, expected: answer }
+
+models:
+  - openai/gpt-5.4-mini
+  - openai/gpt-5.4-nano
+
+labeler_model: openai/gpt-5.4-mini
+judge_model: openai/gpt-5.4
+
+bench:
+  tasks_per_candidate: 40
+  max_cost_usd: 5
+
+review_minutes:
+  auto: 0
+  draft_review: 2
+failure_minutes: 10
+setup_cost_usd: 3000
+max_candidates: 3
