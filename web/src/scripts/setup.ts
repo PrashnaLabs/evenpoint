@@ -1,6 +1,6 @@
 // Setup tab: data file, column mapping, steps, models and assumptions, saved to evenpoint.yaml.
 import { api, upload, type Config, type Inspect } from "../lib/api";
-import { $, $$, busy, html, icon, modelName, mount, num, raw, toast, type Raw } from "../lib/ui";
+import { $, $$, busy, html, icon, modelName, mount, num, raw, stepName, toast, type Raw } from "../lib/ui";
 import type { Ctx } from "./project";
 
 type Mapping = Record<string, any>;
@@ -204,8 +204,8 @@ export async function renderSetup(el: HTMLElement, ctx: Ctx) {
               const o = cfg.steps[s] || {};
               const decide = !o.task_type;
               return html`<tr data-step="${s}">
-                <td class="strong">${s}</td>
-                <td><div class="input-affix" style="max-width:130px"><input class="input num" type="number" min="0" step="0.5" data-k="minutes" value="${o.minutes ?? ""}" placeholder="measured" aria-label="Minutes for ${s}" /><span class="affix">min</span></div></td>
+                <td class="strong">${stepName(s)}</td>
+                <td><input class="input num" style="width:110px" type="number" min="0" step="0.5" data-k="minutes" value="${o.minutes ?? ""}" placeholder="Measured" aria-label="Minutes of work for ${s}" /></td>
                 <td><select class="select" data-k="task_type" aria-label="Test type for ${s}">
                   <option value="" ${decide ? "selected" : ""}>Let Evenpoint decide</option>
                   <option value="classify" ${o.task_type === "classify" ? "selected" : ""}>Picking a label</option>
@@ -215,7 +215,7 @@ export async function renderSetup(el: HTMLElement, ctx: Ctx) {
                 <td><select class="select" data-k="expected" ${decide ? "disabled" : ""} aria-label="Field to compare with for ${s}">${fopt(o.expected)}</select></td>
               </tr>`;
             })}</tbody></table></div>
-          <p class="hint">"Measured" uses the time between events in your file, which includes waiting time. Set real minutes where you know them.</p></div>` : html`
+          <p class="hint">Left empty, minutes are measured from the time between events in your file, which includes waiting time. Enter real minutes where you know them.</p></div>` : html`
           <p class="hint">Steps appear here once you've picked step columns above${source() && "activity" in (source()!.mapping) ? ", or after the first run" : ""}.</p>`}
       </div>`;
   }
@@ -487,7 +487,8 @@ fieldset.field legend { display: grid; gap: 2px; margin-bottom: 6px; padding: 0;
 .map-row .input { height: 30px; font-size: 13px; }
 .map-row:has(input[type=checkbox]:not(:checked)) .input { opacity: 0.5; }
 .steps-table { border: 1px solid var(--border); border-radius: var(--radius-sm); }
-.steps-table td { padding: 8px 10px; }
+.steps-table td { padding: 8px 12px; }
+.steps-table th { padding: 9px 12px; }
 .steps-table .select, .steps-table .input { height: 32px; font-size: 13px; min-width: 120px; }
 .model-list { display: grid; border: 1px solid var(--border); border-radius: var(--radius-sm); }
 .model-option { display: grid; grid-template-columns: 16px minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 11px 12px; border-top: 1px solid var(--border); cursor: pointer; }

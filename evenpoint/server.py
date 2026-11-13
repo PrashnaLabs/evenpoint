@@ -201,7 +201,8 @@ class Workspace:
                     best = con.execute(
                         """SELECT count(*) FILTER (WHERE verdict <> 'dont_automate'),
                                   coalesce(sum(net_hours_month) FILTER (WHERE verdict <> 'dont_automate'), 0),
-                                  coalesce(sum(net_value_month) FILTER (WHERE verdict <> 'dont_automate'), 0)
+                                  coalesce(sum(net_value_month) FILTER (WHERE verdict <> 'dont_automate'), 0),
+                                  coalesce(sum(net_value_low) FILTER (WHERE verdict <> 'dont_automate'), 0)
                            FROM (SELECT *, row_number() OVER (PARTITION BY activity ORDER BY
                                    CASE verdict WHEN 'automate' THEN 0 WHEN 'review' THEN 1 ELSE 2 END,
                                    net_value_month DESC) AS rn
@@ -209,7 +210,7 @@ class Workspace:
                     cases = con.execute("SELECT count(DISTINCT case_id) FROM events WHERE run_id = ?",
                                         [row[0]]).fetchone()[0]
                     info["run"] = {"run_id": row[0], "started_at": row[1].isoformat(), "worth_automating": best[0],
-                                   "hours": best[1], "value": best[2], "cases": cases}
+                                   "hours": best[1], "value": best[2], "value_low": best[3], "cases": cases}
                     info["updated"] = max(info["updated"], row[1].isoformat())
             finally:
                 con.close()

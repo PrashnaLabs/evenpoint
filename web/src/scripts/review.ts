@@ -34,7 +34,7 @@ export async function renderReview(el: HTMLElement, ctx: Ctx) {
     return html`
       <div class="review-head">
         <div><h2>Check the AI's work</h2>
-          <p class="muted">Does each answer match what your team would accept? Your grades override the automatic ones and update the results.</p></div>
+          <p class="muted">Pass an answer if your team would send it as is; fail it if it needs changes. Your grades override the automatic ones and update the results.</p></div>
         <div class="row">
           <label class="hint" for="per-model">Cases per model</label>
           <select class="select" id="per-model" style="width:90px">${[5, 10, 20, 40].map((n) => html`<option ${n === perModel ? "selected" : ""}>${n}</option>`)}</select>
@@ -77,8 +77,8 @@ export async function renderReview(el: HTMLElement, ctx: Ctx) {
           <button class="btn ghost" id="prev" type="button" ${i === 0 ? "disabled" : ""}>${icon("ArrowLeft")}Back</button>
           <span class="spacer"></span>
           <button class="btn ghost" id="skip" type="button">Skip <span class="kbd">S</span></button>
-          <button class="btn ${mark === false ? "danger" : ""}" id="fail" type="button" aria-pressed="${mark === false}">${icon("X")}Not acceptable <span class="kbd">F</span></button>
-          <button class="btn ${mark === true ? "primary" : ""}" id="pass" type="button" aria-pressed="${mark === true}">${icon("Check")}Acceptable <span class="kbd">P</span></button>
+          <button class="btn ${mark === false ? "danger" : ""}" id="fail" type="button" aria-pressed="${mark === false}">${icon("X")}Fail <span class="kbd">F</span></button>
+          <button class="btn ${mark === true ? "primary" : ""}" id="pass" type="button" aria-pressed="${mark === true}">${icon("Check")}Pass <span class="kbd">P</span></button>
         </div>
       </div>`);
     wireCommon();
@@ -97,7 +97,7 @@ export async function renderReview(el: HTMLElement, ctx: Ctx) {
       <div class="panel"><div class="empty">
         <div class="empty-icon">${icon("ClipboardCheck", "lg")}</div>
         <h2>${graded() ? `You graded ${graded()} answers` : "You haven't graded any answers"}</h2>
-        <p>${pass} acceptable, ${fail} not acceptable. Saving updates accuracy, hours and verdicts. No models are called.</p>
+        <p>${pass} passed, ${fail} failed. Saving updates accuracy, hours and verdicts. No models are called.</p>
         <div class="row">
           <button class="btn" id="back" type="button">${icon("ArrowLeft")}Keep reviewing</button>
           <button class="btn primary" id="save" type="button" ${graded() ? "" : "disabled"}>Save grades and update results</button>

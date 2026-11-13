@@ -47,19 +47,23 @@ export async function renderResults(el: HTMLElement, ctx: Ctx) {
   $("#to-review", el)?.addEventListener("click", () => ctx.go("review"));
 }
 
+/** Money range from the hours range: same bootstrap interval, priced with the user's hourly rate. */
+const valueAt = (d: Row, r: Row, hours: number) => hours * d.assumptions.hourly_rate - r.ai_cost_month;
+
 function headline(d: Row): Raw {
   const worth = (d.best as Row[]).filter((r) => r.verdict !== "dont_automate");
   const tested = d.best.length;
-  const sum = (k: string) => worth.reduce((a, r) => a + (r[k] || 0), 0);
+  const sum = (f: (r: Row) => number) => worth.reduce((a, r) => a + (f(r) || 0), 0);
   const q = d.quality;
   const sentence = worth.length
     ? html`Automating <strong>${worth.length} of ${tested}</strong> tested ${tested === 1 ? "step" : "steps"} would save about
-        <strong>${hrs(sum("net_hours_month"))} a month</strong>
-        <span class="muted">(${hrs(sum("net_hours_low"))} to ${hrs(sum("net_hours_high"))})</span>,
-        worth <strong>${usd(sum("net_value_month"))}</strong> a month.`
+        <strong>${hrs(sum((r) => r.net_hours_month))} a month</strong>
+        <span class="muted">(${hrs(sum((r) => r.net_hours_low))} to ${hrs(sum((r) => r.net_hours_high))})</span>,
+        worth <strong>${usd(sum((r) => r.net_value_month))}</strong> a month
+        <span class="muted">(${usd(sum((r) => r.net_value_low))} to ${usd(sum((r) => valueAt(d, r, r.net_hours_high)))})</span>.`
     : tested
       ? html`None of the ${tested} tested steps is worth automating with these models and assumptions yet.`
-      : html`No step could be tested. See the candidates below for why.`;
+      : html`No step could be tested. See below for why.`;
   return html`
     <div class="panel headline">
       <div class="panel-body">
@@ -76,17 +80,25 @@ function headline(d: Row): Raw {
 
 function rangeBar(r: Row, lo: number, hi: number): Raw {
   const span = hi - lo || 1;
-  const x = (v: number) => `${((Math.min(Math.max(v, lo), hi) - lo) / span) * 100}%`;
+  const pos = (v: number) => ((Math.min(Math.max(v, lo), hi) - lo) / span) * 100;
   const left = Math.min(r.net_hours_low, r.net_hours_high);
   const right = Math.max(r.net_hours_low, r.net_hours_high);
+  const tip = `${hrs(r.net_hours_month)} a month, likely between ${hrs(r.net_hours_low)} and ${hrs(r.net_hours_high)}`;
   return html`
-    <div class="range ${r.verdict}" role="img"
-      aria-label="${`${hrs(r.net_hours_month)} a month, likely between ${hrs(r.net_hours_low)} and ${hrs(r.net_hours_high)}`}">
-      <span class="range-zero" style="left:${x(0)}"></span>
-      <span class="range-span" style="left:${x(left)};width:calc(${x(right)} - ${x(left)})"></span>
-      <span class="range-point" style="left:${x(r.net_hours_month)}"></span>
+    <div class="range ${r.verdict}" role="img" aria-label="${tip}" title="${tip}">
+      <span class="range-zero" style="left:${pos(0)}%"></span>
+      <span class="range-span" style="left:${pos(left)}%;width:${pos(right) - pos(left)}%"></span>
+      <span class="range-point" style="left:${pos(r.net_hours_month)}%"></span>
     </div>
-    <div class="range-labels num"><span>${hrs(r.net_hours_low)}</span><strong>${hrs(r.net_hours_month)}</strong><span>${hrs(r.net_hours_high)}</span></div>`;
+    <div class="range-text num"><strong>${hrs(r.net_hours_month)}</strong> <span>${hrs(r.net_hours_low)} to ${hrs(r.net_hours_high)}</span></div>`;
+}
+
+function axis(lo: number, hi: number): Raw {
+  const pos = (v: number) => ((v - lo) / (hi - lo || 1)) * 100;
+  return html`<div class="axis num" aria-hidden="true">
+    <span style="left:0">${hrs(lo)}</span>
+    ${lo < 0 && hi > 0 ? html`<span class="zero" style="left:${pos(0)}%">0 h</span>` : ""}
+    <span style="right:0">${hrs(hi)}</span></div>`;
 }
 
 function recommendations(d: Row): Raw {
@@ -99,25 +111,32 @@ function recommendations(d: Row): Raw {
   return html`
     <div class="panel section">
       <div class="panel-head">
-        <div><h2>Recommendations</h2><p>The best option for each tested step. Bars show hours saved per month, with the likely range from the test sample.</p></div>
+        <div><h2>Recommendations</h2><p>The best option for each tested step. Dots show the likely hours saved per month; the shaded band is the range the test sample supports.</p></div>
       </div>
-      <div class="recs">
+      <div class="recs" role="table" aria-label="Recommendations">
+        <div class="rec-head" role="row">
+          <span role="columnheader">Step</span><span role="columnheader">Verdict</span><span role="columnheader">Best model</span>
+          <span role="columnheader" class="r">Correct</span><span role="columnheader">Hours saved / month ${axis(lo, hi)}</span>
+          <span role="columnheader" class="r">Value / month</span><span></span>
+        </div>
         ${best.map((r, i) => html`
-          <div class="rec">
-            <div class="rec-main">
-              <div class="rec-step">
+          <div class="rec" role="rowgroup">
+            <div class="rec-main" role="row">
+              <div class="rec-step" role="cell">
                 <strong>${stepName(r.activity)}</strong>
                 <span class="sub">${TASK[cand[r.activity]?.task_type] || ""}</span>
               </div>
-              <div>${verdictBadge(r.verdict)}</div>
-              <div class="rec-model">
+              <div role="cell">${verdictBadge(r.verdict)}</div>
+              <div class="rec-model" role="cell">
                 <code>${modelName(r.model)}</code>
                 <span class="sub">${MODE[r.mode]}</span>
               </div>
-              <div class="rec-acc num"><strong>${pct(r.accuracy)}</strong><span class="sub">right on ${n[`${r.activity}|${r.model}`] || "–"} cases</span></div>
-              <div class="rec-range">${rangeBar(r, lo, hi)}</div>
-              <div class="rec-value num"><strong>${usd(r.net_value_month)}</strong><span class="sub">a month${r.payback_months != null ? html` · pays back in ${num(r.payback_months, 1)} mo` : ""}</span></div>
-              <button class="btn ghost sm" type="button" data-expand="${i}" aria-expanded="false" aria-controls="detail-${i}">${icon("ChevronDown")}<span class="sr-only">Details</span></button>
+              <div class="rec-acc num" role="cell"><strong>${pct(r.accuracy)}</strong><span class="sub">${n[`${r.activity}|${r.model}`] || "–"} test cases</span></div>
+              <div class="rec-range" role="cell">${rangeBar(r, lo, hi)}</div>
+              <div class="rec-value num" role="cell"><strong>${usd(r.net_value_month)}</strong>
+                <span class="sub">${usd(r.net_value_low)} to ${usd(valueAt(d, r, r.net_hours_high))}</span>
+                ${r.payback_months != null ? html`<span class="sub">Pays back in ${num(r.payback_months, 1)} mo</span>` : ""}</div>
+              <button class="btn ghost sm rec-toggle" type="button" data-expand="${i}" aria-expanded="false" aria-controls="detail-${i}">${icon("ChevronDown")}<span class="sr-only">Details for ${stepName(r.activity)}</span></button>
             </div>
             <div class="rec-detail" id="detail-${i}" hidden>
               <p class="reason">${r.reason} ${cand[r.activity]?.reason ? html`<span class="muted">Why this step: ${cand[r.activity].reason}</span>` : ""}</p>
@@ -131,7 +150,7 @@ function recommendations(d: Row): Raw {
 function optionsTable(rows: Row[]): Raw {
   return html`
     <div class="table-wrap"><table class="table compact">
-      <thead><tr><th>Model</th><th>How it runs</th><th>Verdict</th><th class="r">Accuracy</th><th class="r">Hours / month</th><th class="r">Low end</th><th class="r">Value / month</th><th class="r">AI cost / month</th></tr></thead>
+      <thead><tr><th>Model</th><th>How it runs</th><th>Verdict</th><th class="r">Correct</th><th class="r">Hours / month</th><th class="r">Low end</th><th class="r">Value / month</th><th class="r">AI cost / month</th></tr></thead>
       <tbody>${rows.map((o) => html`<tr>
         <td><code>${modelName(o.model)}</code></td><td>${MODE[o.mode]}</td><td>${verdictBadge(o.verdict)}</td>
         <td class="r">${pct(o.accuracy)}</td><td class="r">${hrs(o.net_hours_month, 1)}</td><td class="r">${hrs(o.net_hours_low, 1)}</td>
@@ -139,20 +158,24 @@ function optionsTable(rows: Row[]): Raw {
       </tbody></table></div>`;
 }
 
+/** Steps that never reached a test (too risky, or nothing to compare against). Tested ones live in Recommendations. */
 function dontAutomate(d: Row): Raw {
-  const rows = d.dont as Row[];
+  const rows = (d.dont as Row[]).filter((r) => !r.model);
   if (!rows.length) return html``;
   return html`
     <div class="panel section">
-      <div class="panel-head"><div><h2>Don't automate (yet)</h2><p>Steps where AI would cost more than it saves, or the risk is too high. That's a useful answer too.</p></div></div>
+      <div class="panel-head"><div><h2>Not tested</h2><p>Steps Evenpoint left alone: the risk of a wrong answer is too high, or your export doesn't record what a person produced.</p></div></div>
       <ul class="plain-list">
-        ${rows.map((r) => html`<li>${icon("Ban")}<div><strong>${stepName(r.activity)}</strong>${r.model ? html` <span class="muted">with ${modelName(r.model)}</span>` : ""}<p>${r.reason}</p></div></li>`)}
+        ${rows.map((r) => html`<li>${icon("Ban")}<div><strong>${stepName(r.activity)}</strong><p>${r.reason}</p></div></li>`)}
       </ul>
     </div>`;
 }
 
 function models(d: Row): Raw {
-  const rows = d.summaries as Row[];
+  const order = (d.best as Row[]).map((r) => r.activity);
+  const chosen = new Set((d.best as Row[]).map((r) => `${r.activity}|${r.model}`));
+  const rows = [...(d.summaries as Row[])].sort((a, b) =>
+    (order.indexOf(a.activity) + 99) % 99 - (order.indexOf(b.activity) + 99) % 99 || a.model.localeCompare(b.model));
   if (!rows.length) return html``;
   const humans = rows.some((s) => s.judge_human_agreement != null);
   return html`
@@ -162,10 +185,10 @@ function models(d: Row): Raw {
         <button class="btn sm" type="button" id="to-review">${icon("ListChecks")}Check the grading yourself</button>
       </div>
       <div class="table-wrap"><table class="table">
-        <thead><tr><th>Step</th><th>Model</th><th class="r">Cases</th><th class="r">Accuracy</th><th class="r">Cost per case</th>
+        <thead><tr><th>Step</th><th>Model</th><th class="r">Test cases</th><th class="r">Correct</th><th class="r">Cost per case</th>
           <th class="r">Cost per correct case</th><th class="r">Typical speed</th><th class="r">Errors</th>${humans ? html`<th class="r">Grader agrees with you</th>` : ""}</tr></thead>
         <tbody>${rows.map((s) => html`<tr>
-          <td>${stepName(s.activity)}</td><td><code>${modelName(s.model)}</code></td><td class="r">${s.n}</td>
+          <td>${stepName(s.activity)}</td><td><code>${modelName(s.model)}</code>${chosen.has(`${s.activity}|${s.model}`) ? html` <span class="badge outline">Recommended</span>` : ""}</td><td class="r">${s.n}</td>
           <td class="r"><span class="acc"><span class="acc-bar" style="--v:${s.accuracy}"></span>${pct(s.accuracy)}</span></td>
           <td class="r">${smallUsd(s.cost_per_task)}</td><td class="r">${smallUsd(s.cost_per_success)}</td>
           <td class="r">${num((s.latency_p50_ms || 0) / 1000, 1)} s</td><td class="r">${pct(s.error_rate)}</td>
@@ -268,14 +291,23 @@ const css = raw(`
 .facts div { display: grid; gap: 2px; }
 .facts dt { font-size: 12px; color: var(--text-3); }
 .facts dd { margin: 0; font-weight: 550; }
-.recs { display: grid; }
+.recs { display: grid; grid-template-columns: minmax(110px,1fr) 176px minmax(150px,1.1fr) 88px minmax(200px,1.7fr) 140px 32px; column-gap: 18px; }
+.rec, .rec-head, .rec-main { grid-column: 1 / -1; display: grid; grid-template-columns: subgrid; }
+.rec-head { align-items: end; padding: 10px 18px; background: var(--subtle); border-bottom: 1px solid var(--border); font-size: 12px; font-weight: 550; color: var(--text-3); }
+.rec-head .r { text-align: right; }
 .rec { border-top: 1px solid var(--border); }
-.rec:first-child { border-top: 0; }
-.rec-main { display: grid; grid-template-columns: minmax(130px,1.1fr) auto minmax(120px,1fr) 92px minmax(200px,1.6fr) 130px 32px; gap: 18px; align-items: center; padding: 16px 18px; }
-.rec-main > div { display: grid; gap: 2px; min-width: 0; }
+.rec-head + .rec { border-top: 0; }
+.rec-main { align-items: center; padding: 16px 18px; }
+.rec-main > div { display: grid; gap: 2px; min-width: 0; justify-items: start; }
+.rec-main > .rec-acc, .rec-main > .rec-value { justify-items: end; }
+.rec-main > .rec-range { justify-items: stretch; }
+.rec-detail { grid-column: 1 / -1; }
 .rec .sub { color: var(--text-3); font-size: 12.5px; }
 .rec-acc, .rec-value { text-align: right; }
-.rec-step strong { text-transform: capitalize; }
+.rec-toggle { justify-self: end; }
+.axis { position: relative; height: 16px; margin-top: 4px; font-weight: 500; }
+.axis span { position: absolute; top: 0; white-space: nowrap; }
+.axis .zero { transform: translateX(-50%); }
 .range { position: relative; height: 10px; border-radius: 6px; background: var(--hover); }
 .range-zero { position: absolute; top: -4px; bottom: -4px; width: 1px; background: var(--border-strong); }
 .range-span { position: absolute; top: 0; bottom: 0; border-radius: 6px; background: var(--c-soft); }
@@ -283,11 +315,12 @@ const css = raw(`
 .range.automate { --c: var(--good); --c-soft: #b9e3cc; }
 .range.review { --c: #c27a00; --c-soft: #f6d9a6; }
 .range.dont_automate { --c: #7c838e; --c-soft: #dadde2; }
-.range-labels { display: flex; justify-content: space-between; font-size: 12px; color: var(--text-3); margin-top: 6px; }
-.range-labels strong { color: var(--text); font-weight: 600; }
+.range-text { margin-top: 6px; font-size: 12.5px; color: var(--text-3); }
+.range-text strong { color: var(--text); font-weight: 600; margin-right: 4px; }
 .rec-detail { padding: 0 18px 18px; display: grid; gap: 12px; }
 .rec-detail .reason { color: var(--text-2); max-width: 90ch; }
 [aria-expanded="true"] .ico { transform: rotate(180deg); }
+.rec-toggle .ico { transition: transform 200ms var(--ease); }
 .table.compact td, .table.compact th { padding: 8px 12px; }
 .rec-detail .table-wrap { border: 1px solid var(--border); border-radius: var(--radius-sm); }
 .plain-list { list-style: none; margin: 0; padding: 6px 18px; }
@@ -310,10 +343,15 @@ const css = raw(`
 .kv dt { color: var(--text-2); }
 .kv dd { margin: 0; text-align: right; font-weight: 550; font-variant-numeric: tabular-nums; }
 @media (max-width: 1100px) {
-  .rec-main { grid-template-columns: minmax(0, 1fr) auto; gap: 12px 16px; }
+  .recs { display: block; }
+  .rec-head { display: none; }
+  .rec { display: block; }
+  .rec-main { grid-template-columns: minmax(0, 1fr) auto; gap: 12px 16px; position: relative; padding-right: 52px; }
   .rec-range { grid-column: 1 / -1; }
   .rec-acc, .rec-value { text-align: left; }
+  .rec-toggle { position: absolute; top: 14px; right: 12px; }
 }
+@media (max-width: 600px) { .facts { display: grid; grid-template-columns: 1fr 1fr; } }
 `);
 if (!document.getElementById("results-css")) {
   const s = document.createElement("style");

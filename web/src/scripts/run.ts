@@ -1,6 +1,6 @@
 // Run tab: start a run, watch each stage, approve the spend, stop, or add models to the last run.
 import { api, type Job } from "../lib/api";
-import { $, $$, busy, html, icon, modelName, mount, raw, toast, usd, type Raw } from "../lib/ui";
+import { $, $$, busy, html, icon, modelName, mount, raw, smallUsd, toast, usd, type Raw } from "../lib/ui";
 import type { Ctx } from "./project";
 
 const STAGES: { id: string; label: string; about: string }[] = [
@@ -81,7 +81,7 @@ export function renderRun(el: HTMLElement, ctx: Ctx) {
             <span class="confirm-icon">${icon("TriangleAlert", "lg")}</span>
             <div class="stack" style="gap:6px">
               <h2>This run will cost about ${usd(job.estimate, 2)} in model calls</h2>
-              <p class="muted">That's above your limit of ${usd(job.limit, 2)}. Nothing has been spent on testing yet.</p>
+              <p class="muted">That's above your limit of ${smallUsd(job.limit)}. Nothing has been spent on testing yet.</p>
             </div>
             <div class="row">
               <button class="btn" id="decline" type="button">Stop here</button>

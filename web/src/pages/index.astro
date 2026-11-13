@@ -131,7 +131,7 @@ import Shell from "../layouts/Shell.astro";
                 <td class="r">${p.run ? num(p.run.cases) : "–"}</td>
                 <td class="r">${p.run ? num(p.run.worth_automating) : "–"}</td>
                 <td class="r">${p.run ? hrs(p.run.hours) : "–"}</td>
-                <td class="r">${p.run ? usd(p.run.value) : "–"}</td>
+                <td class="r">${p.run ? html`${usd(p.run.value)}${p.run.worth_automating ? html`<div class="sub">at least ${usd(p.run.value_low)}</div>` : ""}` : "–"}</td>
                 <td class="r muted">${icon("ChevronRight")}</td>
               </tr>`)}
           </tbody>

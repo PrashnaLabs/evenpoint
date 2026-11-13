@@ -12,7 +12,7 @@ export type Status = {
 };
 export type ProjectSummary = {
   name: string; sources: string[]; models: string[]; updated: string;
-  run: null | { run_id: string; started_at: string; worth_automating: number; hours: number; value: number; cases: number };
+  run: null | { run_id: string; started_at: string; worth_automating: number; hours: number; value: number; value_low: number; cases: number };
 };
 export type Config = Record<string, any>;
 export type Project = ProjectSummary & { config: Config; files: string[] };
