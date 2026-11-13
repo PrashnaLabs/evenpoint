@@ -14,3 +14,4 @@ evenpoint/web_dist/
 projects/
 node_modules/
 .impeccable/
+web/.astro/

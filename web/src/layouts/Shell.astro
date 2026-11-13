@@ -1,0 +1,77 @@
+---
+import "@fontsource-variable/geist";
+import "@fontsource-variable/geist-mono";
+import "../styles/global.css";
+import { FolderOpen, Menu } from "lucide-static";
+
+interface Props { title: string; active?: "projects" | "settings" }
+const { title, active } = Astro.props;
+const svg = (s: string) => s.replace(/\s(width|height)="24"/g, "");
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <title>{title} · Evenpoint</title>
+  </head>
+  <body>
+    <!--
+      THESIS: The category-standard analytics app, executed at Stripe-dashboard clarity: an ops lead sets up an export, runs it, and reads a defensible answer. Refuses novelty styling; refuses hiding uncertainty.
+      OWN-WORLD: Light neutral ground (#f4f5f7), white panels with hairline borders and soft shadows, one blue accent (#3451d1), verdict colors only for meaning (green automate, amber review, neutral grey don't). Geist for UI, Geist Mono only for logs, ids and model names. Lucide line icons.
+      STORY: See every project and its last answer; add a file, confirm columns and assumptions, run with the cost shown first, read recommendations with ranges, spot-check the AI's work.
+      FIRST VIEWPORT: Left sidebar (brand, Projects, current project's tabs, key status). Main: page title + primary action top right; projects table, or a project's results headline sentence above recommendation rows with range bars.
+      FORM: canon (category standard), chosen by the user; seed a131b98a.
+      FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, and DESIGN.md
+    -->
+    <div class="app" id="app">
+      <aside class="sidebar" aria-label="Main">
+        <a class="brand" href="/">
+          <span class="brand-mark" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 32 32"><path d="M5 18h22" stroke="#fff" stroke-width="3" stroke-linecap="round"/><path d="M16 18l-5 8h10z" fill="#8ea2f0"/><circle cx="9.5" cy="12" r="3.4" fill="#fff"/><circle cx="22.5" cy="12" r="3.4" fill="#fff"/></svg>
+          </span>
+          <span class="brand-name">Evenpoint</span>
+        </a>
+        <nav class="nav">
+          <a href="/" aria-current={active === "projects" ? "page" : undefined}>
+            <span class="ico" set:html={svg(FolderOpen)} />Projects
+          </a>
+          <div id="project-nav"></div>
+        </nav>
+        <div class="sidebar-foot">
+          <a class="key-status" href="/?settings=1" id="key-status">
+            <span class="dot"></span><span>Checking OpenAI key…</span>
+          </a>
+          <span class="version" id="version"></span>
+        </div>
+      </aside>
+      <div class="main">
+        <div class="topbar">
+          <button class="btn ghost sm" id="nav-toggle" aria-label="Open menu"><span class="ico" set:html={svg(Menu)} /></button>
+          <strong>Evenpoint</strong>
+        </div>
+        <main class="page" id="page">
+          <slot />
+        </main>
+      </div>
+    </div>
+    <script>
+      import { api, type Status } from "../lib/api";
+      import { html, mount, $ } from "../lib/ui";
+
+      $("#nav-toggle")?.addEventListener("click", () => $("#app")?.classList.toggle("nav-open"));
+      api<Status>("/status").then((s) => {
+        const el = $("#key-status");
+        if (el) mount(el, s.openai_key
+          ? html`<span class="dot on"></span><span>OpenAI key connected</span>`
+          : html`<span class="dot off"></span><span>Add your OpenAI key</span>`);
+        const v = $("#version");
+        if (v) v.textContent = `v${s.version} · runs on this computer`;
+      }).catch(() => {
+        const el = $("#key-status");
+        if (el) mount(el, html`<span class="dot"></span><span>Server not reachable</span>`);
+      });
+    </script>
+  </body>
+</html>

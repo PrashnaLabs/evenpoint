@@ -1,0 +1,177 @@
+---
+import Shell from "../layouts/Shell.astro";
+---
+<Shell title="Projects" active="projects">
+  <div class="page-head">
+    <div>
+      <h1>Projects</h1>
+      <p class="sub">Each project is one export of your team's work, analysed for what AI could take on.</p>
+    </div>
+    <div class="actions">
+      <button class="btn primary" id="new-btn" type="button"></button>
+    </div>
+  </div>
+
+  <div id="key-panel"></div>
+  <form class="panel new-form" id="new-form" hidden>
+    <div class="panel-body row">
+      <div class="field" style="flex: 1; min-width: 220px">
+        <label for="new-name">Project name</label>
+        <input class="input" id="new-name" name="name" placeholder="e.g. Support tickets Q3" autocomplete="off" required />
+      </div>
+      <div class="row" style="align-self: flex-end">
+        <button class="btn ghost" type="button" id="new-cancel">Cancel</button>
+        <button class="btn primary" type="submit" id="new-submit">Create project</button>
+      </div>
+    </div>
+  </form>
+  <div id="projects"></div>
+</Shell>
+
+<style>
+  .new-form { margin-bottom: 20px; }
+  #key-panel:not(:empty) { margin-bottom: 20px; }
+</style>
+
+<script>
+  import { api, ApiError, type ProjectSummary, type Status } from "../lib/api";
+  import { $, ago, busy, hrs, html, icon, mount, num, toast, usd } from "../lib/ui";
+
+  const newBtn = $<HTMLButtonElement>("#new-btn")!;
+  const form = $<HTMLFormElement>("#new-form")!;
+  mount(newBtn, html`${icon("Plus")}New project`);
+
+  const openProject = (name: string) => (location.href = `/project/?p=${encodeURIComponent(name)}`);
+
+  function showForm(show: boolean) {
+    form.hidden = !show;
+    if (show) $<HTMLInputElement>("#new-name")!.focus();
+  }
+  newBtn.addEventListener("click", () => showForm(true));
+  $("#new-cancel")!.addEventListener("click", () => showForm(false));
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const btn = $<HTMLButtonElement>("#new-submit");
+    busy(btn, true, "Creating");
+    try {
+      const p = await api<ProjectSummary>("/projects", { method: "POST", body: { name: $<HTMLInputElement>("#new-name")!.value } });
+      location.href = `/project/?p=${encodeURIComponent(p.name)}&tab=setup`;
+    } catch (err) {
+      toast((err as Error).message, "error");
+      busy(btn, false);
+    }
+  });
+
+  function keyPanel(status: Status) {
+    const host = $("#key-panel")!;
+    const wanted = !status.openai_key || new URLSearchParams(location.search).has("settings");
+    if (!wanted) return mount(host, "");
+    mount(host, html`
+      <form class="panel" id="key-form">
+        <div class="settings-row">
+          <header>
+            <h2>OpenAI API key</h2>
+            <p>Evenpoint calls OpenAI with your own key to test models on your data. It's saved to <code>.env</code> in your projects folder and never leaves this computer.</p>
+          </header>
+          <div class="stack">
+            ${status.openai_key ? html`<div class="callout success">${icon("CircleCheck")}<span>A key is connected. Paste a new one to replace it.</span></div>` : ""}
+            <div class="field">
+              <label for="key-input">API key</label>
+              <input class="input mono" id="key-input" type="password" placeholder="sk-…" autocomplete="off" spellcheck="false" required />
+              <span class="hint">Create one at platform.openai.com → API keys.</span>
+            </div>
+            <div><button class="btn primary" type="submit" id="key-save">${icon("KeyRound")}Save key</button></div>
+          </div>
+        </div>
+      </form>`);
+    $("#key-form")!.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const btn = $<HTMLButtonElement>("#key-save");
+      busy(btn, true, "Saving");
+      try {
+        await api("/settings/key", { method: "POST", body: { openai_api_key: $<HTMLInputElement>("#key-input")!.value } });
+        toast("OpenAI key saved.");
+        history.replaceState(null, "", "/");
+        location.reload();
+      } catch (err) {
+        toast((err as Error).message, "error");
+        busy(btn, false);
+      }
+    });
+  }
+
+  function emptyState(status: Status) {
+    return html`
+      <div class="panel">
+        <div class="empty">
+          <div class="empty-icon">${icon("FileSpreadsheet", "lg")}</div>
+          <h2>Start with an export of your team's work</h2>
+          <p>A Zendesk or Jira CSV, any spreadsheet saved as CSV, or an email export. Evenpoint finds the steps your team repeats and tests AI models on real past cases.</p>
+          <div class="row">
+            <button class="btn primary" type="button" data-new>${icon("Plus")}New project</button>
+            ${status.sample ? html`<button class="btn" type="button" id="sample-btn">${icon("Sparkles")}Try with sample tickets</button>` : ""}
+          </div>
+        </div>
+      </div>`;
+  }
+
+  function table(projects: ProjectSummary[]) {
+    return html`
+      <div class="panel table-wrap">
+        <table class="table">
+          <thead><tr>
+            <th>Project</th><th>Last run</th><th class="r">Cases</th><th class="r">Steps worth automating</th>
+            <th class="r">Hours saved / month</th><th class="r">Value / month</th><th aria-hidden="true"></th>
+          </tr></thead>
+          <tbody>
+            ${projects.map((p) => html`
+              <tr class="link" data-name="${p.name}" tabindex="0">
+                <td class="strong">${p.name}<div class="sub">${p.sources.join(", ") || "No data yet"}</div></td>
+                <td>${p.run ? ago(p.run.started_at) : html`<span class="muted">Not run yet</span>`}</td>
+                <td class="r">${p.run ? num(p.run.cases) : "–"}</td>
+                <td class="r">${p.run ? num(p.run.worth_automating) : "–"}</td>
+                <td class="r">${p.run ? hrs(p.run.hours) : "–"}</td>
+                <td class="r">${p.run ? usd(p.run.value) : "–"}</td>
+                <td class="r muted">${icon("ChevronRight")}</td>
+              </tr>`)}
+          </tbody>
+        </table>
+      </div>`;
+  }
+
+  function skeleton() {
+    return html`<div class="panel" style="padding:18px; display:grid; gap:12px">
+      ${[1, 2, 3].map(() => html`<div class="skeleton" style="height:22px"></div>`)}
+    </div>`;
+  }
+
+  async function load() {
+    const host = $("#projects")!;
+    mount(host, skeleton());
+    try {
+      const [status, projects] = await Promise.all([api<Status>("/status"), api<ProjectSummary[]>("/projects")]);
+      keyPanel(status);
+      mount(host, projects.length ? table(projects) : emptyState(status));
+      host.querySelectorAll<HTMLElement>("tr[data-name]").forEach((tr) => {
+        tr.addEventListener("click", () => openProject(tr.dataset.name!));
+        tr.addEventListener("keydown", (e) => e.key === "Enter" && openProject(tr.dataset.name!));
+      });
+      host.querySelector("[data-new]")?.addEventListener("click", () => showForm(true));
+      $<HTMLButtonElement>("#sample-btn")?.addEventListener("click", async (e) => {
+        const btn = e.currentTarget as HTMLButtonElement;
+        busy(btn, true, "Setting up");
+        try {
+          const p = await api<ProjectSummary>("/projects/sample", { method: "POST" });
+          location.href = `/project/?p=${encodeURIComponent(p.name)}&tab=setup`;
+        } catch (err) {
+          toast((err as Error).message, "error");
+          busy(btn, false);
+        }
+      });
+    } catch (err) {
+      const msg = err instanceof ApiError && err.status ? err.message : "Couldn't reach Evenpoint. Start it with `evenpoint ui`.";
+      mount(host, html`<div class="callout error">${icon("TriangleAlert")}<span>${msg}</span></div>`);
+    }
+  }
+  load();
+</script>

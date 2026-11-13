@@ -9,6 +9,7 @@ import json
 import mimetypes
 import os
 import re
+import shutil
 import threading
 import time
 import traceback
@@ -20,16 +21,22 @@ from urllib.parse import parse_qs, unquote, urlparse
 import yaml
 from dotenv import load_dotenv, set_key
 
-from . import __version__, adapters, db, pipeline
+from . import __version__, adapters, db, llm, pipeline
 from .adapters.tabular import parse_ts
 from .bench import graders
 from .config import Config
 from .report import render
 
 WEB_DIST = Path(__file__).parent / "web_dist"
+SAMPLE = Path(__file__).parent.parent / "bizbench" / "support-triage"  # present in a source checkout
 NAME = re.compile(r"^[a-z0-9][a-z0-9_-]{0,63}$")
 MAX_UPLOAD = 1024 * 1024 * 1024
-OPENAI_MODELS = ["openai/gpt-5.4-mini", "openai/gpt-5.4-nano", "openai/gpt-5.4", "openai/gpt-5.5"]
+OPENAI_MODELS = {
+    "openai/gpt-5.4-nano": "Fastest and cheapest. Good for sorting and routing.",
+    "openai/gpt-5.4-mini": "Balanced cost and quality. A sensible default.",
+    "openai/gpt-5.4": "Stronger reasoning and writing. Costs more per ticket.",
+    "openai/gpt-5.5": "The most capable. Use to see the ceiling.",
+}
 
 DEFAULT_CONFIG = {
     "project": "",
@@ -373,8 +380,10 @@ class Handler(BaseHTTPRequestHandler):
         match (method, parts):
             case ("GET", ["status"]):
                 return {"version": __version__, "workspace": str(ws.root), "openai_key": bool(os.environ.get(
-                    "OPENAI_API_KEY")), "models": OPENAI_MODELS, "job": _job.json() if _job else None,
-                    "stages": db.STAGES}
+                    "OPENAI_API_KEY")), "job": _job.json() if _job else None, "stages": db.STAGES,
+                    "sample": SAMPLE.exists(),
+                    "models": [{"id": m, "about": about, **{k: v * 1e6 for k, v in llm.price(m).items()}}
+                               for m, about in OPENAI_MODELS.items()]}
             case ("POST", ["settings", "key"]):
                 key = (self.body().get("openai_api_key") or "").strip()
                 if not key.startswith("sk-") or len(key) < 20:
@@ -398,6 +407,18 @@ class Handler(BaseHTTPRequestHandler):
                 (d / "evenpoint.yaml").write_text(yaml.safe_dump({**DEFAULT_CONFIG, "project": name},
                                                                  sort_keys=False))
                 return ws.summary(name)
+            case ("POST", ["projects", "sample"]):
+                if not SAMPLE.exists():
+                    raise ApiError(404, "Sample data ships with the source checkout only.")
+                d = ws.root / "sample-support-triage"
+                if not d.exists():
+                    (d / "exports").mkdir(parents=True)
+                    shutil.copy(SAMPLE / "tickets.csv", d / "exports" / "tickets.csv")
+                    cfg = yaml.safe_load((SAMPLE / "evenpoint.yaml").read_text())
+                    cfg["project"] = d.name
+                    cfg["sources"][0]["path"] = "exports/tickets.csv"
+                    (d / "evenpoint.yaml").write_text(yaml.safe_dump(cfg, sort_keys=False))
+                return ws.summary(d.name)
             case ("GET", ["projects", name]):
                 d = ws.dir(name)
                 files = sorted(p.name for p in (d / "exports").glob("*") if p.is_file()) if (

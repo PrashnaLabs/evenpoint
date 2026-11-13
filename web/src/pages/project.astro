@@ -1,0 +1,18 @@
+---
+import Shell from "../layouts/Shell.astro";
+---
+<Shell title="Project">
+  <div class="page-head">
+    <div>
+      <h1 id="title"><span class="skeleton" style="display:inline-block;width:220px;height:26px"></span></h1>
+      <p class="sub" id="subtitle"></p>
+    </div>
+    <div class="actions" id="actions"></div>
+  </div>
+  <div class="tabs" role="tablist" id="tabs"></div>
+  <section id="tab" aria-live="polite"></section>
+</Shell>
+
+<script>
+  import "../scripts/project";
+</script>
