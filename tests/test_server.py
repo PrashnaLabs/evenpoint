@@ -89,6 +89,16 @@ def test_ui_api_flow(api):
     assert listing[0]["run"]["cases"] == 240
 
 
+def test_real_example_project(api):
+    status, p = api("POST", "/projects/sample", {"example": "github-issue-triage"})
+    assert status == 200 and p["name"] == "example-github-issue-triage" and p["sources"] == ["issues.csv"]
+    _, proj = api("GET", "/projects/example-github-issue-triage")
+    assert proj["files"] == ["issues.csv"] and proj["config"]["sources"][0]["path"] == "exports/issues.csv"
+    _, info = api("GET", "/projects/example-github-issue-triage/inspect?file=issues.csv")
+    assert info["row_count"] > 500 and "Opened at" in info["timestamp_columns"]
+    assert api("POST", "/projects/sample", {"example": "../etc"})[0] == 404
+
+
 def test_api_guards(api):
     assert api("POST", "/projects", {"name": "x"}, headers={"X-Evenpoint": "0"})[0] == 403
     assert api("GET", "/projects/..%2Fetc")[0] == 400

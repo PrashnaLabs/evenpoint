@@ -28,7 +28,12 @@ from .config import Config
 from .report import render
 
 WEB_DIST = Path(__file__).parent / "web_dist"
-SAMPLE = Path(__file__).parent.parent / "bizbench" / "support-triage"  # present in a source checkout
+BIZBENCH = Path(__file__).parent.parent / "bizbench"  # present in a source checkout
+EXAMPLES = {
+    "github-issue-triage": ("Real GitHub issues", "544 real issues from the uv project's tracker, with the labels "
+                            "and first replies its maintainers actually wrote."),
+    "support-triage": ("Synthetic support tickets", "240 made-up tickets for a small shop. Quick to run."),
+}
 NAME = re.compile(r"^[a-z0-9][a-z0-9_-]{0,63}$")
 MAX_UPLOAD = 1024 * 1024 * 1024
 OPENAI_MODELS = {
@@ -382,7 +387,8 @@ class Handler(BaseHTTPRequestHandler):
             case ("GET", ["status"]):
                 return {"version": __version__, "workspace": str(ws.root), "openai_key": bool(os.environ.get(
                     "OPENAI_API_KEY")), "job": _job.json() if _job else None, "stages": db.STAGES,
-                    "sample": SAMPLE.exists(),
+                    "examples": [{"id": k, "title": t, "about": a} for k, (t, a) in EXAMPLES.items()
+                                 if (BIZBENCH / k / "evenpoint.yaml").exists()],
                     "models": [{"id": m, "about": about, **{k: v * 1e6 for k, v in llm.price(m).items()}}
                                for m, about in OPENAI_MODELS.items()]}
             case ("POST", ["settings", "key"]):
@@ -409,16 +415,23 @@ class Handler(BaseHTTPRequestHandler):
                                                                  sort_keys=False))
                 return ws.summary(name)
             case ("POST", ["projects", "sample"]):
-                if not SAMPLE.exists():
-                    raise ApiError(404, "Sample data ships with the source checkout only.")
-                d = ws.root / "sample-support-triage"
+                example = self.body().get("example") or "github-issue-triage"
+                src = BIZBENCH / example
+                if example not in EXAMPLES or not (src / "evenpoint.yaml").exists():
+                    raise ApiError(404, "Example data ships with the source checkout only.")
+                d = ws.root / f"example-{example}"
                 if not d.exists():
                     (d / "exports").mkdir(parents=True)
-                    shutil.copy(SAMPLE / "tickets.csv", d / "exports" / "tickets.csv")
-                    cfg = yaml.safe_load((SAMPLE / "evenpoint.yaml").read_text())
+                    cfg = yaml.safe_load((src / "evenpoint.yaml").read_text())
+                    for s in cfg["sources"]:
+                        f = (src / s["path"]).resolve()
+                        shutil.copy(f, d / "exports" / f.name)
+                        s["path"] = f"exports/{f.name}"
                     cfg["project"] = d.name
-                    cfg["sources"][0]["path"] = "exports/tickets.csv"
-                    (d / "evenpoint.yaml").write_text(yaml.safe_dump(cfg, sort_keys=False))
+                    (d / "evenpoint.yaml").write_text(yaml.safe_dump(cfg, sort_keys=False, allow_unicode=True))
+                    for done in (".evenpoint", "output"):  # finished results, when this checkout has them
+                        if (src / done).is_dir():
+                            shutil.copytree(src / done, d / done)
                 return ws.summary(d.name)
             case ("GET", ["projects", name]):
                 d = ws.dir(name)

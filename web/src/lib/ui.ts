@@ -57,8 +57,12 @@ export const usd = (v: number | null | undefined, d = 0) => {
 export const signedUsd = (v: number | null | undefined, d = 0) =>
   v == null ? "–" : `${v > 0 ? "+" : ""}${usd(v, d)}`;
 export const pct = (v: number | null | undefined) => (v == null ? "–" : `${Math.round(v * 100)}%`);
-export const hrs = (v: number | null | undefined, d = 0) =>
-  v == null ? "–" : `${v < 0 ? "−" : ""}${nf(d).format(Math.abs(v))} h`;
+/** Hours; small values keep one decimal so "0.9 h" doesn't read as "1 h". */
+export const hrs = (v: number | null | undefined, d?: number) => {
+  if (v == null) return "–";
+  const digits = d ?? (Math.abs(v) < 10 ? 1 : 0);
+  return `${v < 0 ? "−" : ""}${nf(digits).format(Math.abs(v))} h`;
+};
 export function smallUsd(v: number | null | undefined) {
   if (v == null) return "–";
   if (v === 0) return "$0";

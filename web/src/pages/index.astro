@@ -30,6 +30,15 @@ import Shell from "../layouts/Shell.astro";
 
 <style>
   .new-form { margin-bottom: 20px; }
+  :global(.examples) { display: grid; gap: 8px; width: min(560px, 100%); margin-top: 28px; padding-top: 22px; border-top: 1px solid var(--border); text-align: left; }
+  :global(.examples > .hint) { text-align: center; margin-bottom: 4px; }
+  :global(.examples-below .examples) { margin: 28px auto 0; border-top: 0; padding-top: 0; }
+  :global(.example) { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 12px 14px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); font: inherit; color: var(--text-3); text-align: left; cursor: pointer; transition: border-color 120ms, background 120ms; }
+  :global(.example:hover) { border-color: var(--accent); background: var(--accent-soft); }
+  :global(.example[aria-busy="true"]) { opacity: 0.6; pointer-events: none; }
+  :global(.example > span:nth-child(2)) { display: grid; gap: 2px; }
+  :global(.example strong) { color: var(--text); font-weight: 550; }
+  :global(.example .file-icon) { width: 36px; height: 36px; border-radius: 9px; display: grid; place-items: center; background: var(--accent-soft); color: var(--accent); }
   #key-panel:not(:empty) { margin-bottom: 20px; }
 </style>
 
@@ -109,9 +118,25 @@ import Shell from "../layouts/Shell.astro";
           <p>A Zendesk or Jira CSV, any spreadsheet saved as CSV, or an email export. Evenpoint finds the steps your team repeats and tests AI models on real past cases.</p>
           <div class="row">
             <button class="btn primary" type="button" data-new>${icon("Plus")}New project</button>
-            ${status.sample ? html`<button class="btn" type="button" id="sample-btn">${icon("Sparkles")}Try with sample tickets</button>` : ""}
           </div>
+          ${examples(status, [], "Or explore a ready-made example")}
         </div>
+      </div>`;
+  }
+
+  function examples(status: Status, projects: ProjectSummary[], title: string) {
+    const have = new Set(projects.map((p) => p.name));
+    const list = status.examples.filter((x) => !have.has(`example-${x.id}`));
+    if (!list.length) return html``;
+    return html`
+      <div class="examples">
+        <p class="hint">${title}</p>
+        ${list.map((x) => html`
+          <button class="example" type="button" data-example="${x.id}">
+            <span class="file-icon">${icon(x.id.startsWith("github") ? "Workflow" : "Sparkles")}</span>
+            <span><strong>${x.title}</strong><span class="hint">${x.about}</span></span>
+            ${icon("ArrowRight")}
+          </button>`)}
       </div>`;
   }
 
@@ -151,23 +176,24 @@ import Shell from "../layouts/Shell.astro";
     try {
       const [status, projects] = await Promise.all([api<Status>("/status"), api<ProjectSummary[]>("/projects")]);
       keyPanel(status);
-      mount(host, projects.length ? table(projects) : emptyState(status));
+      mount(host, projects.length
+        ? html`${table(projects)}<div class="examples-below">${examples(status, projects, "Try a ready-made example")}</div>`
+        : emptyState(status));
       host.querySelectorAll<HTMLElement>("tr[data-name]").forEach((tr) => {
         tr.addEventListener("click", () => openProject(tr.dataset.name!));
         tr.addEventListener("keydown", (e) => e.key === "Enter" && openProject(tr.dataset.name!));
       });
       host.querySelector("[data-new]")?.addEventListener("click", () => showForm(true));
-      $<HTMLButtonElement>("#sample-btn")?.addEventListener("click", async (e) => {
-        const btn = e.currentTarget as HTMLButtonElement;
-        busy(btn, true, "Setting up");
+      host.querySelectorAll<HTMLButtonElement>("[data-example]").forEach((btn) => btn.addEventListener("click", async () => {
+        btn.setAttribute("aria-busy", "true");
         try {
-          const p = await api<ProjectSummary>("/projects/sample", { method: "POST" });
+          const p = await api<ProjectSummary>("/projects/sample", { method: "POST", body: { example: btn.dataset.example } });
           location.href = `/project/?p=${encodeURIComponent(p.name)}&tab=setup`;
         } catch (err) {
           toast((err as Error).message, "error");
-          busy(btn, false);
+          btn.removeAttribute("aria-busy");
         }
-      });
+      }));
     } catch (err) {
       const msg = err instanceof ApiError && err.status ? err.message : "Couldn't reach Evenpoint. Start it with `evenpoint ui`.";
       mount(host, html`<div class="callout error">${icon("TriangleAlert")}<span>${msg}</span></div>`);

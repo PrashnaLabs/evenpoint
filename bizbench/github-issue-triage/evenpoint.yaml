@@ -1,0 +1,51 @@
+# Real-data example: issue triage for an open-source project's support queue (astral-sh/uv on GitHub).
+# 544 real issues opened May-Oct 2026, with the real times each was triaged, first answered and closed.
+# Ground truth is what the maintainers actually did: the type label they applied and the first reply they wrote.
+# Refresh the data: python bizbench/github-issue-triage/fetch.py
+# Run: uv run evenpoint -c bizbench/github-issue-triage/evenpoint.yaml run
+#
+# Volumes and timings are measured. The minutes of work per step are assumptions (set below).
+project: github-issue-triage
+hourly_rate: 45
+
+sources:
+  - adapter: csv
+    path: issues.csv
+    mapping:
+      case_id: Id
+      actor: Responder
+      timestamps:
+        opened: Opened at
+        triaged: Triaged at
+        first_response: First response at
+        closed: Closed at
+      fields:
+        text: Text
+        type: Type
+        reply: Reply
+
+steps:
+  opened:         { minutes: 0 }    # the user files the issue; no maintainer time
+  triaged:        { minutes: 3, task_type: classify, input: text, expected: type }
+  first_response: { minutes: 12, task_type: draft, input: text, expected: reply }
+  closed:         { minutes: 2 }
+
+models:
+  - openai/gpt-5.4-mini
+  - openai/gpt-5.4-nano
+
+labeler_model: openai/gpt-5.4-mini
+judge_model: openai/gpt-5.4
+
+bench:
+  tasks_per_candidate: 40
+  few_shot: 3
+  max_cost_usd: 3
+
+review_minutes:
+  auto: 0
+  draft_review: 1.5
+failure_minutes: 15
+setup_cost_usd: 3000
+min_volume_per_month: 10
+max_candidates: 2
