@@ -4,7 +4,7 @@
 
 Evenpoint is an open-source tool that tells a small or mid-sized business which of its workflows are worth handing to AI, which model to use, and how much time and money that will actually save. It runs locally on the data exports a business already has (support tickets, issue trackers, CRM, email, spreadsheets), and it measures instead of guessing: it rebuilds how work really flows, then tests real AI models on real samples of that work.
 
-_Status: architecture v0. No code yet._
+_Status: v0 implemented. See the [README](../README.md) to run it._
 
 ## The problem
 
@@ -27,7 +27,7 @@ Exports ──► Event log ──► Baseline ──► AI-fit scoring ──�
 ```
 
 ### 1. Ingest
-- Reads exports: Zendesk / Jira CSV, CRM exports, email (mbox), spreadsheets.
+- Reads exports: Zendesk / Jira CSV, any other CSV (CRM, spreadsheets saved as CSV), email (mbox).
 - Adapters per source, with **PII redaction**. Runs locally; no desktop agent.
 
 ### 2. Normalize
@@ -35,7 +35,7 @@ Exports ──► Event log ──► Baseline ──► AI-fit scoring ──�
 - Stored in **DuckDB**.
 
 ### 3. Baseline (deterministic, no AI)
-- **PM4Py** process mining: process map, time per step, handoffs, rework.
+- Process mining in DuckDB SQL: process map, time per step, handoffs, rework.
 - **Baseline cost** per step = volume × minutes per step.
 
 ### 4. AI-fit scoring
@@ -45,7 +45,7 @@ Exports ──► Event log ──► Baseline ──► AI-fit scoring ──�
 ### 5. Benchmark on your own data
 - **Task builder** turns sampled real records into test cases.
 - **Model runner** runs them against OpenAI, Anthropic, Gemini and local models via Ollama.
-- **Graders**: schema checks, exact match, LLM judge, and human spot-checks.
+- **Graders**: exact match, LLM judge, and human spot-checks.
 - **Per model** results: accuracy, cost per *successful* task, latency, and the human review minutes needed.
 
 ### 6. ROI engine
@@ -54,15 +54,15 @@ Exports ──► Event log ──► Baseline ──► AI-fit scoring ──�
 
 ### 7. Outputs
 - ROI report (HTML / PDF).
-- CLI: `evenpoint run export.csv`
-- Web demo on sample data, no sign-up.
+- CLI: `evenpoint init export.csv` then `evenpoint run`
+- Web demo on sample data, no sign-up (planned).
 
 ## Shared foundation
 
 - **Model pricing catalog**, versioned, so cost numbers are reproducible.
 - **Trace store** holding every prompt, output and grade, so every number can be audited.
 - **YAML config** for workflows, hourly rates and models.
-- **bizbench**: a public dataset of 15–20 common SMB workflows, for demos and comparing models.
+- **bizbench**: a public dataset of common SMB workflows, for demos and comparing models (1 of a planned 15–20 so far: support triage).
 - **Privacy**: local-first, bring your own API keys, PII redaction before anything reaches a model.
 
 ## What makes it different
