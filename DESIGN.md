@@ -2,309 +2,313 @@
 name: Evenpoint
 description: A local analytics app that turns a team's own export into a defensible answer about what to automate with AI.
 colors:
-  ground: "#f4f5f7"
+  accent: "#2563eb"
+  accent-hover: "#1d4ed8"
+  accent-soft: "#eff4ff"
+  ground: "#f8fafc"
   surface: "#ffffff"
-  subtle: "#f8f9fa"
-  hover: "#f1f3f5"
-  hairline: "#e3e6ea"
-  hairline-strong: "#cdd2d9"
-  ink: "#14171c"
-  ink-2: "#464d58"
-  ink-3: "#636a75"
-  accent: "#3451d1"
-  accent-hover: "#2a43b4"
-  accent-soft: "#edf0fc"
-  accent-tint: "#8ea2f0"
-  good: "#0a7347"
-  good-soft: "#e3f4eb"
-  warn: "#8f5200"
-  warn-soft: "#fdf1dc"
-  quiet: "#474e59"
-  quiet-soft: "#eceef1"
-  bad: "#b42318"
-  bad-soft: "#fcebea"
+  subtle: "#f1f5f9"
+  track: "#eef2f7"
+  hairline: "#e2e8f0"
+  hairline-strong: "#cbd5e1"
+  ink: "#0f172a"
+  ink-2: "#334155"
+  ink-3: "#64748b"
+  good: "#047857"
+  good-soft: "#ecfdf5"
+  warn: "#b45309"
+  warn-soft: "#fffbeb"
+  quiet: "#475569"
+  quiet-soft: "#f1f5f9"
+  bad: "#dc2626"
+  bad-soft: "#fef2f2"
 typography:
-  headline:
-    fontFamily: "Geist Variable, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif"
-    fontSize: "22px"
-    fontWeight: 600
-    lineHeight: 1.25
-    letterSpacing: "-0.015em"
   answer:
-    fontFamily: "Geist Variable, ui-sans-serif, system-ui, sans-serif"
-    fontSize: "19px"
+    fontFamily: "Plus Jakarta Sans Variable, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif"
+    fontSize: "24px"
     fontWeight: 400
     lineHeight: 1.45
-    letterSpacing: "-0.01em"
+    letterSpacing: "-0.015em"
+  headline:
+    fontFamily: "Plus Jakarta Sans Variable, ui-sans-serif, system-ui, sans-serif"
+    fontSize: "28px"
+    fontWeight: 700
+    lineHeight: 1.2
+    letterSpacing: "-0.025em"
   title:
-    fontFamily: "Geist Variable, ui-sans-serif, system-ui, sans-serif"
-    fontSize: "15px"
-    fontWeight: 600
-    letterSpacing: "-0.005em"
+    fontFamily: "Plus Jakarta Sans Variable, ui-sans-serif, system-ui, sans-serif"
+    fontSize: "16px"
+    fontWeight: 650
+    letterSpacing: "-0.01em"
   body:
-    fontFamily: "Geist Variable, ui-sans-serif, system-ui, sans-serif"
-    fontSize: "14px"
+    fontFamily: "Plus Jakarta Sans Variable, ui-sans-serif, system-ui, sans-serif"
+    fontSize: "15px"
     fontWeight: 400
-    lineHeight: 1.5
-    fontFeature: "\"ss01\", \"cv11\""
+    lineHeight: 1.6
   label:
-    fontFamily: "Geist Variable, ui-sans-serif, system-ui, sans-serif"
+    fontFamily: "Plus Jakarta Sans Variable, ui-sans-serif, system-ui, sans-serif"
     fontSize: "13px"
-    fontWeight: 500
-  meta:
-    fontFamily: "Geist Variable, ui-sans-serif, system-ui, sans-serif"
-    fontSize: "12px"
-    fontWeight: 550
+    fontWeight: 400
   mono:
     fontFamily: "Geist Mono Variable, ui-monospace, SFMono-Regular, Menlo, monospace"
-    fontSize: "12.5px"
+    fontSize: "13px"
     fontWeight: 400
 rounded:
-  sm: "6px"
-  md: "8px"
-  pill: "999px"
-spacing:
-  xs: "6px"
   sm: "8px"
   md: "12px"
-  lg: "16px"
-  panel: "18px"
-  section: "20px"
-  xl: "24px"
-  page-x: "40px"
+  pill: "999px"
+spacing:
+  xs: "4px"
+  sm: "8px"
+  md: "16px"
+  lg: "24px"
+  xl: "32px"
+  page-top: "40px"
+  section: "64px"
 components:
-  button:
-    backgroundColor: "{colors.surface}"
-    textColor: "{colors.ink}"
-    rounded: "{rounded.sm}"
-    padding: "0 13px"
-    height: "34px"
-  button-hover:
-    backgroundColor: "{colors.subtle}"
   button-primary:
     backgroundColor: "{colors.accent}"
     textColor: "{colors.surface}"
     rounded: "{rounded.sm}"
-    padding: "0 13px"
-    height: "34px"
+    padding: "0 16px"
+    height: "40px"
   button-primary-hover:
     backgroundColor: "{colors.accent-hover}"
+  button-secondary:
+    backgroundColor: "{colors.surface}"
+    textColor: "{colors.ink}"
+    rounded: "{rounded.sm}"
+    padding: "0 16px"
+    height: "40px"
+  button-secondary-hover:
+    backgroundColor: "{colors.subtle}"
   button-ghost:
     backgroundColor: "transparent"
-    textColor: "{colors.ink-2}"
+    textColor: "{colors.ink-3}"
     rounded: "{rounded.sm}"
-    padding: "0 13px"
-    height: "34px"
-  button-ghost-hover:
-    backgroundColor: "{colors.hover}"
-    textColor: "{colors.ink}"
+    padding: "0 16px"
+    height: "40px"
   input:
     backgroundColor: "{colors.surface}"
     textColor: "{colors.ink}"
+    typography: "{typography.body}"
     rounded: "{rounded.sm}"
-    padding: "0 10px"
-    height: "34px"
-  panel:
-    backgroundColor: "{colors.surface}"
-    rounded: "{rounded.md}"
-    padding: "{spacing.panel}"
-  nav-item:
+    padding: "0 12px"
+    height: "42px"
+  tabs-track:
+    backgroundColor: "{colors.track}"
+    rounded: "{rounded.pill}"
+    padding: "4px"
+  tab:
     backgroundColor: "transparent"
-    textColor: "{colors.ink-2}"
-    rounded: "{rounded.sm}"
-    padding: "7px 10px"
-  nav-item-active:
-    backgroundColor: "{colors.accent-soft}"
-    textColor: "{colors.accent}"
+    textColor: "{colors.ink-3}"
+    rounded: "{rounded.pill}"
+    padding: "0 16px"
+    height: "36px"
+  tab-selected:
+    backgroundColor: "{colors.surface}"
+    textColor: "{colors.ink}"
   badge-automate:
     backgroundColor: "{colors.good-soft}"
     textColor: "{colors.good}"
     rounded: "{rounded.pill}"
-    padding: "0 8px"
-    height: "22px"
+    padding: "0 10px"
+    height: "26px"
   badge-review:
     backgroundColor: "{colors.warn-soft}"
     textColor: "{colors.warn}"
     rounded: "{rounded.pill}"
-    padding: "0 8px"
-    height: "22px"
+    padding: "0 10px"
+    height: "26px"
   badge-dont-automate:
     backgroundColor: "{colors.quiet-soft}"
     textColor: "{colors.quiet}"
     rounded: "{rounded.pill}"
-    padding: "0 8px"
-    height: "22px"
-  table-header:
-    backgroundColor: "{colors.subtle}"
-    textColor: "{colors.ink-3}"
-    typography: "{typography.meta}"
-    padding: "9px 14px"
+    padding: "0 10px"
+    height: "26px"
+  panel:
+    backgroundColor: "{colors.surface}"
+    rounded: "{rounded.md}"
+    padding: "20px 24px 24px"
+  project-card:
+    backgroundColor: "{colors.surface}"
+    textColor: "{colors.ink}"
+    rounded: "{rounded.md}"
+    padding: "24px"
+  toast:
+    backgroundColor: "{colors.ink}"
+    textColor: "{colors.surface}"
+    rounded: "{rounded.pill}"
+    padding: "12px 16px"
 ---
 
 # Design System: Evenpoint
 
 ## Overview
 
-**Creative North Star: "The Defensible Ledger"**
+**Creative North Star: "The Answer Sheet"**
 
-Evenpoint is the category-standard analytics dashboard, executed at Stripe-dashboard clarity and nothing more decorative than that. An operations lead sets up an export, runs it, and reads an answer they can defend to a manager. The system's job is to make numbers, ranges and verdicts legible; it refuses novelty styling and refuses to hide uncertainty.
+Evenpoint is a light, quiet, Swiss-minimal tool: a cool slate ground, white cards held by hairlines, one blue for action, and verdict colours that appear only where they carry meaning. Every screen leads with its answer in plain sentence form; the evidence behind it (per-model tables, the measured flow, costs, the run log) waits one click away under disclosure rows that each carry a one-line summary of what is inside.
 
-The world is a light, cool neutral ground with white panels sitting on it, separated by hairline borders and the softest of shadows. One blue accent marks action, selection and focus. Green, amber and grey appear only as verdict meaning (automate, automate with review, don't automate), never as decoration. Density is moderate and table-led: 14px body, tabular numerals everywhere numbers sit in columns, generous row padding.
+Density is calm, not sparse. A centred 1080px page under a slim sticky top bar, a big title on the left with a single primary action on the right, then the answer and its supporting rows. Generous vertical rhythm (24px between blocks, 64px before the footer) does the separating; borders appear only where two things genuinely need dividing. Depth is flat; shadows exist only for things that float (toasts, the save bar) or respond (a lifted card on hover, the selected tab).
 
-Type is a single family, Geist, at a tight ramp; Geist Mono is reserved for the machine's voice (logs, ids, model names, API keys). Icons are Lucide line icons at 16px, stroke 1.75.
+This system replaces the previous Geist / indigo / left-sidebar world entirely.
 
 **Key Characteristics:**
-- Cool grey ground, white hairline panels, soft ambient shadow
-- One blue accent for action, selection, focus and progress
-- Verdict colors as meaning only, always paired with an icon and a label
-- Every result shown with its range, not just a point
-- Single sans family with a compact ramp; mono only for machine values
-- Left sidebar shell, page title with primary action top right
+- Slate neutrals with a single blue accent (#2563eb); green, amber and slate-grey reserved for the three verdicts.
+- Plus Jakarta Sans throughout, Geist Mono only for ids, model names, file paths and logs.
+- 12px cards, 8px controls, fully rounded pills for tabs, badges, chips and toasts.
+- Flat surfaces separated by 1px hairlines; no decorative shadows.
+- Answer first: one sentence, one row per step, details collapsed.
+- One next action per screen.
 
 ## Colors
 
-A cool neutral palette with one saturated blue and a three-way verdict set; color is rationed so that when it appears, it means something.
+A cool slate neutral ramp carries almost everything; one saturated blue marks action and selection, and three muted semantic pairs (tint background + deep text) speak the verdicts.
 
 ### Primary
-- **Ledger Blue** (accent): primary buttons, active nav item, selected tab underline, focus rings and input focus border, links, progress meters, accuracy bars, the checked state of segmented choices and checkboxes. Darkens to **Ledger Blue Deep** (accent-hover) on hover.
-- **Blue Wash** (accent-soft): background of the active nav item, info callouts, the empty-state icon tile, the "assumed" pill, dropzone hover, and the AI-answer pane in review.
-- **Periwinkle** (accent-tint): the lighter blue in the brand mark and the flow-volume bars on results; a quieter blue for data that is not an action.
-
-### Verdict and status
-- **Automate Green** (good on good-soft): "Automate" badges, pass badges, completed run stages, success callouts.
-- **Review Amber** (warn on warn-soft): "Automate with review" badges, warning callouts, the spend-confirmation panel.
-- **Don't-automate Grey** (quiet on quiet-soft): "Don't automate" badges and the default badge. Deliberately neutral, not red: not automating is a respectable answer.
-- **Error Red** (bad on bad-soft): failures, stopped stages, invalid inputs, error callouts and toasts, destructive button text. Never a verdict.
+- **Decision Blue** (accent): primary buttons, links, focus outline, the run progress bar, the current step dot, selected chips, the tab count bubble. Hover deepens to **Pressed Blue** (accent-hover). **Blue Wash** (accent-soft) tints icon tiles, hovered drop zones and sample rows, the "AI answer" pane in review, and info callouts.
 
 ### Neutral
-- **Cool Ground** (ground): the app background behind panels.
-- **Paper White** (surface): panels, sidebar, buttons, inputs, topbar.
-- **Subtle** (subtle): table header rows, panel footers, file cards, dropzone, log blocks, the case pane in review.
-- **Hover Grey** (hover): row/nav hover, empty tracks of range, meter and accuracy bars.
-- **Hairline** (hairline): every panel border, divider and row rule. **Hairline Strong** (hairline-strong): input and button borders, the zero line on range bars.
-- **Ink / Ink 2 / Ink 3**: primary text; secondary text and nav labels; tertiary text for hints, sub-lines, table headers and meta.
+- **Morning Slate** (ground): the page ground and the translucent top bar (85% opacity with a 10px backdrop blur).
+- **Paper White** (surface): cards, panels, inputs, the selected tab.
+- **Mist** (subtle): button hover, input affixes, file cards, log blocks, the case pane in review.
+- **Tab Track** (track): the recessed pill track behind segmented tabs and skeleton shimmer.
+- **Hairline** (hairline): every separating border: card edges, row dividers, panel footers, the top bar's underline.
+- **Strong Hairline** (hairline-strong): input borders, dashed drop zones and example cards, card border on hover, range zero tick.
+- **Ink** (ink): headings, body, values. **Ink 2** (ink-2): secondary prose inside details. **Ink 3** (ink-3): meta lines, hints, table headers, inactive nav and tabs.
+
+### Semantic (verdicts and status)
+- **Automate**: good on good-soft. Also pass marks and success callouts.
+- **Automate with review**: warn on warn-soft. Also the cost-confirm panel and warning callouts.
+- **Don't automate**: quiet on quiet-soft. Deliberately grey, not red: declining to automate is a valid answer, not an error.
+- **Error / fail**: bad on bad-soft. Errors, failed grades, destructive buttons, the cancelled-run bar.
 
 ### Named Rules
-**The Meaning-Only Rule.** Green, amber and grey appear only where they encode a verdict or status. A green that is decorative is a lie on this product.
+**The One Blue Rule.** Blue means "you can act here" or "this is selected". It never decorates, never marks a verdict, and appears on at most one filled button per screen.
 
-**The Gentle No Rule.** "Don't automate" is grey, never red. Red is for things that broke.
-
-**The One Blue Rule.** The accent is the only chromatic color outside verdicts and errors. It marks what you can act on and where you are; it is not a fill for large areas.
+**The Meaning-Only Colour Rule.** Green, amber, grey and red appear only when they encode a verdict or a status. A neutral fact is ink on paper.
 
 ## Typography
 
-**Body Font:** Geist Variable (with ui-sans-serif, system-ui fallbacks), stylistic sets ss01 and cv11 on.
-**Mono Font:** Geist Mono Variable (with ui-monospace, Menlo).
+**Display Font:** Plus Jakarta Sans Variable (with ui-sans-serif, system-ui)
+**Body Font:** Plus Jakarta Sans Variable
+**Label/Mono Font:** Geist Mono Variable (with ui-monospace, Menlo)
 
-**Character:** One neutral grotesque carries everything from page titles to table meta; hierarchy comes from size steps of 1-3px and weight (400/500/550/600), not from a second display face. Variable weights in between (550, 620, 650) are used for fine emphasis.
+**Character:** A friendly geometric grotesk with tight negative tracking at size and intermediate variable weights (550, 620, 650) between the usual stops; the mono is a quiet technical aside, never a display voice.
 
 ### Hierarchy
-- **Headline** (600, 22px, 1.25, -0.015em): page titles only, one per page.
-- **Answer** (400, 19px, 1.45, max 62ch): the results headline sentence; key figures inside it set at 620 weight, ranges in ink-3. The one place text is larger than the page title's neighbours, because the answer is the product.
-- **Title** (600, 15px): panel headings.
-- **Body** (400, 14px, 1.5): default text, table cells, inputs.
-- **Label** (500, 13px): form labels, buttons at small size, disclosure summaries; panel subtitles at 13px in ink-3.
-- **Meta** (550, 12px, ink-3): table and recommendation column headers, fact labels, nav section labels (500). Sentence case.
-- **Small** (400, 12.5px, ink-3): hints, sub-lines under table cells, range text.
-- **Mono** (12.5px): model names, ids, file names in logs, API keys, run logs (12.5/1.6).
+- **Answer** (400 with 620 bold figures, 24px, 1.45, -0.015em; 19px under 900px): the result sentence that opens Results. Max 46ch. Key figures are bolded inline rather than broken out into stat tiles.
+- **Headline** (700, 28px, 1.2, -0.025em; 24px under 760px): the page title, one per screen.
+- **Title** (650, 16px, -0.01em): panel and section headings. Project names on cards run slightly larger (650, 17px); figures at the end of a step row run 600 at 19px; the answer on a project card runs 700 at 26px, -0.03em.
+- **Body** (400, 15px, 1.6): everything else. Rows and secondary text step down to 14px.
+- **Label** (400, 13px, ink-3): meta lines, hints, disclosure summaries, table headers (600, 12.5px). Sentence case, never uppercase.
+- **Mono** (13px; 12.5px in rows and logs): model names, file names, ids, keyboard hints.
 
 ### Named Rules
-**The Machine Voice Rule.** Geist Mono is for values the machine produced or consumes verbatim (model names, ids, logs, keys). Never for headings, labels or numbers.
+**The Sentence Answer Rule.** The answer is a sentence with bold figures, not a dashboard of numbers. Figures always use tabular numerals.
 
-**The Tabular Rule.** Any number in a column or a fact row uses tabular numerals; tables set it on the whole table.
-
-**The Sentence Case Rule.** Headers and labels are sentence case at normal tracking. The system has no uppercase tracked labels.
+**The Mono-For-Machines Rule.** Geist Mono is only for strings a machine produced (model ids, paths, column names, logs). Never for labels or headings.
 
 ## Layout
 
-A fixed two-column shell: a 236px white sidebar (sticky, full height) holding brand, Projects, the current project's nav, and a footer with the API-key status dot and version; and a main column whose page content is centred at max 1160px with 32px top, 40px side and 96px bottom padding.
+A single centred column: content max 1080px with 24px side padding (16px under 760px), 40px top and 120px bottom page padding. The sticky top bar is 60px tall and aligns its content to the same column edges.
 
-Every page opens with a page head: title (plus a sub-line of meta with icons) on the left, actions right-aligned with the primary action last. Content below is a vertical stack of panels separated by 20px. Inside panels: head 14px 18px, body 18px, footer 12px 18px on the subtle tint. Settings-style forms use a two-column row (280px explanation, flexible controls, 32px gap) divided by hairlines. Spacing steps are 6, 8, 12, 16, 18, 20, 24 and 32px; gaps inside rows are 8-12px, between grid cards 16px.
+Every screen opens with the page head: title and a one-line meta row on the left, actions bottom-aligned on the right (stacked under 760px). Project screens then show the segmented tabs (32px below), then the tab content as a stack with 24px between blocks. The start flow narrows to 760px with a numbered step indicator above its title.
 
-Recommendations use a single CSS subgrid so every row's columns align with the header (step, verdict, model, accuracy, range, value, toggle). Below 1100px the rows collapse to stacked cards with the range bar spanning full width.
+Grids: project and example cards use `auto-fill, minmax(320px, 1fr)` at 16px/12px gaps; two- and three-column grids use 20px gaps and collapse to one column under 760px. Settings use a 250px label column beside the control column (36px gap), collapsing under 760px. Step rows collapse their four columns (name, range, figures, toggle) into a two-by-two grid under 900px.
 
-At 900px and below, the sidebar becomes an off-canvas drawer (260px, slides in with the shared ease) opened from a sticky white topbar; page padding drops to 20px 16px; page heads stack; two-column grids, settings rows and the review split collapse to one column. Project sections switch from sidebar nav to an underlined tab bar only at this width.
+### Named Rules
+**The One Next Action Rule.** Each screen has exactly one filled blue button, placed top-right in the page head (or at the end of a confirm panel). Everything else is secondary, ghost, or a link.
+
+**The Answer-First Rule.** What the user came for sits directly under the tabs: the answer sentence and step rows on Results, the answer on each project card. Supporting evidence comes after, collapsed.
 
 ## Elevation & Depth
 
-A hybrid: depth is mostly tonal (white panels on a grey ground, subtle-tinted heads and footers) with a soft ambient shadow at rest. Shadows are cool (tinted from rgb(16 24 40)), low-opacity and never offset hard. Elevation rises only for things that float above the page.
+Flat by default. Surfaces separate from the slate ground by colour and a 1px hairline, not by shadow. Shadows are reserved for elements that float above the page or respond to the pointer.
 
 ### Shadow Vocabulary
-- **Rest** (shadow-1): panels, secondary buttons. Barely there; it seats the panel on the ground.
-- **Raised** (shadow-2): a panel demanding attention in-flow, such as the spend-confirmation panel before a run.
-- **Floating** (shadow-3): toasts, the sticky unsaved-changes bar, the mobile drawer.
+- **Lift** (`box-shadow: 0 8px 24px -8px rgb(15 23 42 / 0.12)`): a project card on hover, paired with a 2px rise and a stronger hairline.
+- **Float** (`box-shadow: 0 20px 48px -16px rgb(15 23 42 / 0.25)`): toasts and the sticky unsaved-changes bar, both ink-filled.
+- **Selected tab** (`box-shadow: 0 1px 3px rgb(15 23 42 / 0.1)`): the white selected pill inside the tab track.
 
 ### Named Rules
-**The Hairline First Rule.** Separation comes from a 1px hairline before it comes from shadow. A panel without its border is not a panel.
+**The Flat-At-Rest Rule.** Nothing in the page flow carries a shadow at rest. A shadow means the element floats, is hovered, or is the selected tab.
 
 ## Shapes
 
-Gently rounded and consistent: 8px on panels, callouts, file cards, dropzones, toasts and the savebar; 6px on buttons, inputs, nav items, inner tables and lists; full pills on badges, counts and the "assumed" marker. Small tiles holding a single icon (file icon, empty-state icon, confirm icon) are 36-44px squares at 9-12px radius. Bars (range, meter, accuracy, flow) are thin rounded tracks (6-10px tall) on hover grey. Borders are 1px everywhere; the only dashed line is the upload dropzone (1.5px).
+Three radii: 12px for containers (panels, cards, step lists, drop zones, callout-sized blocks), 8px for controls (buttons, inputs, selects, inner bordered tables, callouts), and fully rounded pills for tabs, badges, chips, the nav links and toasts. Large buttons step to 10px. Borders are 1px solid hairlines; dashed 1.5px strong hairlines mark "drop something here" and "try an example" affordances only. Icon tiles are rounded squares (10-14px radius) in accent-soft with an accent glyph.
 
 ## Components
 
 ### Buttons
-Quiet, compact, tactile.
-- **Shape:** gently rounded (6px), 34px tall; small 28px, large 40px. Icon 16px left of label, 7px gap.
-- **Default:** white with a strong hairline border and rest shadow; hover tints to subtle; active nudges down 0.5px.
-- **Primary:** Ledger Blue fill, white text, a blue-tinted 1px shadow and a faint inner top highlight; hover to Ledger Blue Deep. One per page head.
-- **Ghost:** transparent, ink-2 text, hover grey fill. Used for Cancel and toolbar actions.
-- **Danger:** default button with Error Red text.
-- **Busy / disabled:** 55% opacity; busy swaps the label for a spinning loader icon and a verb ("Creating", "Working").
+Quiet, compact, and solid.
+- **Shape:** gently rounded (8px), 40px tall; small 34px, large 48px at 10px radius.
+- **Primary:** Decision Blue fill, white 600 14px label, optional leading 16px Lucide icon.
+- **Secondary (default):** white fill, hairline border, ink label; hover fills with Mist.
+- **Ghost:** transparent, ink-3 label; hover fills with Mist and darkens to ink. Used for Report, Stop, Back.
+- **Danger:** secondary shape with red label; fills red only inside the danger zone on hover.
+- **States:** press scales to 0.98; disabled and busy drop to 50% opacity; focus is the global 2px blue outline at 2px offset.
+
+### Chips
+- **Style:** 32px pill, strong hairline border, white fill, ink-2 13px label, wrapping a visually hidden checkbox.
+- **State:** selected chips take a blue border and Blue Wash fill with a blue icon. Used to pick columns and models.
 
 ### Badges (verdicts)
-- **Style:** 22px pill, 12px at 550 weight, a 13px line icon then the label, on the soft verdict tint.
-- **Verdicts:** Automate (circle-check, green), Automate with review (clipboard-check, amber), Don't automate (ban, grey). Pass/fail use green/red. An outline variant (transparent with hairline) marks neutral tags like "Recommended".
+- **Style:** 26px pill, 12.5px 600 label, leading 13px Lucide icon at stroke 2.2, semantic tint background with deep semantic text: CircleCheck "Automate", ClipboardCheck "Automate with review", Ban "Don't automate". Outline variant is transparent with an inset hairline.
 
-### Panels
-- **Corner Style:** 8px.
-- **Background:** surface, with subtle-tinted header/footer bands where needed.
-- **Shadow Strategy:** Rest; Raised only for the spend confirmation.
+### Cards / Containers
+- **Corner Style:** 12px.
+- **Background:** Paper White on Morning Slate.
+- **Shadow Strategy:** none at rest (see Elevation).
 - **Border:** 1px hairline.
-- **Internal Padding:** 18px; heads 14px 18px with a 15px title and a 13px ink-3 description.
+- **Internal Padding:** panels 20px 24px 24px with a head row (title + 14px ink-3 description) and an optional hairline-topped footer of right-aligned actions; project cards 24px, min-height 168px, name and meta above the answer figure.
 
 ### Inputs / Fields
-- **Style:** white, 1px strong hairline, 6px radius, 34px tall, faint inset shadow. Selects use a custom up/down chevron. Prefix/suffix affixes sit in subtle-tinted cells sharing the border.
-- **Focus:** border turns Ledger Blue with a 3px accent-ring halo (32% blue).
-- **Error / Disabled:** invalid border in Error Red with a 12.5px red message below; field hints 12.5px ink-3.
-- **Choice cards:** segmented two-up options with a hairline border; checked turns border blue and fill Blue Wash.
+- **Style:** 42px, strong hairline border, white fill, 8px radius, 15px body text, placeholder #94a3b8. Selects use a Lucide chevron as background image. Prefix/suffix affixes join flush in Mist.
+- **Focus:** border turns blue with a 4px blue ring at 28% opacity.
+- **Error / Disabled:** invalid fields take a red border with 13px red helper text below.
+- **Labels:** 14px 600 ink above the control, 8px gap, 13px ink-3 hint beneath.
 
 ### Navigation
-- **Sidebar:** 7px 10px items, 500 weight, ink-2, 16px line icons; hover grey; current page Blue Wash with blue text. Section label is the project name in 12px ink-3.
-- **Tabs (mobile only):** 40px items, ink-3, selected blue with a 2px rounded underline inset 8px.
+- **Top bar:** 60px, translucent Morning Slate with blur and a hairline underline. Left: ink brand tile (28px, 8px radius) plus wordmark, then pill nav links (14px 550, ink-3; hover and current fill with Mist and turn ink). Right: key status (8px dot, emerald when connected, amber when missing) and the small primary "New analysis" button. Under 760px the nav links and key-status text hide.
+- **Segmented tabs:** a pill track (4px inset) holding 36px pill tabs; the selected tab is white with ink text and the selected-tab shadow. Exactly three on a project: Results, Check AI answers, Settings. They stretch to full width on mobile.
 
-### Tables
-- **Header:** subtle band, 12px/550 ink-3 sentence-case labels, 9px 14px.
-- **Rows:** 11px 14px, hairline rules, last rule dropped; numeric columns right-aligned and tabular; clickable rows tint subtle on hover. Secondary info sits as a 12.5px ink-3 sub-line under the primary value.
+### Step Rows (signature)
+The core of Results: one bordered 12px list, one row per workflow step, divided by hairlines. Each row: step name + verdict badge, a one-line "why" with the model name in mono; an 8px range bar showing the likely savings span as a soft verdict-tinted band with a solid 12px point and a zero tick; the monthly hours figure right-aligned (19px) with dollars beneath (13px ink-3); a chevron toggle that rotates 180deg to expand inline details. Untested steps collapse to a single-column row.
 
-### Callouts
-Icon plus text in a tinted box (8px radius, 12px 14px): info on Blue Wash, warn on amber, error on red, success on green, each with a slightly deeper border and darkened text of the same hue.
+### Disclosure Rows (signature)
+Evidence lives in disclosure rows under a small "Details" heading: a full-width summary with a rotating 14px chevron, a 550 ink title, and a right-aligned 13px ink-3 one-line summary of what is inside (hidden under 900px). Rows are separated by bottom hairlines, and bodies indent 22px.
 
-### Range Bar (signature)
-The system's core honesty device. A 10px rounded grey track with a 1px zero line; the plausible range is a soft band in the verdict's tint and the point estimate a 12px dot in the verdict color, ringed in white. Axis labels above, and below it the point in bold followed by "low to high" in ink-3. Every money and hours figure that has a range shows it, either here or as "($297 to $3,871)" in ink-3 beside the figure.
+### Run Progress (signature)
+While a run is live it replaces the Results content in place (there is no Run tab): a panel with a 20px title, a "Step n of 7" line, an 8px pill progress bar in blue (red on error, strong hairline when cancelled), a reassurance note, and the log collapsed in a disclosure. A cost confirmation appears above it as an amber panel (warn-soft fill, amber border) with Stop and one primary Continue.
 
-### Floating feedback
-Toasts and the unsaved-changes savebar are inverse surfaces: ink background, white text, 8px radius, Floating shadow, entering with a short rise (240-280ms, ease cubic-bezier(0.16, 1, 0.3, 1)). Error toasts are deep red.
+### Feedback
+- **Callouts:** 8px radius tinted blocks with a leading icon: info (Blue Wash), warn, error, success, each with a deep tinted text colour.
+- **Toasts:** ink-filled pills centred at the bottom, 14px 500, Float shadow; errors in deep red.
+- **Empty states:** centred, a 52px Blue Wash icon tile, title, 46ch ink-3 explanation, one action.
 
-### Empty states
-Centred in a panel: a 44px Blue Wash tile with a 20px icon, a title, a 46ch ink-3 explanation, then the primary action and an optional secondary one.
+### Motion
+Short and settling: one 320ms fade-and-rise (6px) when content first lands, 180ms colour transitions on controls, a 2px hover lift on cards, chevrons rotating on the expo-out ease `cubic-bezier(0.16, 1, 0.3, 1)`. Live views never re-animate on redraw. Reduced motion collapses all of it.
 
 ## Do's and Don'ts
 
 ### Do:
-- **Do** put every money and hours result with its range, the point in ink and the range in ink-3.
-- **Do** pair every verdict color with its icon and its words; color alone never carries the verdict.
-- **Do** keep one primary (blue) button per page head, at the right end of the actions.
-- **Do** set model names, ids and logs in Geist Mono at 12.5px, and everything else in Geist.
-- **Do** separate surfaces with 1px hairlines (hairline) and seat panels with the Rest shadow only.
-- **Do** use Lucide line icons at 16px (14px small, 20px large), stroke 1.75.
-- **Do** honour prefers-reduced-motion; motion is limited to short state transitions (100-240ms) and toast/drawer entrances.
+- **Do** lead every screen with its answer: a sentence with bold tabular figures, or the answer figure on a project card.
+- **Do** keep exactly one filled blue button per screen, top-right in the page head.
+- **Do** collapse evidence under disclosure rows that each show a one-line summary of their contents.
+- **Do** show live run progress in place of Results; never add a Run tab.
+- **Do** keep projects to three tabs: Results, Check AI answers, Settings.
+- **Do** use the verdict pairs (good, warn, quiet on their soft tints) only for verdicts and status, with their Lucide icon and plain-language label.
+- **Do** use Lucide line icons at 16px, stroke 1.75 (14px small, 22px large).
+- **Do** separate with hairlines (#e2e8f0) and whitespace; use 12px for containers, 8px for controls, pills for tabs, badges and chips.
+- **Do** put model names, file names and ids in Geist Mono.
 
 ### Don't:
-- **Don't** use green, amber or grey for anything that is not a verdict or status.
-- **Don't** make "Don't automate" red or alarming; red is reserved for errors and failures.
-- **Don't** introduce a second accent hue or fill large areas with Ledger Blue.
-- **Don't** use mono for headings, labels or figures.
-- **Don't** add uppercase tracked labels or eyebrows above titles; headers are sentence case.
-- **Don't** use hard offset shadows, gradients or decorative backgrounds; the only gradient is the loading skeleton shimmer.
-- **Don't** show a single number where a range exists.
+- **Don't** add shadows to elements at rest in the page flow; shadows are for hover, the selected tab, and floating layers.
+- **Don't** introduce a second accent hue or use blue for anything that is not an action or a selection.
+- **Don't** render "Don't automate" in red; it is a grey verdict, not an error.
+- **Don't** set labels in uppercase or tracked-out small caps; labels are sentence case.
+- **Don't** break the answer into stat tiles or hero metrics.
+- **Don't** bring back the left sidebar, Geist as the UI face, or the #3451d1 indigo; that world is retired.
+- **Don't** treat the static HTML report (evenpoint/report/template.html.j2) as part of this system; it still follows its own styling and is a known divergence.

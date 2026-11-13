@@ -217,9 +217,10 @@ const css = raw(`
 .range-zero { position: absolute; top: -4px; bottom: -4px; width: 1px; background: var(--border-strong); }
 .range-span { position: absolute; top: 0; bottom: 0; border-radius: 6px; background: var(--c-soft); }
 .range-point { position: absolute; top: 50%; width: 12px; height: 12px; margin: -6px 0 0 -6px; border-radius: 50%; background: var(--c); box-shadow: 0 0 0 2px var(--surface); }
-.range.automate { --c: var(--good); --c-soft: #b9e3cc; }
-.range.review { --c: #c27a00; --c-soft: #f6d9a6; }
-.range.dont_automate { --c: #7c838e; --c-soft: #dadde2; }
+.range.automate { --c: var(--good); }
+.range.review { --c: var(--warn); }
+.range.dont_automate { --c: var(--quiet); }
+.range-span { background: color-mix(in srgb, var(--c) 28%, var(--surface)) !important; }
 .range-text { display: block; margin-top: 6px; font-size: 12px; color: var(--text-3); }
 .table.compact td, .table.compact th { padding: 8px 12px; }
 .firm-up { display: inline-flex; align-items: center; gap: 10px; padding: 6px 0; border: 0; background: none; font: inherit; color: var(--text-2); cursor: pointer; }

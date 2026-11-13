@@ -52,7 +52,7 @@ export const num = (v: number | null | undefined, d = 0) => (v == null || Number
 export const usd = (v: number | null | undefined, d = 0) => {
   if (v == null || Number.isNaN(v)) return "–";
   const s = nf(d).format(Math.abs(v));
-  return `${v < 0 ? "−" : ""}$${s}`;
+  return `${v < 0 && Number(s.replace(/,/g, "")) ? "−" : ""}$${s}`;  // no "−$0"
 };
 export const signedUsd = (v: number | null | undefined, d = 0) =>
   v == null ? "–" : `${v > 0 ? "+" : ""}${usd(v, d)}`;

@@ -372,7 +372,7 @@ const css = raw(`
 .start-head { margin-bottom: 24px; }
 .start-head h1 { letter-spacing: -0.02em; }
 .start-head p { margin-top: 8px; color: var(--text-2); font-size: 15px; max-width: 64ch; line-height: 1.55; }
-.drop { position: relative; display: grid; justify-items: center; gap: 8px; text-align: center; padding: 56px 24px; border: 1.5px dashed var(--border-strong); border-radius: 12px; background: var(--surface); cursor: pointer; transition: border-color 150ms, background 150ms, box-shadow 150ms; box-shadow: var(--shadow-1); }
+.drop { position: relative; display: grid; justify-items: center; gap: 8px; text-align: center; padding: 56px 24px; border: 1.5px dashed var(--border-strong); border-radius: 12px; background: var(--surface); cursor: pointer; transition: border-color 150ms, background 150ms, box-shadow 150ms; }
 .drop:hover, .drop.over { border-color: var(--accent); background: var(--accent-soft); }
 .drop.busy { pointer-events: none; }
 .drop strong { font-size: 15px; font-weight: 600; }
@@ -385,7 +385,7 @@ const css = raw(`
 .or { display: flex; align-items: center; gap: 12px; margin: 32px 0 14px; color: var(--text-3); font-size: 13px; }
 .or::before, .or::after { content: ""; flex: 1; height: 1px; background: var(--border); }
 .samples { display: grid; gap: 10px; }
-.sample { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 14px; align-items: center; padding: 14px 16px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); font: inherit; color: var(--text-3); text-align: left; cursor: pointer; box-shadow: var(--shadow-1); transition: border-color 120ms, background 120ms; }
+.sample { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 14px; align-items: center; padding: 14px 16px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); font: inherit; color: var(--text-3); text-align: left; cursor: pointer; transition: border-color 120ms, background 120ms; }
 .sample:hover { border-color: var(--accent); background: var(--accent-soft); }
 .sample[aria-busy="true"] { opacity: 0.6; pointer-events: none; }
 .sample > span:nth-child(2) { display: grid; gap: 2px; }

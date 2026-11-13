@@ -1,22 +1,67 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-11-13T08:55:11.846023+00:00",
+  "generatedAt": "2026-11-13T10:13:02.944845+00:00",
   "title": "Design System: Evenpoint",
   "extensions": {
     "colorMeta": {
+      "accent": {
+        "role": "primary",
+        "displayName": "Decision Blue",
+        "canonical": "#2563eb",
+        "tonalRamp": [
+          "#1e3a8a",
+          "#1e40af",
+          "#1d4ed8",
+          "#2563eb",
+          "#3b82f6",
+          "#60a5fa",
+          "#93c5fd",
+          "#dbeafe"
+        ]
+      },
+      "accent-hover": {
+        "role": "primary",
+        "displayName": "Pressed Blue",
+        "canonical": "#1d4ed8",
+        "tonalRamp": [
+          "#1e3a8a",
+          "#1e40af",
+          "#1d4ed8",
+          "#2563eb",
+          "#3b82f6",
+          "#60a5fa",
+          "#93c5fd",
+          "#dbeafe"
+        ]
+      },
+      "accent-soft": {
+        "role": "primary",
+        "displayName": "Blue Wash",
+        "canonical": "#eff4ff",
+        "tonalRamp": [
+          "#1e3a8a",
+          "#1e40af",
+          "#1d4ed8",
+          "#2563eb",
+          "#3b82f6",
+          "#60a5fa",
+          "#93c5fd",
+          "#dbeafe"
+        ]
+      },
       "ground": {
         "role": "neutral",
-        "displayName": "Cool Ground",
-        "canonical": "#f4f5f7",
+        "displayName": "Morning Slate",
+        "canonical": "#f8fafc",
         "tonalRamp": [
-          "#0b0b0c",
-          "#242526",
-          "#414243",
-          "#606163",
-          "#818284",
-          "#a4a5a7",
-          "#c8c9cb",
-          "#eeeef0"
+          "#0f172a",
+          "#1e293b",
+          "#334155",
+          "#475569",
+          "#64748b",
+          "#94a3b8",
+          "#cbd5e1",
+          "#f1f5f9"
         ]
       },
       "surface": {
@@ -24,382 +69,323 @@
         "displayName": "Paper White",
         "canonical": "#ffffff",
         "tonalRamp": [
-          "#0b0b0b",
-          "#252525",
-          "#424242",
-          "#616161",
-          "#828282",
-          "#a5a5a5",
-          "#c9c9c9",
-          "#eeeeee"
+          "#0f172a",
+          "#1e293b",
+          "#334155",
+          "#475569",
+          "#64748b",
+          "#94a3b8",
+          "#cbd5e1",
+          "#f1f5f9"
         ]
       },
       "subtle": {
         "role": "neutral",
-        "displayName": "Subtle",
-        "canonical": "#f8f9fa",
+        "displayName": "Mist",
+        "canonical": "#f1f5f9",
         "tonalRamp": [
-          "#0b0b0c",
-          "#242526",
-          "#414243",
-          "#606162",
-          "#818283",
-          "#a4a5a6",
-          "#c8c9ca",
-          "#eeeeef"
+          "#0f172a",
+          "#1e293b",
+          "#334155",
+          "#475569",
+          "#64748b",
+          "#94a3b8",
+          "#cbd5e1",
+          "#f1f5f9"
         ]
       },
-      "hover": {
+      "track": {
         "role": "neutral",
-        "displayName": "Hover Grey",
-        "canonical": "#f1f3f5",
+        "displayName": "Tab Track",
+        "canonical": "#eef2f7",
         "tonalRamp": [
-          "#0a0b0c",
-          "#242527",
-          "#414244",
-          "#606163",
-          "#818284",
-          "#a3a5a7",
-          "#c7c9cb",
-          "#edeef0"
+          "#0f172a",
+          "#1e293b",
+          "#334155",
+          "#475569",
+          "#64748b",
+          "#94a3b8",
+          "#cbd5e1",
+          "#f1f5f9"
         ]
       },
       "hairline": {
         "role": "neutral",
         "displayName": "Hairline",
-        "canonical": "#e3e6ea",
+        "canonical": "#e2e8f0",
         "tonalRamp": [
-          "#0a0b0d",
-          "#232528",
-          "#404245",
-          "#5f6165",
-          "#808286",
-          "#a2a5a9",
-          "#c6c9cd",
-          "#edeff1"
+          "#0f172a",
+          "#1e293b",
+          "#334155",
+          "#475569",
+          "#64748b",
+          "#94a3b8",
+          "#cbd5e1",
+          "#f1f5f9"
         ]
       },
       "hairline-strong": {
         "role": "neutral",
-        "displayName": "Hairline Strong",
-        "canonical": "#cdd2d9",
+        "displayName": "Strong Hairline",
+        "canonical": "#cbd5e1",
         "tonalRamp": [
-          "#090b0e",
-          "#22252b",
-          "#3e4248",
-          "#5d6268",
-          "#7e8389",
-          "#a1a5ac",
-          "#c5cad0",
-          "#eceff3"
+          "#0f172a",
+          "#1e293b",
+          "#334155",
+          "#475569",
+          "#64748b",
+          "#94a3b8",
+          "#cbd5e1",
+          "#f1f5f9"
         ]
       },
       "ink": {
         "role": "neutral",
         "displayName": "Ink",
-        "canonical": "#14171c",
+        "canonical": "#0f172a",
         "tonalRamp": [
-          "#0a0b0e",
-          "#22252b",
-          "#3f4248",
-          "#5e6168",
-          "#7f8389",
-          "#a1a5ac",
-          "#c5c9d0",
-          "#eceff3"
+          "#0f172a",
+          "#1e293b",
+          "#334155",
+          "#475569",
+          "#64748b",
+          "#94a3b8",
+          "#cbd5e1",
+          "#f1f5f9"
         ]
       },
       "ink-2": {
         "role": "neutral",
         "displayName": "Ink 2",
-        "canonical": "#464d58",
+        "canonical": "#334155",
         "tonalRamp": [
-          "#080b10",
-          "#1f252f",
-          "#3c424d",
-          "#5a626d",
-          "#7b838f",
-          "#9ea6b2",
-          "#c1cad7",
-          "#eaeff7"
+          "#0f172a",
+          "#1e293b",
+          "#334155",
+          "#475569",
+          "#64748b",
+          "#94a3b8",
+          "#cbd5e1",
+          "#f1f5f9"
         ]
       },
       "ink-3": {
         "role": "neutral",
         "displayName": "Ink 3",
-        "canonical": "#636a75",
+        "canonical": "#64748b",
         "tonalRamp": [
-          "#080b10",
-          "#1f252f",
-          "#3c424d",
-          "#5b626d",
-          "#7c838e",
-          "#9ea6b2",
-          "#c2cad6",
-          "#eaeff6"
-        ]
-      },
-      "accent": {
-        "role": "primary",
-        "displayName": "Ledger Blue",
-        "canonical": "#3451d1",
-        "tonalRamp": [
-          "#02042e",
-          "#0c1567",
-          "#23388b",
-          "#405ab0",
-          "#5f7cd6",
-          "#80a0fd",
-          "#a2c5ff",
-          "#d6edff"
-        ]
-      },
-      "accent-hover": {
-        "role": "primary",
-        "displayName": "Ledger Blue Deep",
-        "canonical": "#2a43b4",
-        "tonalRamp": [
-          "#02042e",
-          "#0c1567",
-          "#23388b",
-          "#405ab0",
-          "#5f7cd6",
-          "#80a0fd",
-          "#a2c5ff",
-          "#d6edff"
-        ]
-      },
-      "accent-soft": {
-        "role": "primary",
-        "displayName": "Blue Wash",
-        "canonical": "#edf0fc",
-        "tonalRamp": [
-          "#0a0b0f",
-          "#23252d",
-          "#3f414b",
-          "#5e616b",
-          "#7f828c",
-          "#a2a4b0",
-          "#c6c9d4",
-          "#eceef5"
-        ]
-      },
-      "accent-tint": {
-        "role": "primary",
-        "displayName": "Periwinkle",
-        "canonical": "#8ea2f0",
-        "tonalRamp": [
-          "#040628",
-          "#151a5c",
-          "#2e3a7e",
-          "#4b5ba2",
-          "#6b7dc8",
-          "#8ca0ee",
-          "#afc4ff",
-          "#deedff"
+          "#0f172a",
+          "#1e293b",
+          "#334155",
+          "#475569",
+          "#64748b",
+          "#94a3b8",
+          "#cbd5e1",
+          "#f1f5f9"
         ]
       },
       "good": {
-        "role": "status",
+        "role": "semantic",
         "displayName": "Automate Green",
-        "canonical": "#0a7347",
+        "canonical": "#047857",
         "tonalRamp": [
-          "#001202",
-          "#00330c",
-          "#005329",
-          "#0c7448",
-          "#3c9668",
-          "#62ba8a",
-          "#87e0ad",
-          "#cafddd"
+          "#064e3b",
+          "#065f46",
+          "#047857",
+          "#059669",
+          "#10b981",
+          "#34d399",
+          "#6ee7b7",
+          "#d1fae5"
         ]
       },
       "good-soft": {
-        "role": "status",
-        "displayName": "Automate Green Soft",
-        "canonical": "#e3f4eb",
+        "role": "semantic",
+        "displayName": "Automate Tint",
+        "canonical": "#ecfdf5",
         "tonalRamp": [
-          "#070d0a",
-          "#1b2822",
-          "#38463f",
-          "#57655e",
-          "#77877f",
-          "#9aaaa1",
-          "#bdcec5",
-          "#e7f1ec"
+          "#064e3b",
+          "#065f46",
+          "#047857",
+          "#059669",
+          "#10b981",
+          "#34d399",
+          "#6ee7b7",
+          "#d1fae5"
         ]
       },
       "warn": {
-        "role": "status",
+        "role": "semantic",
         "displayName": "Review Amber",
-        "canonical": "#8f5200",
+        "canonical": "#b45309",
         "tonalRamp": [
-          "#1d0200",
-          "#480f00",
-          "#6a3000",
-          "#8d5000",
-          "#b17230",
-          "#d79555",
-          "#feb979",
-          "#ffe5c0"
+          "#78350f",
+          "#92400e",
+          "#b45309",
+          "#d97706",
+          "#f59e0b",
+          "#fbbf24",
+          "#fcd34d",
+          "#fef3c7"
         ]
       },
       "warn-soft": {
-        "role": "status",
-        "displayName": "Review Amber Soft",
-        "canonical": "#fdf1dc",
+        "role": "semantic",
+        "displayName": "Review Tint",
+        "canonical": "#fffbeb",
         "tonalRamp": [
-          "#0f0a04",
-          "#2d2413",
-          "#4a412f",
-          "#6a604e",
-          "#8c816e",
-          "#afa490",
-          "#d3c8b3",
-          "#f5eee1"
+          "#78350f",
+          "#92400e",
+          "#b45309",
+          "#d97706",
+          "#f59e0b",
+          "#fbbf24",
+          "#fcd34d",
+          "#fef3c7"
         ]
       },
       "quiet": {
-        "role": "status",
-        "displayName": "Don't-automate Grey",
-        "canonical": "#474e59",
+        "role": "semantic",
+        "displayName": "Decline Slate",
+        "canonical": "#475569",
         "tonalRamp": [
-          "#080b10",
-          "#1f252f",
-          "#3c424d",
-          "#5a626d",
-          "#7b838f",
-          "#9ea6b2",
-          "#c1cad7",
-          "#eaeff7"
+          "#0f172a",
+          "#1e293b",
+          "#334155",
+          "#475569",
+          "#64748b",
+          "#94a3b8",
+          "#cbd5e1",
+          "#f1f5f9"
         ]
       },
       "quiet-soft": {
-        "role": "status",
-        "displayName": "Don't-automate Grey Soft",
-        "canonical": "#eceef1",
+        "role": "semantic",
+        "displayName": "Decline Tint",
+        "canonical": "#f1f5f9",
         "tonalRamp": [
-          "#0a0b0c",
-          "#242527",
-          "#404244",
-          "#606164",
-          "#818285",
-          "#a3a5a8",
-          "#c7c9cc",
-          "#edeef0"
+          "#0f172a",
+          "#1e293b",
+          "#334155",
+          "#475569",
+          "#64748b",
+          "#94a3b8",
+          "#cbd5e1",
+          "#f1f5f9"
         ]
       },
       "bad": {
-        "role": "status",
+        "role": "semantic",
         "displayName": "Error Red",
-        "canonical": "#b42318",
+        "canonical": "#dc2626",
         "tonalRamp": [
-          "#250000",
-          "#570000",
-          "#7c130b",
-          "#a23a2e",
-          "#c85d4e",
-          "#f08070",
-          "#ffa493",
-          "#ffdace"
+          "#7f1d1d",
+          "#991b1b",
+          "#b91c1c",
+          "#dc2626",
+          "#ef4444",
+          "#f87171",
+          "#fca5a5",
+          "#fee2e2"
         ]
       },
       "bad-soft": {
-        "role": "status",
-        "displayName": "Error Red Soft",
-        "canonical": "#fcebea",
+        "role": "semantic",
+        "displayName": "Error Tint",
+        "canonical": "#fef2f2",
         "tonalRamp": [
-          "#100909",
-          "#2e2221",
-          "#4c3e3e",
-          "#6c5d5c",
-          "#8d7e7d",
-          "#b1a1a0",
-          "#d5c5c4",
-          "#f6eceb"
+          "#7f1d1d",
+          "#991b1b",
+          "#b91c1c",
+          "#dc2626",
+          "#ef4444",
+          "#f87171",
+          "#fca5a5",
+          "#fee2e2"
         ]
       }
     },
     "typographyMeta": {
-      "headline": {
-        "displayName": "Headline",
-        "purpose": "Page titles, one per page."
-      },
       "answer": {
         "displayName": "Answer",
-        "purpose": "The results headline sentence."
+        "purpose": "The result sentence opening Results; 19px under 900px."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Page title, one per screen; 24px under 760px."
       },
       "title": {
         "displayName": "Title",
-        "purpose": "Panel headings."
+        "purpose": "Panel and section headings."
       },
       "body": {
         "displayName": "Body",
-        "purpose": "Default text, table cells, inputs."
+        "purpose": "Default text; rows step to 14px."
       },
       "label": {
         "displayName": "Label",
-        "purpose": "Form labels, small buttons, disclosure summaries."
-      },
-      "meta": {
-        "displayName": "Meta",
-        "purpose": "Table and column headers, fact labels; sentence case."
+        "purpose": "Meta lines, hints, disclosure summaries; ink-3, sentence case."
       },
       "mono": {
         "displayName": "Mono",
-        "purpose": "Model names, ids, logs, API keys only."
+        "purpose": "Model names, file names, ids, logs."
       }
     },
     "shadows": [
       {
-        "name": "shadow-1",
-        "value": "0 1px 2px rgb(16 24 40 / 0.06), 0 1px 1px rgb(16 24 40 / 0.03)",
-        "purpose": "Rest: panels and secondary buttons."
+        "name": "lift",
+        "value": "0 8px 24px -8px rgb(15 23 42 / 0.12)",
+        "purpose": "Project card on hover."
       },
       {
-        "name": "shadow-2",
-        "value": "0 6px 16px -4px rgb(16 24 40 / 0.12), 0 2px 4px -1px rgb(16 24 40 / 0.06)",
-        "purpose": "Raised: in-flow panel demanding attention (spend confirmation)."
+        "name": "float",
+        "value": "0 20px 48px -16px rgb(15 23 42 / 0.25)",
+        "purpose": "Toasts and the sticky save bar."
       },
       {
-        "name": "shadow-3",
-        "value": "0 18px 40px -12px rgb(16 24 40 / 0.22), 0 4px 10px -4px rgb(16 24 40 / 0.08)",
-        "purpose": "Floating: toasts, savebar, mobile drawer."
+        "name": "tab-selected",
+        "value": "0 1px 3px rgb(15 23 42 / 0.1)",
+        "purpose": "Selected pill inside the tab track."
       },
       {
         "name": "focus-ring",
-        "value": "0 0 0 3px rgb(52 81 209 / 0.32)",
-        "purpose": "Input focus halo; elsewhere 2px solid accent outline, 2px offset."
+        "value": "0 0 0 4px rgb(37 99 235 / 0.28)",
+        "purpose": "Focused inputs and selects."
       }
     ],
     "motion": [
       {
         "name": "ease",
         "value": "cubic-bezier(0.16, 1, 0.3, 1)",
-        "purpose": "Drawer, toast/savebar entrance, disclosure chevrons, meters."
+        "purpose": "Settling ease for fades, lifts, chevrons, progress."
       },
       {
-        "name": "state",
-        "value": "120ms",
-        "purpose": "Hover/border/background transitions on controls."
+        "name": "fade-in",
+        "value": "320ms, opacity 0 and translateY(6px) to rest",
+        "purpose": "Content landing once; never on live redraws."
       },
       {
-        "name": "enter",
-        "value": "240-280ms",
-        "purpose": "Toast, savebar and drawer entrances."
+        "name": "control",
+        "value": "150-180ms colour transitions",
+        "purpose": "Buttons, inputs, tabs, nav."
+      },
+      {
+        "name": "press",
+        "value": "scale(0.98), 120ms",
+        "purpose": "Button active state."
       }
     ],
     "breakpoints": [
       {
-        "name": "compact-recs",
-        "value": "1100px"
+        "name": "mobile",
+        "value": "760px"
       },
       {
-        "name": "mobile-shell",
+        "name": "compact-rows",
         "value": "900px"
       },
       {
-        "name": "narrow",
+        "name": "start-narrow",
         "value": "600px"
       }
     ]
@@ -409,132 +395,142 @@
       "name": "Primary Button",
       "kind": "button",
       "refersTo": "button-primary",
-      "description": "The one main action in a page head (Run, New project).",
-      "html": "<button class=\"ds-btn ds-btn-primary\"><svg viewBox=\"0 0 24 24\" width=\"16\" height=\"16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.75\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M6 3l14 9-14 9V3z\"/></svg>Run again</button>",
-      "css": ":host{--font:'Geist Variable',ui-sans-serif,system-ui,sans-serif;--mono:'Geist Mono Variable',ui-monospace,Menlo,monospace;--bg:#f4f5f7;--surface:#fff;--subtle:#f8f9fa;--hover:#f1f3f5;--border:#e3e6ea;--border-strong:#cdd2d9;--text:#14171c;--text-2:#464d58;--text-3:#636a75;--accent:#3451d1;--accent-hover:#2a43b4;--accent-soft:#edf0fc;--accent-ring:rgb(52 81 209/.32);--good:#0a7347;--good-soft:#e3f4eb;--warn:#8f5200;--warn-soft:#fdf1dc;--quiet:#474e59;--quiet-soft:#eceef1;--bad:#b42318;--bad-soft:#fcebea;--radius:8px;--radius-sm:6px;--shadow-1:0 1px 2px rgb(16 24 40/.06),0 1px 1px rgb(16 24 40/.03);--ease:cubic-bezier(0.16,1,0.3,1)} .ds-btn{display:inline-flex;align-items:center;gap:7px;height:34px;padding:0 13px;border-radius:var(--radius-sm);border:1px solid var(--border-strong);background:var(--surface);color:var(--text);font:500 13.5px/1 var(--font);box-shadow:var(--shadow-1);cursor:pointer;transition:background 120ms,border-color 120ms,transform 120ms}.ds-btn:hover{background:var(--subtle)}.ds-btn:active{transform:translateY(.5px)}.ds-btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}.ds-btn-primary{background:var(--accent);border-color:var(--accent);color:#fff;box-shadow:0 1px 2px rgb(52 81 209/.3),inset 0 1px 0 rgb(255 255 255/.12)}.ds-btn-primary:hover{background:var(--accent-hover);border-color:var(--accent-hover)}"
+      "description": "The one next action per screen, top-right in the page head.",
+      "html": "<button class=\"ds-btn-primary\"><svg viewBox=\"0 0 24 24\" width=\"16\" height=\"16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.75\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M5 12h14\"/><path d=\"M12 5v14\"/></svg>New analysis</button>",
+      "css": ".ds-btn-primary{font-family:\"Plus Jakarta Sans Variable\",ui-sans-serif,system-ui,sans-serif;display:inline-flex;align-items:center;gap:8px;height:40px;padding:0 16px;border-radius:8px;font-weight:600;font-size:14px;line-height:1;transition:background 180ms,border-color 180ms,color 180ms,transform 120ms;cursor:pointer;background:#2563eb;color:#fff;border:1px solid #2563eb}.ds-btn-primary:hover{background:#1d4ed8;border-color:#1d4ed8}.ds-btn-primary:active{transform:scale(.98)}.ds-btn-primary:focus-visible{outline:2px solid #2563eb;outline-offset:2px}"
     },
     {
       "name": "Secondary Button",
       "kind": "button",
-      "refersTo": "button",
-      "description": "Default white button for secondary actions.",
-      "html": "<button class=\"ds-btn\">Download report</button>",
-      "css": ":host{--font:'Geist Variable',ui-sans-serif,system-ui,sans-serif;--mono:'Geist Mono Variable',ui-monospace,Menlo,monospace;--bg:#f4f5f7;--surface:#fff;--subtle:#f8f9fa;--hover:#f1f3f5;--border:#e3e6ea;--border-strong:#cdd2d9;--text:#14171c;--text-2:#464d58;--text-3:#636a75;--accent:#3451d1;--accent-hover:#2a43b4;--accent-soft:#edf0fc;--accent-ring:rgb(52 81 209/.32);--good:#0a7347;--good-soft:#e3f4eb;--warn:#8f5200;--warn-soft:#fdf1dc;--quiet:#474e59;--quiet-soft:#eceef1;--bad:#b42318;--bad-soft:#fcebea;--radius:8px;--radius-sm:6px;--shadow-1:0 1px 2px rgb(16 24 40/.06),0 1px 1px rgb(16 24 40/.03);--ease:cubic-bezier(0.16,1,0.3,1)} .ds-btn{display:inline-flex;align-items:center;gap:7px;height:34px;padding:0 13px;border-radius:var(--radius-sm);border:1px solid var(--border-strong);background:var(--surface);color:var(--text);font:500 13.5px/1 var(--font);box-shadow:var(--shadow-1);cursor:pointer;transition:background 120ms,border-color 120ms,transform 120ms}.ds-btn:hover{background:var(--subtle)}.ds-btn:active{transform:translateY(.5px)}.ds-btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}"
+      "refersTo": "button-secondary",
+      "description": "Default button: white, hairline border.",
+      "html": "<button class=\"ds-btn\">Cancel</button>",
+      "css": ".ds-btn{font-family:\"Plus Jakarta Sans Variable\",ui-sans-serif,system-ui,sans-serif;display:inline-flex;align-items:center;gap:8px;height:40px;padding:0 16px;border-radius:8px;font-weight:600;font-size:14px;line-height:1;transition:background 180ms,border-color 180ms,color 180ms,transform 120ms;cursor:pointer;background:#fff;color:#0f172a;border:1px solid #e2e8f0}.ds-btn:hover{background:#f1f5f9}.ds-btn:active{transform:scale(.98)}.ds-btn:focus-visible{outline:2px solid #2563eb;outline-offset:2px}"
     },
     {
       "name": "Ghost Button",
       "kind": "button",
       "refersTo": "button-ghost",
-      "description": "Cancel and toolbar actions.",
-      "html": "<button class=\"ds-btn ds-btn-ghost\">Cancel</button>",
-      "css": ":host{--font:'Geist Variable',ui-sans-serif,system-ui,sans-serif;--mono:'Geist Mono Variable',ui-monospace,Menlo,monospace;--bg:#f4f5f7;--surface:#fff;--subtle:#f8f9fa;--hover:#f1f3f5;--border:#e3e6ea;--border-strong:#cdd2d9;--text:#14171c;--text-2:#464d58;--text-3:#636a75;--accent:#3451d1;--accent-hover:#2a43b4;--accent-soft:#edf0fc;--accent-ring:rgb(52 81 209/.32);--good:#0a7347;--good-soft:#e3f4eb;--warn:#8f5200;--warn-soft:#fdf1dc;--quiet:#474e59;--quiet-soft:#eceef1;--bad:#b42318;--bad-soft:#fcebea;--radius:8px;--radius-sm:6px;--shadow-1:0 1px 2px rgb(16 24 40/.06),0 1px 1px rgb(16 24 40/.03);--ease:cubic-bezier(0.16,1,0.3,1)} .ds-btn{display:inline-flex;align-items:center;gap:7px;height:34px;padding:0 13px;border-radius:var(--radius-sm);border:1px solid var(--border-strong);background:var(--surface);color:var(--text);font:500 13.5px/1 var(--font);box-shadow:var(--shadow-1);cursor:pointer;transition:background 120ms,border-color 120ms,transform 120ms}.ds-btn:hover{background:var(--subtle)}.ds-btn:active{transform:translateY(.5px)}.ds-btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}.ds-btn-ghost{background:transparent;border-color:transparent;box-shadow:none;color:var(--text-2)}.ds-btn-ghost:hover{background:var(--hover);color:var(--text)}"
+      "description": "Report, Stop, Back: quiet actions beside the primary.",
+      "html": "<button class=\"ds-btn-ghost\">Report</button>",
+      "css": ".ds-btn-ghost{font-family:\"Plus Jakarta Sans Variable\",ui-sans-serif,system-ui,sans-serif;display:inline-flex;align-items:center;gap:8px;height:40px;padding:0 16px;border-radius:8px;font-weight:600;font-size:14px;line-height:1;transition:background 180ms,border-color 180ms,color 180ms,transform 120ms;cursor:pointer;background:transparent;color:#64748b;border:1px solid transparent}.ds-btn-ghost:hover{background:#f1f5f9;color:#0f172a}.ds-btn-ghost:focus-visible{outline:2px solid #2563eb;outline-offset:2px}"
     },
     {
       "name": "Text Input",
       "kind": "input",
       "refersTo": "input",
-      "description": "34px field with label and hint; blue border and ring on focus.",
-      "html": "<label class=\"ds-field\"><span class=\"ds-label\">Project name</span><input class=\"ds-input\" placeholder=\"e.g. Support tickets Q3\"><span class=\"ds-hint\">You can rename it later.</span></label>",
-      "css": ":host{--font:'Geist Variable',ui-sans-serif,system-ui,sans-serif;--mono:'Geist Mono Variable',ui-monospace,Menlo,monospace;--bg:#f4f5f7;--surface:#fff;--subtle:#f8f9fa;--hover:#f1f3f5;--border:#e3e6ea;--border-strong:#cdd2d9;--text:#14171c;--text-2:#464d58;--text-3:#636a75;--accent:#3451d1;--accent-hover:#2a43b4;--accent-soft:#edf0fc;--accent-ring:rgb(52 81 209/.32);--good:#0a7347;--good-soft:#e3f4eb;--warn:#8f5200;--warn-soft:#fdf1dc;--quiet:#474e59;--quiet-soft:#eceef1;--bad:#b42318;--bad-soft:#fcebea;--radius:8px;--radius-sm:6px;--shadow-1:0 1px 2px rgb(16 24 40/.06),0 1px 1px rgb(16 24 40/.03);--ease:cubic-bezier(0.16,1,0.3,1)} .ds-field{display:grid;gap:6px;font-family:var(--font);width:280px}.ds-label{font-size:13px;font-weight:500;color:var(--text)}.ds-hint{font-size:12.5px;color:var(--text-3)}.ds-input{height:34px;padding:0 10px;border:1px solid var(--border-strong);border-radius:var(--radius-sm);background:var(--surface);color:var(--text);font:400 14px/1.4 var(--font);box-shadow:inset 0 1px 1px rgb(16 24 40/.03);transition:border-color 120ms,box-shadow 120ms}.ds-input::placeholder{color:#8a909a}.ds-input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-ring)}"
+      "description": "42px field with a blue ring on focus.",
+      "html": "<input class=\"ds-input\" placeholder=\"Project name\">",
+      "css": ".ds-input{font-family:\"Plus Jakarta Sans Variable\",ui-sans-serif,system-ui,sans-serif;width:280px;height:42px;padding:0 12px;border:1px solid #cbd5e1;border-radius:8px;background:#fff;color:#0f172a;font-size:15px;transition:border-color 150ms,box-shadow 150ms}.ds-input::placeholder{color:#94a3b8}.ds-input:focus{outline:none;border-color:#2563eb;box-shadow:0 0 0 4px rgb(37 99 235 / .28)}"
     },
     {
-      "name": "Sidebar Nav",
+      "name": "Segmented Tabs",
       "kind": "nav",
-      "refersTo": "nav-item",
-      "description": "Sidebar items; current page in Blue Wash.",
-      "html": "<nav class=\"ds-nav\"><span class=\"ds-nav-label\">kaggle-support-tickets</span><a href=\"#\" aria-current=\"page\">Results</a><a href=\"#\">Setup</a><a href=\"#\">Run</a></nav>",
-      "css": ":host{--font:'Geist Variable',ui-sans-serif,system-ui,sans-serif;--mono:'Geist Mono Variable',ui-monospace,Menlo,monospace;--bg:#f4f5f7;--surface:#fff;--subtle:#f8f9fa;--hover:#f1f3f5;--border:#e3e6ea;--border-strong:#cdd2d9;--text:#14171c;--text-2:#464d58;--text-3:#636a75;--accent:#3451d1;--accent-hover:#2a43b4;--accent-soft:#edf0fc;--accent-ring:rgb(52 81 209/.32);--good:#0a7347;--good-soft:#e3f4eb;--warn:#8f5200;--warn-soft:#fdf1dc;--quiet:#474e59;--quiet-soft:#eceef1;--bad:#b42318;--bad-soft:#fcebea;--radius:8px;--radius-sm:6px;--shadow-1:0 1px 2px rgb(16 24 40/.06),0 1px 1px rgb(16 24 40/.03);--ease:cubic-bezier(0.16,1,0.3,1)} .ds-nav{display:flex;flex-direction:column;gap:1px;width:216px;padding:10px;background:var(--surface);font:400 14px/1.5 var(--font)}.ds-nav-label{font-size:12px;font-weight:500;color:var(--text-3);padding:4px 10px 6px}.ds-nav a{padding:7px 10px;border-radius:var(--radius-sm);color:var(--text-2);text-decoration:none;font-weight:500;transition:background 120ms,color 120ms}.ds-nav a:hover{background:var(--hover);color:var(--text)}.ds-nav a[aria-current=page]{background:var(--accent-soft);color:var(--accent)}.ds-nav a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}"
+      "refersTo": "tab",
+      "description": "The three project tabs in a pill track.",
+      "html": "<div class=\"ds-tabs\" role=\"tablist\"><button aria-selected=\"true\">Results</button><button aria-selected=\"false\">Check AI answers</button><button aria-selected=\"false\">Settings</button></div>",
+      "css": ".ds-tabs{display:inline-flex;gap:2px;padding:4px;border-radius:999px;background:#eef2f7}.ds-tabs button{font-family:\"Plus Jakarta Sans Variable\",ui-sans-serif,system-ui,sans-serif;height:36px;padding:0 16px;border:0;border-radius:999px;background:none;color:#64748b;font-weight:600;font-size:14px;cursor:pointer;transition:color 150ms,background 150ms,box-shadow 150ms}.ds-tabs button:hover{color:#0f172a}.ds-tabs button[aria-selected=true]{background:#fff;color:#0f172a;box-shadow:0 1px 3px rgb(15 23 42 / .1)}.ds-tabs button:focus-visible{outline:2px solid #2563eb;outline-offset:2px}"
     },
     {
       "name": "Verdict Badges",
       "kind": "chip",
       "refersTo": "badge-automate",
-      "description": "Verdict pills: color, icon and words together.",
-      "html": "<div class=\"ds-badges\"><span class=\"ds-badge ds-automate\">Automate</span><span class=\"ds-badge ds-review\">Automate with review</span><span class=\"ds-badge ds-dont\">Don&#39;t automate</span></div>",
-      "css": ":host{--font:'Geist Variable',ui-sans-serif,system-ui,sans-serif;--mono:'Geist Mono Variable',ui-monospace,Menlo,monospace;--bg:#f4f5f7;--surface:#fff;--subtle:#f8f9fa;--hover:#f1f3f5;--border:#e3e6ea;--border-strong:#cdd2d9;--text:#14171c;--text-2:#464d58;--text-3:#636a75;--accent:#3451d1;--accent-hover:#2a43b4;--accent-soft:#edf0fc;--accent-ring:rgb(52 81 209/.32);--good:#0a7347;--good-soft:#e3f4eb;--warn:#8f5200;--warn-soft:#fdf1dc;--quiet:#474e59;--quiet-soft:#eceef1;--bad:#b42318;--bad-soft:#fcebea;--radius:8px;--radius-sm:6px;--shadow-1:0 1px 2px rgb(16 24 40/.06),0 1px 1px rgb(16 24 40/.03);--ease:cubic-bezier(0.16,1,0.3,1)} .ds-badges{display:flex;gap:8px;font-family:var(--font)}.ds-badge{display:inline-flex;align-items:center;height:22px;padding:0 8px;border-radius:999px;font-size:12px;font-weight:550}.ds-automate{background:var(--good-soft);color:var(--good)}.ds-review{background:var(--warn-soft);color:var(--warn)}.ds-dont{background:var(--quiet-soft);color:var(--quiet)}"
+      "description": "Pill badges carrying the three verdicts.",
+      "html": "<span class=\"ds-badge ds-good\"><svg viewBox=\"0 0 24 24\" width=\"13\" height=\"13\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"m9 12 2 2 4-4\"/></svg>Automate</span> <span class=\"ds-badge ds-warn\"><svg viewBox=\"0 0 24 24\" width=\"13\" height=\"13\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"m9 12 2 2 4-4\"/></svg>Automate with review</span> <span class=\"ds-badge ds-quiet\"><svg viewBox=\"0 0 24 24\" width=\"13\" height=\"13\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"m9 12 2 2 4-4\"/></svg>Don't automate</span>",
+      "css": ".ds-badge{font-family:\"Plus Jakarta Sans Variable\",ui-sans-serif,system-ui,sans-serif;display:inline-flex;align-items:center;gap:6px;height:26px;padding:0 10px;border-radius:999px;font-size:12.5px;font-weight:600;white-space:nowrap}.ds-good{background:#ecfdf5;color:#047857}.ds-warn{background:#fffbeb;color:#b45309}.ds-quiet{background:#f1f5f9;color:#475569}"
     },
     {
-      "name": "Panel",
+      "name": "Project Card",
       "kind": "card",
-      "refersTo": "panel",
-      "description": "White hairline panel with head and body.",
-      "html": "<section class=\"ds-panel\"><header class=\"ds-panel-head\"><h2>Recommendations</h2><p>The best option for each tested step.</p></header><div class=\"ds-panel-body\">Body content</div></section>",
-      "css": ":host{--font:'Geist Variable',ui-sans-serif,system-ui,sans-serif;--mono:'Geist Mono Variable',ui-monospace,Menlo,monospace;--bg:#f4f5f7;--surface:#fff;--subtle:#f8f9fa;--hover:#f1f3f5;--border:#e3e6ea;--border-strong:#cdd2d9;--text:#14171c;--text-2:#464d58;--text-3:#636a75;--accent:#3451d1;--accent-hover:#2a43b4;--accent-soft:#edf0fc;--accent-ring:rgb(52 81 209/.32);--good:#0a7347;--good-soft:#e3f4eb;--warn:#8f5200;--warn-soft:#fdf1dc;--quiet:#474e59;--quiet-soft:#eceef1;--bad:#b42318;--bad-soft:#fcebea;--radius:8px;--radius-sm:6px;--shadow-1:0 1px 2px rgb(16 24 40/.06),0 1px 1px rgb(16 24 40/.03);--ease:cubic-bezier(0.16,1,0.3,1)} .ds-panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow-1);font:400 14px/1.5 var(--font);color:var(--text);width:420px}.ds-panel-head{padding:14px 18px;border-bottom:1px solid var(--border)}.ds-panel-head h2{margin:0;font-size:15px;font-weight:600}.ds-panel-head p{margin:2px 0 0;font-size:13px;color:var(--text-3)}.ds-panel-body{padding:18px}"
+      "refersTo": "project-card",
+      "description": "Leads with its answer; lifts on hover.",
+      "html": "<a class=\"ds-card\" href=\"#\"><div><div class=\"ds-card-name\">kaggle-support-tickets</div><div class=\"ds-card-meta\">tickets.csv \u00b7 Updated 1 hour ago</div></div><div class=\"ds-card-answer\"><strong>69 h</strong><span>a month, worth $2,084</span></div></a>",
+      "css": ".ds-card{font-family:\"Plus Jakarta Sans Variable\",ui-sans-serif,system-ui,sans-serif;display:grid;gap:20px;align-content:space-between;width:340px;min-height:168px;padding:24px;border:1px solid #e2e8f0;border-radius:12px;background:#fff;color:#0f172a;text-decoration:none;transition:border-color 180ms,transform 180ms cubic-bezier(.16,1,.3,1),box-shadow 180ms}.ds-card:hover{border-color:#cbd5e1;transform:translateY(-2px);box-shadow:0 8px 24px -8px rgb(15 23 42 / .12)}.ds-card:focus-visible{outline:2px solid #2563eb;outline-offset:2px}.ds-card-name{font-size:17px;font-weight:650;letter-spacing:-.015em}.ds-card-meta{margin-top:4px;color:#64748b;font-size:13px}.ds-card-answer{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}.ds-card-answer strong{font-size:26px;font-weight:700;letter-spacing:-.03em}.ds-card-answer span{color:#64748b;font-size:14px}"
     },
     {
-      "name": "Range Bar",
+      "name": "Step Row",
       "kind": "custom",
       "refersTo": "panel",
-      "description": "Signature: point estimate as a dot on its plausible-range band, with zero line.",
-      "html": "<div class=\"ds-rangewrap\"><div class=\"ds-range\"><span class=\"ds-zero\" style=\"left:35%\"></span><span class=\"ds-span\" style=\"left:39%;right:0\"></span><span class=\"ds-point\" style=\"left:70%\"></span></div><div class=\"ds-rtext\"><strong>69 h</strong>10 h to 129 h</div></div>",
-      "css": ":host{--font:'Geist Variable',ui-sans-serif,system-ui,sans-serif;--mono:'Geist Mono Variable',ui-monospace,Menlo,monospace;--bg:#f4f5f7;--surface:#fff;--subtle:#f8f9fa;--hover:#f1f3f5;--border:#e3e6ea;--border-strong:#cdd2d9;--text:#14171c;--text-2:#464d58;--text-3:#636a75;--accent:#3451d1;--accent-hover:#2a43b4;--accent-soft:#edf0fc;--accent-ring:rgb(52 81 209/.32);--good:#0a7347;--good-soft:#e3f4eb;--warn:#8f5200;--warn-soft:#fdf1dc;--quiet:#474e59;--quiet-soft:#eceef1;--bad:#b42318;--bad-soft:#fcebea;--radius:8px;--radius-sm:6px;--shadow-1:0 1px 2px rgb(16 24 40/.06),0 1px 1px rgb(16 24 40/.03);--ease:cubic-bezier(0.16,1,0.3,1)} .ds-rangewrap{width:240px;font:400 14px/1.5 var(--font)}.ds-range{position:relative;height:10px;border-radius:6px;background:var(--hover)}.ds-zero{position:absolute;top:-4px;bottom:-4px;width:1px;background:var(--border-strong)}.ds-span{position:absolute;top:0;bottom:0;border-radius:6px;background:#f6d9a6}.ds-point{position:absolute;top:50%;width:12px;height:12px;margin:-6px 0 0 -6px;border-radius:50%;background:#c27a00;box-shadow:0 0 0 2px var(--surface),var(--shadow-1)}.ds-rtext{margin-top:6px;font-size:12.5px;color:var(--text-3)}.ds-rtext strong{color:var(--text);font-weight:600;margin-right:4px}"
+      "description": "One row per workflow step: name, verdict, range, figures, toggle.",
+      "html": "<div class=\"ds-steps\"><div class=\"ds-step\"><div><div class=\"ds-step-name\"><strong>Answered</strong><span class=\"ds-badge-r\">Automate with review</span></div><div class=\"ds-why\"><code>gpt-5.4-nano</code> was right on 38% of 40 past cases</div></div><div><div class=\"ds-range\"><span class=\"ds-zero\" style=\"left:35%\"></span><span class=\"ds-span\" style=\"left:40%;right:0\"></span><span class=\"ds-pt\" style=\"left:70%\"></span></div><span class=\"ds-range-t\">9.9 h to 129 h</span></div><div class=\"ds-fig\"><strong>69 h</strong><span>$2,084 / mo</span></div></div></div>",
+      "css": ".ds-steps{font-family:\"Plus Jakarta Sans Variable\",ui-sans-serif,system-ui,sans-serif;width:720px;background:#fff;border:1px solid #e2e8f0;border-radius:12px;color:#0f172a}.ds-step{display:grid;grid-template-columns:1.5fr 1fr 110px;gap:8px 28px;align-items:center;padding:18px 20px}.ds-step-name{display:flex;gap:10px;align-items:center}.ds-step-name strong{font-size:15px;font-weight:600}.ds-badge-r{display:inline-flex;align-items:center;height:26px;padding:0 10px;border-radius:999px;background:#fffbeb;color:#b45309;font-size:12.5px;font-weight:600}.ds-why{margin-top:4px;color:#64748b;font-size:14px}.ds-why code{font:12.5px \"Geist Mono Variable\",ui-monospace,monospace;color:#334155}.ds-range{position:relative;height:8px;border-radius:6px;background:#f1f5f9}.ds-zero{position:absolute;top:-4px;bottom:-4px;width:1px;background:#cbd5e1}.ds-span{position:absolute;top:0;bottom:0;border-radius:6px;background:#fcd34d80}.ds-pt{position:absolute;top:50%;width:12px;height:12px;margin:-6px 0 0 -6px;border-radius:50%;background:#b45309;box-shadow:0 0 0 2px #fff}.ds-range-t{display:block;margin-top:6px;font-size:12px;color:#64748b}.ds-fig{display:grid;justify-items:end;font-variant-numeric:tabular-nums}.ds-fig strong{font-size:19px;font-weight:600}.ds-fig span{color:#64748b;font-size:13px}"
+    },
+    {
+      "name": "Disclosure Row",
+      "kind": "custom",
+      "refersTo": "panel",
+      "description": "Collapsed evidence with a one-line summary of what is inside.",
+      "html": "<details class=\"ds-more\"><summary><span class=\"ds-chev\"><svg viewBox=\"0 0 24 24\" width=\"16\" height=\"16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.75\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m9 18 6-6-6-6\"/></svg></span>How each model did<span class=\"ds-sum\">2 models on 240 test cases</span></summary><div class=\"ds-more-body\">Per-model accuracy table.</div></details>",
+      "css": ".ds-more{font-family:\"Plus Jakarta Sans Variable\",ui-sans-serif,system-ui,sans-serif;width:720px;border-bottom:1px solid #e2e8f0;color:#0f172a}.ds-more summary{list-style:none;display:flex;align-items:center;gap:10px;padding:14px 2px;font-weight:550;cursor:pointer}.ds-more summary::-webkit-details-marker{display:none}.ds-chev{display:inline-flex;color:#64748b;transition:transform 200ms cubic-bezier(.16,1,.3,1)}.ds-more[open] .ds-chev{transform:rotate(90deg)}.ds-sum{margin-left:auto;font-weight:400;color:#64748b;font-size:13px}.ds-more-body{padding:0 0 18px 22px;color:#334155}.ds-more summary:focus-visible{outline:2px solid #2563eb;outline-offset:2px;border-radius:6px}"
     }
   ],
   "narrative": {
-    "northStar": "The Defensible Ledger",
-    "overview": "\n**Creative North Star: \"The Defensible Ledger\"**\n\nEvenpoint is the category-standard analytics dashboard, executed at Stripe-dashboard clarity and nothing more decorative than that. An operations lead sets up an export, runs it, and reads an answer they can defend to a manager. The system's job is to make numbers, ranges and verdicts legible; it refuses novelty styling and refuses to hide uncertainty.\n\nThe world is a light, cool neutral ground with white panels sitting on it, separated by hairline borders and the softest of shadows. One blue accent marks action, selection and focus. Green, amber and grey appear only as verdict meaning (automate, automate with review, don't automate), never as decoration. Density is moderate and table-led: 14px body, tabular numerals everywhere numbers sit in columns, generous row padding.\n\nType is a single family, Geist, at a tight ramp; Geist Mono is reserved for the machine's voice (logs, ids, model names, API keys). Icons are Lucide line icons at 16px, stroke 1.75.",
+    "northStar": "The Answer Sheet",
+    "overview": "**Creative North Star: \"The Answer Sheet\"**\n\nEvenpoint is a light, quiet, Swiss-minimal tool: a cool slate ground, white cards held by hairlines, one blue for action, and verdict colours that appear only where they carry meaning. Every screen leads with its answer in plain sentence form; the evidence behind it (per-model tables, the measured flow, costs, the run log) waits one click away under disclosure rows that each carry a one-line summary of what is inside.\n\nDensity is calm, not sparse. A centred 1080px page under a slim sticky top bar, a big title on the left with a single primary action on the right, then the answer and its supporting rows. Generous vertical rhythm (24px between blocks, 64px before the footer) does the separating; borders appear only where two things genuinely need dividing. Depth is flat; shadows exist only for things that float (toasts, the save bar) or respond (a lifted card on hover, the selected tab).\n\nThis system replaces the previous Geist / indigo / left-sidebar world entirely.",
     "keyCharacteristics": [
-      "Cool grey ground, white hairline panels, soft ambient shadow",
-      "One blue accent for action, selection, focus and progress",
-      "Verdict colors as meaning only, always paired with an icon and a label",
-      "Every result shown with its range, not just a point",
-      "Single sans family with a compact ramp; mono only for machine values",
-      "Left sidebar shell, page title with primary action top right"
+      "Slate neutrals with a single blue accent (#2563eb); green, amber and slate-grey reserved for the three verdicts.",
+      "Plus Jakarta Sans throughout, Geist Mono only for ids, model names, file paths and logs.",
+      "12px cards, 8px controls, fully rounded pills for tabs, badges, chips and toasts.",
+      "Flat surfaces separated by 1px hairlines; no decorative shadows.",
+      "Answer first: one sentence, one row per step, details collapsed.",
+      "One next action per screen."
     ],
     "rules": [
       {
-        "name": "The Meaning-Only Rule",
-        "body": "Green, amber and grey appear only where they encode a verdict or status. A green that is decorative is a lie on this product.",
-        "section": "colors"
-      },
-      {
-        "name": "The Gentle No Rule",
-        "body": "\"Don't automate\" is grey, never red. Red is for things that broke.",
-        "section": "colors"
-      },
-      {
         "name": "The One Blue Rule",
-        "body": "The accent is the only chromatic color outside verdicts and errors. It marks what you can act on and where you are; it is not a fill for large areas.",
+        "body": "Blue means \"you can act here\" or \"this is selected\". It never decorates, never marks a verdict, and appears on at most one filled button per screen.",
         "section": "colors"
       },
       {
-        "name": "The Machine Voice Rule",
-        "body": "Geist Mono is for values the machine produced or consumes verbatim (model names, ids, logs, keys). Never for headings, labels or numbers.",
+        "name": "The Meaning-Only Colour Rule",
+        "body": "Green, amber, grey and red appear only when they encode a verdict or a status. A neutral fact is ink on paper.",
+        "section": "colors"
+      },
+      {
+        "name": "The Sentence Answer Rule",
+        "body": "The answer is a sentence with bold figures, not a dashboard of numbers. Figures always use tabular numerals.",
         "section": "typography"
       },
       {
-        "name": "The Tabular Rule",
-        "body": "Any number in a column or a fact row uses tabular numerals; tables set it on the whole table.",
+        "name": "The Mono-For-Machines Rule",
+        "body": "Geist Mono is only for strings a machine produced (model ids, paths, column names, logs). Never for labels or headings.",
         "section": "typography"
       },
       {
-        "name": "The Sentence Case Rule",
-        "body": "Headers and labels are sentence case at normal tracking. The system has no uppercase tracked labels.",
-        "section": "typography"
+        "name": "The One Next Action Rule",
+        "body": "Each screen has exactly one filled blue button, placed top-right in the page head (or at the end of a confirm panel). Everything else is secondary, ghost, or a link.",
+        "section": "layout"
       },
       {
-        "name": "The Hairline First Rule",
-        "body": "Separation comes from a 1px hairline before it comes from shadow. A panel without its border is not a panel.",
+        "name": "The Answer-First Rule",
+        "body": "What the user came for sits directly under the tabs: the answer sentence and step rows on Results, the answer on each project card. Supporting evidence comes after, collapsed.",
+        "section": "layout"
+      },
+      {
+        "name": "The Flat-At-Rest Rule",
+        "body": "Nothing in the page flow carries a shadow at rest. A shadow means the element floats, is hovered, or is the selected tab.",
         "section": "elevation"
       }
     ],
     "dos": [
-      "Do put every money and hours result with its range, the point in ink and the range in ink-3.",
-      "Do pair every verdict color with its icon and its words; color alone never carries the verdict.",
-      "Do keep one primary (blue) button per page head, at the right end of the actions.",
-      "Do set model names, ids and logs in Geist Mono at 12.5px, and everything else in Geist.",
-      "Do separate surfaces with 1px hairlines (hairline) and seat panels with the Rest shadow only.",
-      "Do use Lucide line icons at 16px (14px small, 20px large), stroke 1.75.",
-      "Do honour prefers-reduced-motion; motion is limited to short state transitions (100-240ms) and toast/drawer entrances."
+      "Do lead every screen with its answer: a sentence with bold tabular figures, or the answer figure on a project card.",
+      "Do keep exactly one filled blue button per screen, top-right in the page head.",
+      "Do collapse evidence under disclosure rows that each show a one-line summary of their contents.",
+      "Do show live run progress in place of Results; never add a Run tab.",
+      "Do keep projects to three tabs: Results, Check AI answers, Settings.",
+      "Do use the verdict pairs (good, warn, quiet on their soft tints) only for verdicts and status, with their Lucide icon and plain-language label.",
+      "Do use Lucide line icons at 16px, stroke 1.75 (14px small, 22px large).",
+      "Do separate with hairlines (#e2e8f0) and whitespace; use 12px for containers, 8px for controls, pills for tabs, badges and chips.",
+      "Do put model names, file names and ids in Geist Mono."
     ],
     "donts": [
-      "Don't use green, amber or grey for anything that is not a verdict or status.",
-      "Don't make \"Don't automate\" red or alarming; red is reserved for errors and failures.",
-      "Don't introduce a second accent hue or fill large areas with Ledger Blue.",
-      "Don't use mono for headings, labels or figures.",
-      "Don't add uppercase tracked labels or eyebrows above titles; headers are sentence case.",
-      "Don't use hard offset shadows, gradients or decorative backgrounds; the only gradient is the loading skeleton shimmer.",
-      "Don't show a single number where a range exists."
+      "Don't add shadows to elements at rest in the page flow; shadows are for hover, the selected tab, and floating layers.",
+      "Don't introduce a second accent hue or use blue for anything that is not an action or a selection.",
+      "Don't render \"Don't automate\" in red; it is a grey verdict, not an error.",
+      "Don't set labels in uppercase or tracked-out small caps; labels are sentence case.",
+      "Don't break the answer into stat tiles or hero metrics.",
+      "Don't bring back the left sidebar, Geist as the UI face, or the #3451d1 indigo; that world is retired.",
+      "Don't treat the static HTML report (evenpoint/report/template.html.j2) as part of this system; it still follows its own styling and is a known divergence."
     ]
   }
 }

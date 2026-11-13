@@ -141,7 +141,7 @@ const css = raw(`
 .run-note { font-size: 13px; }
 .log summary { color: var(--text-3); font-size: 13px; font-weight: 600; }
 .log pre { margin: 12px 0 0; padding: 14px 16px; max-height: 260px; overflow: auto; font: 12.5px/1.6 var(--mono); color: var(--text-2); background: var(--subtle); border-radius: var(--radius-sm); white-space: pre-wrap; }
-.confirm { border-color: #fcd34d; background: var(--warn-soft); }
+.confirm { border-color: color-mix(in srgb, var(--warn) 35%, var(--surface)); background: var(--warn-soft); }
 .confirm .panel-body { display: flex; justify-content: space-between; align-items: center; gap: 20px; flex-wrap: wrap; padding: 20px 24px; }
 `);
 if (!document.getElementById("run-css")) {

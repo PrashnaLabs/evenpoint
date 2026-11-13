@@ -41,7 +41,7 @@ def test_bizbench_end_to_end(tmp_path, monkeypatch):
     cli.main(["run", "--yes"])
     assert os.environ.pop("EVENPOINT_TEST_KEY") == "from-dotenv"
     html = report.read_text()
-    assert "Recommendations" in html and "support-triage" in html
+    assert "what to automate" in html and "support-triage" in html and "Step by step" in html
 
     con = duckdb.connect(str(tmp_path / ".evenpoint" / "project.duckdb"))
     q = lambda sql: con.execute(sql).fetchall()  # noqa: E731
@@ -84,7 +84,7 @@ def test_bizbench_end_to_end(tmp_path, monkeypatch):
 
     # Restart from a later stage keeps earlier tables.
     cli.main(["run", "--from", "roi"])
-    assert "Recommendations" in report.read_text()
+    assert "what to automate" in report.read_text()
 
 
 def test_init_writes_config(tmp_path, monkeypatch):
