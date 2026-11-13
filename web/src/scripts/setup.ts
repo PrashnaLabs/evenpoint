@@ -77,12 +77,30 @@ export async function renderSetup(el: HTMLElement, ctx: Ctx) {
             </label>`}
           <input type="file" id="file-input" accept=".csv,.mbox,.mbx,text/csv" hidden />
           <div class="upload-progress" id="upload-progress" hidden><span></span></div>
+          ${sampleData()}
           ${ctx.project.files.length > 1 || (!s && ctx.project.files.length) ? html`
             <div class="field"><label for="existing">Or use a file already in this project</label>
               <select class="select" id="existing"><option value="">Choose…</option>
                 ${ctx.project.files.map((f) => html`<option ${f === fileName() ? "selected" : ""}>${f}</option>`)}</select></div>` : ""}
         </div>
       </div>`;
+  }
+
+  /** Mock or real example datasets, loaded into this project with their column mapping and step settings. */
+  function sampleData(): Raw {
+    const ex = [...ctx.status.examples].sort((a, b) => Number(a.id.startsWith("github")) - Number(b.id.startsWith("github")));
+    if (!ex.length) return html``;
+    const inner = html`
+      <div class="sample-data">
+        ${ex.map((x) => html`
+          <button class="sample-option" type="button" data-sample="${x.id}">
+            <span class="sample-icon">${icon(x.id.startsWith("github") ? "Workflow" : "Sparkles", "sm")}</span>
+            <span><strong>${x.title}</strong><span class="hint">${x.about}</span></span>
+          </button>`)}
+      </div>`;
+    return source()
+      ? html`<details class="sample-details"><summary>Use sample data instead</summary>${inner}</details>`
+      : html`<div class="field"><span class="label">No export handy? Start with sample data</span>${inner}</div>`;
   }
 
   function preview(i: Inspect): Raw {
@@ -379,6 +397,27 @@ export async function renderSetup(el: HTMLElement, ctx: Ctx) {
     draw();
   }
 
+  async function loadSample(btn: HTMLButtonElement) {
+    btn.setAttribute("aria-busy", "true");
+    try {
+      const r = await api<{ inspect: Inspect; source: { adapter: string; path: string; mapping: Mapping }; steps: Config }>(
+        `/projects/${encodeURIComponent(ctx.name)}/sample-data`, { method: "POST", body: { example: btn.dataset.sample } });
+      info = r.inspect;
+      const s = { ...r.source, mapping: r.source.mapping || {} };
+      if ((s.adapter === "zendesk" || s.adapter === "jira") && info.adapter === s.adapter) s.mapping = { ...info.mapping, ...s.mapping };
+      cfg.sources = [s];
+      cfg.steps = structuredClone(r.steps);
+      const f = s.path.split("/").pop()!;
+      if (!ctx.project.files.includes(f)) ctx.project.files.push(f);
+      toast(`Loaded ${f}${info.row_count != null ? ` · ${num(info.row_count)} rows` : ""}. Check the settings, then save.`);
+      setDirty(true);
+      draw();
+    } catch (err) {
+      toast((err as Error).message, "error");
+      btn.removeAttribute("aria-busy");
+    }
+  }
+
   async function handleFile(file: File) {
     const bar = $("#upload-progress", el)!;
     bar.hidden = false;
@@ -405,6 +444,7 @@ export async function renderSetup(el: HTMLElement, ctx: Ctx) {
         if (f) handleFile(f);
       });
     }
+    $$<HTMLButtonElement>("[data-sample]", el).forEach((b) => b.addEventListener("click", () => loadSample(b)));
     $<HTMLSelectElement>("#existing", el)?.addEventListener("change", async (e) => {
       const f = (e.target as HTMLSelectElement).value;
       if (!f) return;
@@ -467,6 +507,15 @@ const css = raw(`
 .dropzone { display: grid; justify-items: center; gap: 6px; text-align: center; padding: 34px 20px; border: 1.5px dashed var(--border-strong); border-radius: var(--radius); background: var(--subtle); cursor: pointer; transition: border-color 150ms, background 150ms; }
 .dropzone:hover, .dropzone.over { border-color: var(--accent); background: var(--accent-soft); }
 .dropzone .file-icon { margin-bottom: 4px; }
+.sample-data { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 8px; }
+.sample-details .sample-data { margin-top: 10px; }
+.sample-details summary { color: var(--text-2); font-weight: 500; font-size: 13px; }
+.sample-option { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 10px; align-items: start; padding: 10px 12px; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--surface); font: inherit; color: var(--text); text-align: left; cursor: pointer; transition: border-color 120ms, background 120ms; }
+.sample-option:hover { border-color: var(--accent); background: var(--accent-soft); }
+.sample-option[aria-busy="true"] { opacity: 0.6; pointer-events: none; }
+.sample-option > span:last-child { display: grid; gap: 2px; }
+.sample-option strong { font-weight: 550; }
+.sample-icon { width: 26px; height: 26px; border-radius: var(--radius-sm); display: grid; place-items: center; background: var(--accent-soft); color: var(--accent); }
 .upload-progress { height: 4px; border-radius: 4px; background: var(--hover); overflow: hidden; }
 .upload-progress span { display: block; height: 100%; background: var(--accent); transform: scaleX(0); transform-origin: left; transition: transform 160ms; }
 .preview summary, .advanced summary { cursor: pointer; color: var(--text-2); font-weight: 500; font-size: 13px; }

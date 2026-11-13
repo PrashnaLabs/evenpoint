@@ -32,7 +32,7 @@ BIZBENCH = Path(__file__).parent.parent / "bizbench"  # present in a source chec
 EXAMPLES = {
     "github-issue-triage": ("Real GitHub issues", "544 real issues from the uv project's tracker, with the labels "
                             "and first replies its maintainers actually wrote."),
-    "support-triage": ("Synthetic support tickets", "240 made-up tickets for a small shop. Quick to run."),
+    "support-triage": ("Mock support tickets", "240 made-up tickets for a small online shop. Quick and cheap to run."),
 }
 NAME = re.compile(r"^[a-z0-9][a-z0-9_-]{0,63}$")
 MAX_UPLOAD = 1024 * 1024 * 1024
@@ -446,6 +446,21 @@ class Handler(BaseHTTPRequestHandler):
                 return {"config": cfg}
             case ("DELETE", ["projects", name]):
                 raise ApiError(405, "Delete projects from your file manager; Evenpoint never deletes data.")
+            case ("POST", ["projects", name, "sample-data"]):
+                # Copy an example's export into this project; the UI applies the returned mapping and steps.
+                example = self.body().get("example") or "support-triage"
+                src = BIZBENCH / example
+                if example not in EXAMPLES or not (src / "evenpoint.yaml").exists():
+                    raise ApiError(404, "Sample data ships with the source checkout only.")
+                cfg = yaml.safe_load((src / "evenpoint.yaml").read_text())
+                source = dict(cfg["sources"][0])
+                f = (src / source["path"]).resolve()
+                exports = ws.dir(name) / "exports"
+                exports.mkdir(exist_ok=True)
+                dest = exports / f"sample-{f.name}"
+                shutil.copy(f, dest)
+                source["path"] = f"exports/{dest.name}"
+                return {"inspect": inspect_file(dest), "source": source, "steps": cfg.get("steps") or {}}
             case ("POST", ["projects", name, "upload"]):
                 return self.upload(name)
             case ("GET", ["projects", name, "inspect"]):

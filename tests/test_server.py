@@ -99,6 +99,15 @@ def test_real_example_project(api):
     assert api("POST", "/projects/sample", {"example": "../etc"})[0] == 404
 
 
+def test_sample_data_into_project(api):
+    api("POST", "/projects", {"name": "mine"})
+    status, r = api("POST", "/projects/mine/sample-data", {"example": "support-triage"})
+    assert status == 200 and r["source"]["path"] == "exports/sample-tickets.csv"
+    assert r["inspect"]["row_count"] == 240 and r["steps"]["solved"]["task_type"] == "draft"
+    assert api("GET", "/projects/mine")[1]["files"] == ["sample-tickets.csv"]
+    assert api("POST", "/projects/mine/sample-data", {"example": "nope"})[0] == 404
+
+
 def test_api_guards(api):
     assert api("POST", "/projects", {"name": "x"}, headers={"X-Evenpoint": "0"})[0] == 403
     assert api("GET", "/projects/..%2Fetc")[0] == 400
