@@ -75,6 +75,9 @@ evenpoint/
 │       └── template.html.j2
 ├── bizbench/
 │   └── support-triage/   # synthetic Zendesk-style export + config (first of 15–20)
+├── evenpoint/server.py   # local JSON API + static UI (evenpoint ui)
+├── evenpoint/pipeline.py # stage runner shared by CLI and UI
+├── web/                  # Astro source for the UI; builds to evenpoint/web_dist/
 ├── tests/
 └── docs/
 ```
@@ -280,6 +283,16 @@ evenpoint report                          # re-render output/report.html from st
 ```
 
 All commands take `-c path/to/evenpoint.yaml`; `--out` overrides the report path. Stages: `ingest, baseline, score, bench, grade, roi, report`.
+
+## Web interface
+
+`evenpoint ui [--dir projects] [--port 8765]` starts `evenpoint/server.py`: a stdlib `ThreadingHTTPServer` serving a JSON API and the built Astro app (`web/` → `evenpoint/web_dist/`).
+
+- **Projects** are folders under the workspace, each with its own `evenpoint.yaml`, `exports/`, `.evenpoint/` and `output/`, so the CLI works on them too (`evenpoint -c projects/<name>/evenpoint.yaml run`).
+- **Runs** go through `pipeline.run_stages` in a background thread, one at a time. Callbacks feed the UI: log lines, current stage, model-call progress, and a cost confirmation that blocks the thread until the user approves or stops. Stopping cancels pending model calls; finished calls stay saved and a re-run resumes.
+- **API** (all JSON): `GET /api/status`, `POST /api/settings/key`, `GET|POST /api/projects`, `POST /api/projects/sample`, `GET /api/projects/{p}`, `PUT /api/projects/{p}/config`, `POST /api/projects/{p}/upload` (raw body, `X-Filename` header), `GET /api/projects/{p}/inspect?file=`, `POST /api/projects/{p}/run|rerun|review`, `GET /api/job`, `POST /api/job/confirm|cancel`, `GET /api/projects/{p}/results|report|review`.
+- **Security:** binds to 127.0.0.1; rejects requests whose Host isn't localhost (DNS rebinding); every write needs an `X-Evenpoint: 1` header, which cross-site forms can't send; project names are validated and upload names stripped to a base name.
+- **Front end:** Astro static pages (`/`, `/project/?p=<name>&tab=results|setup|run|review`) with plain TypeScript; no UI framework. Geist fonts and Lucide icons are bundled, so it works offline.
 
 ## Privacy and security
 

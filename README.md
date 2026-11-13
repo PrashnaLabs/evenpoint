@@ -4,7 +4,19 @@ Exports in, ROI out. Evenpoint reads the exports your business already has (Zend
 
 Local-first, open source, bring your own API keys.
 
-## Quick start
+## Web interface
+
+```bash
+uv sync
+(cd web && npm install && npm run build)   # once, and after UI changes
+uv run evenpoint ui                        # opens http://localhost:8765
+```
+
+Create a project, drop in your export, check the columns and assumptions, run, then read the results and spot-check the AI's answers, all in the browser. Projects live in `./projects` (change with `--dir`). The server only listens on localhost. Your OpenAI key can be pasted in the UI; it's saved to `projects/.env`.
+
+UI development: `uv run evenpoint ui --no-open` in one terminal and `cd web && npm run dev` in another (the dev server proxies `/api` to port 8765).
+
+## Command line
 
 ```bash
 uv sync
