@@ -20,6 +20,7 @@ export type Project = ProjectSummary & { config: Config; files: string[] };
 export type Inspect = {
   file: string; adapter: "csv" | "zendesk" | "jira" | "mbox"; headers: string[]; rows: Record<string, string>[];
   row_count: number | null; timestamp_columns?: string[]; text_columns?: string[]; label_columns?: string[];
+  timestamp_counts?: Record<string, number>; first_date?: string | null; last_date?: string | null;
   mapping: Record<string, any>;
 };
 

@@ -55,8 +55,8 @@ DEFAULT_CONFIG = {
     "review_minutes": {"auto": 0, "draft_review": 1.5},
     "failure_minutes": 10,
     "setup_cost_usd": 2000,
-    "min_volume_per_month": 20,
-    "max_candidates": 5,
+    "min_volume_per_month": 10,
+    "max_candidates": 3,
 }
 
 
@@ -287,8 +287,26 @@ def inspect_file(path: Path) -> dict:
                    "fields": {slug(h): h for h in text_like + label_like}}
     else:
         mapping = adapters.DEFAULT_MAPPINGS[adapter]
+    # Second pass over the whole file: how often each step happened, and the date range covered.
+    filled = {h: 0 for h in timestamps}
+    first = last = None
+    with open(path, newline="", encoding="utf-8-sig") as f:
+        for row in csv.DictReader(f):
+            for h in timestamps:
+                v = (row.get(h) or "").strip()
+                if not v:
+                    continue
+                filled[h] += 1
+                try:
+                    ts = parse_ts(v)
+                except ValueError:
+                    continue
+                first = ts if first is None or ts < first else first
+                last = ts if last is None or ts > last else last
     return {
         "file": path.name, "adapter": adapter, "headers": headers, "row_count": count,
+        "timestamp_counts": filled, "first_date": first.isoformat() if first else None,
+        "last_date": last.isoformat() if last else None,
         "rows": [{h: (r.get(h) or "")[:300] for h in headers} for r in sample[:5]],
         "timestamp_columns": timestamps, "text_columns": text_like, "label_columns": label_like,
         "mapping": mapping,
@@ -403,11 +421,15 @@ class Handler(BaseHTTPRequestHandler):
             case ("GET", ["projects"]):
                 return ws.list()
             case ("POST", ["projects"]):
-                name = (self.body().get("name") or "").strip().lower()
-                name = re.sub(r"[^a-z0-9_-]+", "-", name).strip("-")
+                body = self.body()
+                name = (body.get("name") or "").strip().lower()
+                name = re.sub(r"[^a-z0-9_-]+", "-", name).strip("-")[:56].strip("-")
                 if not NAME.match(name):
                     raise ApiError(400, "Give the project a name using letters and numbers.")
                 d = ws.root / name
+                if d.exists() and body.get("unique"):  # e.g. named after an uploaded file: add -2, -3…
+                    d = next(ws.root / f"{name}-{i}" for i in range(2, 1000) if not (ws.root / f"{name}-{i}").exists())
+                    name = d.name
                 if d.exists():
                     raise ApiError(409, f"A project named {name} already exists.")
                 (d / "exports").mkdir(parents=True)

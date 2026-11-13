@@ -1,0 +1,13 @@
+---
+import Shell from "../layouts/Shell.astro";
+---
+<Shell title="New analysis" active="start">
+  <div class="start">
+    <ol class="steps" id="steps" aria-label="Progress"></ol>
+    <section id="step" aria-live="polite"></section>
+  </div>
+</Shell>
+
+<script>
+  import "../scripts/start";
+</script>

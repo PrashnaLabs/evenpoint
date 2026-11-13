@@ -56,6 +56,8 @@ def test_ui_api_flow(api):
     status, info = api("POST", "/projects/support-q3/upload", raw=csv_bytes, headers={"X-Filename": "../tickets.csv"})
     assert status == 200 and info["adapter"] == "zendesk" and info["file"] == "tickets.csv"
     assert "Created at" in info["timestamp_columns"] and info["row_count"] == 240
+    assert info["timestamp_counts"]["Created at"] == 240 and info["first_date"].startswith("2026-07")
+    assert api("POST", "/projects", {"name": "support-q3", "unique": True})[1]["name"] == "support-q3-2"
 
     _, proj = api("GET", "/projects/support-q3")
     cfg = proj["config"]

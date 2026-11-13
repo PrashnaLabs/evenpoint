@@ -18,9 +18,10 @@ export async function renderResults(el: HTMLElement, ctx: Ctx) {
           ? "Your data is set up. Run the analysis to measure each step and test the models."
           : "Add your export in Setup, then run the analysis."}</p>
         <div class="row"><button class="btn primary" type="button" id="empty-go">
-          ${ctx.project.sources.length ? html`${icon("Play")}Run analysis` : html`${icon("Upload")}Go to Setup`}</button></div>
+          ${ctx.project.sources.length ? html`${icon("Play")}Run analysis` : html`${icon("Upload")}Add your data`}</button></div>
       </div></div>`);
-    $("#empty-go")!.addEventListener("click", () => (ctx.project.sources.length ? ctx.startRun() : ctx.go("setup")));
+    $("#empty-go")!.addEventListener("click", () => (ctx.project.sources.length ? ctx.startRun()
+      : (location.href = `/start/?p=${encodeURIComponent(ctx.name)}&step=1`)));
     return;
   }
   mount(el, html`<div class="panel" style="padding:18px;display:grid;gap:12px">${[1, 2, 3, 4].map(() => html`<div class="skeleton" style="height:28px"></div>`)}</div>`);
@@ -30,6 +31,7 @@ export async function renderResults(el: HTMLElement, ctx: Ctx) {
   mount(el, html`
     ${headline(d)}
     ${recommendations(d)}
+    ${nextSteps(d)}
     ${dontAutomate(d)}
     ${models(d)}
     ${baseline(d)}
@@ -44,6 +46,9 @@ export async function renderResults(el: HTMLElement, ctx: Ctx) {
       b.setAttribute("aria-expanded", String(open));
     }));
   $("#edit-assumptions", el)?.addEventListener("click", () => ctx.go("setup"));
+  $("#next-review", el)?.addEventListener("click", () => ctx.go("review"));
+  $("#next-models", el)?.addEventListener("click", () => ctx.go("run"));
+  $("#next-settings", el)?.addEventListener("click", () => ctx.go("setup"));
   $("#to-review", el)?.addEventListener("click", () => ctx.go("review"));
 }
 
@@ -144,6 +149,21 @@ function recommendations(d: Row): Raw {
             </div>
           </div>`)}
       </div>
+    </div>`;
+}
+
+/** The three things worth doing after a first result, in order of how much they firm it up. */
+function nextSteps(d: Row): Raw {
+  const reviewed = (d.summaries as Row[]).some((s) => s.judge_human_agreement != null);
+  const items = [
+    !reviewed && { id: "next-review", icon: "ListChecks", title: "Check 10 of the AI's answers", text: "Takes five minutes. Your pass/fail grades replace the automatic ones." },
+    { id: "next-models", icon: "FlaskConical", title: "Test another model", text: "Runs the same cases on more models. Nothing else is redone." },
+    { id: "next-settings", icon: "Settings", title: "Adjust your numbers", text: "Change minutes or hourly cost. Results update for free." },
+  ].filter(Boolean) as { id: string; icon: string; title: string; text: string }[];
+  return html`
+    <div class="next">
+      ${items.map((x) => html`<button class="next-item" type="button" id="${x.id}">
+        <span class="next-icon">${icon(x.icon)}</span><span><strong>${x.title}</strong><span class="muted">${x.text}</span></span></button>`)}
     </div>`;
 }
 
@@ -324,6 +344,13 @@ const css = raw(`
 .rec-toggle .ico { transition: transform 200ms var(--ease); }
 .table.compact td, .table.compact th { padding: 8px 12px; }
 .rec-detail .table-wrap { border: 1px solid var(--border); border-radius: var(--radius-sm); }
+.next { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+.next-item { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 12px; align-items: start; padding: 14px 16px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); box-shadow: var(--shadow-1); font: inherit; color: var(--text); text-align: left; cursor: pointer; transition: border-color 120ms, background 120ms; }
+.next-item:hover { border-color: var(--accent); background: var(--accent-soft); }
+.next-item > span:last-child { display: grid; gap: 2px; }
+.next-item strong { font-weight: 550; }
+.next-item .muted { font-size: 13px; }
+.next-icon { width: 32px; height: 32px; border-radius: var(--radius-sm); display: grid; place-items: center; background: var(--accent-soft); color: var(--accent); }
 .plain-list { list-style: none; margin: 0; padding: 6px 18px; }
 .plain-list li { display: flex; gap: 12px; padding: 12px 0; border-top: 1px solid var(--border); color: var(--text-3); }
 .plain-list li:first-child { border-top: 0; }

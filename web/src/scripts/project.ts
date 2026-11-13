@@ -19,7 +19,7 @@ type Tab = "results" | "setup" | "run" | "review";
 
 const TABS: { id: Tab; label: string; icon: string }[] = [
   { id: "results", label: "Results", icon: "Gauge" },
-  { id: "setup", label: "Setup", icon: "Settings" },
+  { id: "setup", label: "Settings", icon: "Settings" },
   { id: "run", label: "Run", icon: "Play" },
   { id: "review", label: "Review AI work", icon: "ListChecks" },
 ];
@@ -107,6 +107,13 @@ function drawTabs() {
 
 function drawTab() {
   const el = $("#tab")!;
+  const banner = $("#setup-banner");
+  if (banner) banner.remove();
+  if (!ctx.project.sources.length) {
+    el.insertAdjacentHTML("beforebegin", html`<div class="callout info" id="setup-banner" style="margin-bottom:20px">${icon("Sparkles")}
+      <div class="callout-body"><strong>Finish setting up this project</strong><span>Add your export and confirm two numbers. It takes about two minutes.</span>
+      <div><a class="btn primary sm" href="/start/?p=${encodeURIComponent(ctx.name)}&step=1">Continue setup ${icon("ArrowRight", "sm")}</a></div></div></div>`.value);
+  }
   el.innerHTML = "";
   el.oninput = el.onchange = null;
   delete el.dataset.dirty;
@@ -126,7 +133,10 @@ function poll() {
         pollTimer = window.setTimeout(tick, 700);
       } else {
         await ctx.reload();
-        if (ctx.job?.state === "done") toast(ctx.job.kind === "review" ? "Results updated with your grades." : "Analysis finished.");
+        if (ctx.job?.state === "done") {
+          toast(ctx.job.kind === "review" ? "Results updated with your grades." : "Analysis finished.");
+          if (current === "run" || current === "review") ctx.go("results");
+        }
         if (ctx.job?.state === "error") toast("The run stopped with an error. See the Run tab.", "error");
       }
     } catch {

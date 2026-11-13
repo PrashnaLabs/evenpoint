@@ -12,7 +12,7 @@ uv sync
 uv run evenpoint ui                        # opens http://localhost:8765
 ```
 
-Create a project, drop in your export, check the columns and assumptions, run, then read the results and spot-check the AI's answers, all in the browser. Projects live in `./projects` (change with `--dir`). The server only listens on localhost. Your OpenAI key can be pasted in the UI; it's saved to `projects/.env`.
+The first screen is a guided start: drop in your export (or pick sample data), confirm what Evenpoint detected, set your hourly cost and minutes per step, and run. Then read the results and spot-check the AI's answers, all in the browser. Every other setting lives under Settings. Projects live in `./projects` (change with `--dir`). The server only listens on localhost. Your OpenAI key can be pasted in the UI; it's saved to `projects/.env`.
 
 UI development: `uv run evenpoint ui --no-open` in one terminal and `cd web && npm run dev` in another (the dev server proxies `/api` to port 8765).
 
