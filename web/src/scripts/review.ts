@@ -148,7 +148,7 @@ const css = raw(`
 .review-head p { margin-top: 4px; max-width: 70ch; }
 .review-progress { display: flex; align-items: center; gap: 14px; margin-bottom: 12px; font-size: 13px; }
 .dots { display: flex; flex-wrap: wrap; gap: 4px; flex: 1; }
-.dots .d { width: 10px; height: 10px; border-radius: 3px; border: 1px solid var(--border-strong); background: var(--surface); padding: 0; cursor: pointer; }
+.dots .d { width: 10px; height: 10px; border-radius: 999px; border: 1px solid var(--border-strong); background: var(--surface); padding: 0; cursor: pointer; }
 .dots .d.p { background: var(--good); border-color: var(--good); }
 .dots .d.f { background: var(--bad); border-color: var(--bad); }
 .dots .d.cur { outline: 2px solid var(--accent); outline-offset: 1px; }
@@ -156,7 +156,7 @@ const css = raw(`
 .review-card .panel-head { padding: 16px 24px; border-bottom: 1px solid var(--border); }
 .review-body { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
 .review-body section { padding: 16px 18px; display: grid; gap: 8px; align-content: start; }
-.review-body h3 { font-size: 12px; font-weight: 550; color: var(--text-3); }
+.review-body h3 { font-size: 13px; font-weight: 550; color: var(--text-3); }
 .review-body .text { white-space: pre-wrap; overflow-wrap: anywhere; max-height: 360px; overflow: auto; line-height: 1.6; color: var(--text); }
 .review-body .case { border-right: 1px solid var(--border); background: var(--subtle); }
 .answers { display: grid; align-content: start; }
