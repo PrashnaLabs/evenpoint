@@ -41,7 +41,7 @@ def _build_web() -> bool:
     out = subprocess.run([npm, "run", "build", "--silent"], cwd=WEB, capture_output=True, text=True)
     if out.returncode:
         print(f"reload: UI build failed, keeping the previous build\n{out.stdout[-2000:]}{out.stderr[-2000:]}",
-              file=sys.stderr)
+              file=sys.stderr, flush=True)
         return False
     print(f"reload: UI rebuilt in {time.time() - started:.1f}s", flush=True)
     return True
@@ -90,4 +90,4 @@ def run(argv: list[str], port: int, open_browser: bool) -> None:
         pass
     finally:
         child.terminate()
-        print(, flush=True)
+        print(flush=True)

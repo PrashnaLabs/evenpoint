@@ -14,7 +14,7 @@ uv run evenpoint ui                        # opens http://localhost:8765
 
 The first screen is a guided start: drop in your export (or pick sample data), confirm what Evenpoint detected, set your hourly cost and minutes per step, and run. Then read the results and spot-check the AI's answers, all in the browser. Every other setting lives under Settings. Projects live in `./projects` (change with `--dir`). The server only listens on localhost. Your OpenAI key can be pasted in the UI; it's saved to `projects/.env`.
 
-UI development: `uv run evenpoint ui --no-open` in one terminal and `cd web && npm run dev` in another (the dev server proxies `/api` to port 8765).
+While developing, `uv run evenpoint ui --reload` restarts the server when Python files change, rebuilds the UI when anything in `web/` changes, and refreshes open pages (it skips the refresh while a form has unsaved changes). Restarting stops a run that's in progress.
 
 ## Command line
 
