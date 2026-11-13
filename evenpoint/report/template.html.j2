@@ -140,7 +140,7 @@
   {% if worth %}
   <div class="hero">
     <p class="hero-label">Estimated savings</p>
-    <div class="hero-figure num"><strong>{{ totals.net_value_month | usd }}</strong><span>a month · could be anywhere from {{ totals.net_value_low | usd }} to {{ totals.value_high | usd }}</span></div>
+    <div class="hero-figure num"><strong>{{ totals.net_value_month | usd }}</strong><span>a month · real savings could be anywhere from {{ totals.net_value_low | usd }} to {{ totals.value_high | usd }}</span></div>
     <p class="hero-text">Automating <b>{{ worth | length }} of {{ best | length }}</b> tested {{ "step" if best | length == 1 else "steps" }} would save about <b>{{ totals.net_hours_month | hrs }} of the team's time a month</b>.</p>
     <dl class="hero-stats num">
       <div class="stat"><dt>Steps worth automating</dt><dd>{{ worth | length }} of {{ best | length }}</dd></div>
@@ -178,7 +178,7 @@
           </div>
           <div class="figures num">
             <strong>{{ r.net_value_month | usd }}<span style="display:inline;font-size:14px;font-weight:500"> / mo</span></strong>
-            <span>could be {{ r.net_value_low | usd }} to {{ r.value_high | usd }}</span>
+            <span>savings could be {{ r.net_value_low | usd }} to {{ r.value_high | usd }}</span>
             <span>{% if r.net_hours_month >= 0 %}{{ r.net_hours_month | hrs }} saved a month{% else %}{{ (-r.net_hours_month) | hrs }} lost a month{% endif %}{% if r.payback_months is not none %} · pays back in {{ r.payback_months | num(1) }} mo{% endif %}</span>
           </div>
         </div>

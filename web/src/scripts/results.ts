@@ -97,13 +97,13 @@ function answer(d: Row): Raw {
           <p class="answer-sub">${hrs(sum((r) => r.net_hours_month))} of team time a month, after AI costs and checking its work</p>
         </div>
         <div class="answer-range">
-          <p class="answer-label">Could be anywhere from</p>
+          <p class="answer-label">Real savings could be anywhere from</p>
           <p class="range-figures num"><strong>${usd(low)}</strong> to <strong>${usd(high)}</strong> <span>a month</span></p>
           <div class="answer-bar" role="img" aria-label="${`Estimate ${usd(value)} a month, could be between ${usd(low)} and ${usd(high)}`}">
             <span class="answer-band" style="left:${pos(low)}%;width:${pos(high) - pos(low)}%"></span>
             <span class="answer-dot" style="left:${pos(value)}%"></span>
           </div>
-          <p class="answer-why">Because the AI was tested on ${num(perStep)} past cases per step, not all of them. More test cases narrow this range.</p>
+          <p class="answer-why">${usd(value)} is the best estimate. The real figure is uncertain because the AI was tested on ${num(perStep)} past cases per step, not all of them. Testing more cases narrows this range.</p>
         </div>
       </div>
       ${facts}
