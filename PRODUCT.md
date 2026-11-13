@@ -40,7 +40,7 @@ Measured on the user's own data, not guesses: every number comes from their expo
 
 ## Brand Commitments
 
-- App UI follows the category standard on purpose (chosen over distinctive directions): a clean, light analytics dashboard. Quality bar: the Stripe dashboard (clarity of numbers, tables, setup flows). Execute conventions at full craft; no novelty styling. Do not copy Stripe's brand assets or colors.
+- App UI is modern and minimal (user-directed redesign, November 2026, using the ui-ux-pro-max design system: Minimalism & Swiss, light). Show only what helps the decision; merge information wherever possible; evidence sits one click away. Low friction and fast time-to-value outrank completeness on screen. Do not copy any vendor's brand assets or colors.
 
 ## Evidence on Hand
 
