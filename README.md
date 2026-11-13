@@ -8,26 +8,28 @@ Local-first, open source, bring your own API keys.
 
 ```bash
 uv sync
-export ANTHROPIC_API_KEY=... OPENAI_API_KEY=...          # whichever providers you list in the config
+cp .env.example .env                                          # add keys for the providers you list in the config
 
 uv run evenpoint init exports/tickets.csv --adapter zendesk   # writes evenpoint.yaml; check the mapping
-uv run evenpoint run                                         # all stages, writes report.html
+uv run evenpoint run                                         # all stages, writes output/report.html
 ```
 
 Try it on the bundled synthetic workflow:
 
 ```bash
-uv run evenpoint -c bizbench/support-triage/evenpoint.yaml run --out report.html
+uv run evenpoint -c bizbench/support-triage/evenpoint.yaml run   # report in bizbench/support-triage/output/
 ```
 
 Other commands:
 
 ```bash
 uv run evenpoint rerun --models ollama/llama3.2   # test saved cases on another model
-uv run evenpoint review export review.csv         # human spot-check: fill the 'pass' column...
-uv run evenpoint review import review.csv         # ...and the report uses your grades
+uv run evenpoint review export                   # human spot-check: fill the 'pass' column in output/review.csv...
+uv run evenpoint review import                   # ...and the report uses your grades
 uv run evenpoint run --from score                 # redo one stage onward
 ```
+
+API keys are read from `.env` next to `evenpoint.yaml` (or in the current folder); variables already set in your shell take priority. Reports and review CSVs go to `output/` next to `evenpoint.yaml` (`output_dir` in the config).
 
 Tests: `uv run pytest` (no network; the model is faked).
 

@@ -6,6 +6,7 @@ import sys
 from pathlib import Path
 
 import yaml
+from dotenv import load_dotenv
 
 from . import __version__, adapters, baseline, db, llm, normalize, roi, score
 from .bench import graders, runner, tasks
@@ -27,7 +28,7 @@ sources:
 #   assigned: {{ minutes: 2 }}
 #   solved:   {{ minutes: 8, task_type: draft, input: text, expected: reply }}
 
-models:                    # any LiteLLM model string; API keys come from environment variables
+models:                    # any LiteLLM model string; API keys come from .env next to this file, or the environment
   - anthropic/claude-haiku-5-5
   - openai/gpt-5.4-mini
   # - ollama/llama3.2       # local: nothing leaves your machine
@@ -116,6 +117,14 @@ def run_stages(con, run_id: str, cfg, start: str, yes: bool, out: Path, models: 
 
 def _open(args) -> tuple:
     cfg = Config.load(args.config)
+    # API keys: .env next to evenpoint.yaml, then .env in the current folder. Real env vars win over both.
+    load_dotenv(cfg.root / ".env")
+    load_dotenv(Path.cwd() / ".env")
+    cfg.output_path.mkdir(parents=True, exist_ok=True)
+    if hasattr(args, "out"):
+        args.out = Path(args.out) if args.out else cfg.output_path / "report.html"
+    if hasattr(args, "file"):
+        args.file = Path(args.file) if args.file else cfg.output_path / "review.csv"
     return cfg, db.connect(cfg.project_dir)
 
 
@@ -176,24 +185,24 @@ def main(argv: list[str] | None = None) -> None:
     s = sub.add_parser("run", help="run the pipeline (all stages, or from one stage on the latest run)")
     s.add_argument("--from", dest="from_stage", choices=db.STAGES, default="ingest")
     s.add_argument("--yes", action="store_true", help="don't ask before spending above max_cost_usd")
-    s.add_argument("--out", default="report.html")
+    s.add_argument("--out", help="default: <output_dir>/report.html")
     s.set_defaults(fn=cmd_run)
 
     s = sub.add_parser("rerun", help="run saved test cases on new models")
     s.add_argument("--models", required=True, help="comma-separated LiteLLM model strings")
     s.add_argument("--yes", action="store_true")
-    s.add_argument("--out", default="report.html")
+    s.add_argument("--out", help="default: <output_dir>/report.html")
     s.set_defaults(fn=cmd_rerun)
 
     s = sub.add_parser("review", help="human spot-check: export outputs to CSV, import your grades")
     s.add_argument("action", choices=["export", "import"])
-    s.add_argument("file", nargs="?", default="review.csv")
+    s.add_argument("file", nargs="?", help="default: <output_dir>/review.csv")
     s.add_argument("--n", type=int, default=10, help="outputs per model to export")
-    s.add_argument("--out", default="report.html")
+    s.add_argument("--out", help="default: <output_dir>/report.html")
     s.set_defaults(fn=cmd_review)
 
     s = sub.add_parser("report", help="re-render the report for the latest run")
-    s.add_argument("--out", default="report.html")
+    s.add_argument("--out", help="default: <output_dir>/report.html")
     s.set_defaults(fn=cmd_report)
 
     args = p.parse_args(argv)

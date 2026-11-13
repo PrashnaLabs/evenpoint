@@ -6,4 +6,7 @@ __pycache__/
 dist/
 .evenpoint/
 exports/
+output/
 report.html
+review.csv
+.env

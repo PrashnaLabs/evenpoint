@@ -214,10 +214,12 @@ classDiagram
     +float setup_cost_usd
     +float min_volume_per_month
     +int max_candidates
+    +str output_dir
     +Path root
     +str raw
     +load(path) Config$
     +project_dir() Path
+    +output_path() Path
   }
 
   class SourceConfig {

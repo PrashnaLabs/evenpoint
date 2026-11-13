@@ -1,6 +1,7 @@
 """End to end on the bizbench support-triage workflow, with a fake model instead of real API calls."""
 
 import csv
+import os
 import re
 import shutil
 from pathlib import Path
@@ -32,10 +33,13 @@ def test_bizbench_end_to_end(tmp_path, monkeypatch):
     for f in ("evenpoint.yaml", "tickets.csv"):
         shutil.copy(BIZBENCH / f, tmp_path / f)
     monkeypatch.setattr(llm, "complete", fake_complete)
+    (tmp_path / ".env").write_text("EVENPOINT_TEST_KEY=from-dotenv\n")
+    monkeypatch.delenv("EVENPOINT_TEST_KEY", raising=False)
     monkeypatch.chdir(tmp_path)
-    report = tmp_path / "report.html"
+    report = tmp_path / "output" / "report.html"
 
-    cli.main(["run", "--yes", "--out", str(report)])
+    cli.main(["run", "--yes"])
+    assert os.environ.pop("EVENPOINT_TEST_KEY") == "from-dotenv"
     html = report.read_text()
     assert "Recommendations" in html and "support-triage" in html
 
@@ -58,14 +62,14 @@ def test_bizbench_end_to_end(tmp_path, monkeypatch):
     con.close()
 
     # Rerun on a new model only adds that model's calls.
-    cli.main(["rerun", "--models", "ollama/llama3.2", "--yes", "--out", str(report)])
+    cli.main(["rerun", "--models", "ollama/llama3.2", "--yes"])
     con = duckdb.connect(str(tmp_path / ".evenpoint" / "project.duckdb"))
     assert con.execute("SELECT count(DISTINCT model) FROM roi").fetchone()[0] == 3
     con.close()
 
     # Human review round trip.
-    review = tmp_path / "review.csv"
-    cli.main(["review", "export", str(review), "--n", "3"])
+    review = tmp_path / "output" / "review.csv"
+    cli.main(["review", "export", "--n", "3"])
     rows = list(csv.DictReader(open(review)))
     for r in rows:
         r["pass"] = "no"
@@ -73,13 +77,13 @@ def test_bizbench_end_to_end(tmp_path, monkeypatch):
         w = csv.DictWriter(f, fieldnames=rows[0].keys())
         w.writeheader()
         w.writerows(rows)
-    cli.main(["review", "import", str(review), "--out", str(report)])
+    cli.main(["review", "import"])
     con = duckdb.connect(str(tmp_path / ".evenpoint" / "project.duckdb"))
     assert con.execute("SELECT count(*) FROM grades WHERE grader = 'human'").fetchone()[0] == len(rows)
     con.close()
 
     # Restart from a later stage keeps earlier tables.
-    cli.main(["run", "--from", "roi", "--out", str(report)])
+    cli.main(["run", "--from", "roi"])
     assert "Recommendations" in report.read_text()
 
 

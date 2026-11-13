@@ -60,6 +60,7 @@ class Config:
     setup_cost_usd: float = 0.0
     min_volume_per_month: float = 20.0
     max_candidates: int = 5
+    output_dir: str = "output"  # report and review CSVs, relative to evenpoint.yaml
     root: Path = Path(".")
     raw: str = ""
 
@@ -102,3 +103,7 @@ class Config:
     @property
     def project_dir(self) -> Path:
         return self.root / ".evenpoint"
+
+    @property
+    def output_path(self) -> Path:
+        return self.root / self.output_dir

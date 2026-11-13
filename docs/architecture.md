@@ -25,7 +25,7 @@ _Status: v0 implemented as described here. Companion to [overview.md](overview.m
 | PII redaction | Regex rules (email, phone, card, IBAN, secret URLs) + staff names from the actor column | Optional Presidio plug-in later if regex isn't enough |
 | Stats | stdlib `random` | Bootstrap confidence intervals over ≤ a few hundred results |
 
-Runtime dependencies: `duckdb`, `litellm`, `pyyaml`, `jinja2`. Deliberately **not** used in v0: pandas, numpy, PM4Py, a web framework, a task queue, an ORM, promptfoo (Node runtime for a Python tool), a hosted backend.
+Runtime dependencies: `duckdb`, `litellm`, `pyyaml`, `jinja2`, `python-dotenv` (already required by LiteLLM). Deliberately **not** used in v0: pandas, numpy, PM4Py, a web framework, a task queue, an ORM, promptfoo (Node runtime for a Python tool), a hosted backend.
 
 ## Pipeline
 
@@ -218,7 +218,7 @@ payback_months  = setup_cost / net_value_month   (only when positive)
 
 ### 7. Outputs
 
-- `report.html`: single file, inline CSS, no external requests, light and dark. Sections: headline numbers, recommendations, don't-automate list, model comparison, all ROI options, candidates, baseline and process map, data quality, assumptions, privacy and call log.
+- `output/report.html`: single file, inline CSS, no external requests, light and dark. Sections: headline numbers, recommendations, don't-automate list, model comparison, all ROI options, candidates, baseline and process map, data quality, assumptions, privacy and call log.
 - PDF = browser print of the same HTML.
 - **Web demo:** the bizbench report rendered as a static page. No backend, no sign-up.
 
@@ -261,23 +261,24 @@ failure_minutes: 10        # minutes to fix a wrong output
 setup_cost_usd: 2000       # one-off cost to put automation in place
 min_volume_per_month: 20   # ignore rarer steps
 max_candidates: 5          # benchmark at most this many steps
+output_dir: output         # report.html and review.csv go here
 ```
 
-API keys come from environment variables (`OPENAI_API_KEY`, `ANTHROPIC_API_KEY`, ...), as LiteLLM expects. They are never written to config or DuckDB.
+API keys (`OPENAI_API_KEY`, `ANTHROPIC_API_KEY`, ...) are read from `.env` next to `evenpoint.yaml`, then `.env` in the current folder, via python-dotenv; variables already set in the shell win. `.env` is git-ignored and `.env.example` lists the names. Keys are never written to config or DuckDB.
 
 ## CLI
 
 ```
 evenpoint init EXPORT --adapter zendesk   # write evenpoint.yaml with that adapter's default mapping
-evenpoint run [--yes]                     # new run, all stages, writes report.html
+evenpoint run [--yes]                     # new run, all stages, writes output/report.html
 evenpoint run --from bench                # redo one stage onward on the latest run
 evenpoint rerun --models a,b              # run saved test cases on new models, refresh the report
-evenpoint review export [review.csv]      # human spot-check round trip
-evenpoint review import review.csv
-evenpoint report                          # re-render report.html from stored tables
+evenpoint review export [file]            # human spot-check round trip (default output/review.csv)
+evenpoint review import [file]
+evenpoint report                          # re-render output/report.html from stored tables
 ```
 
-All commands take `-c path/to/evenpoint.yaml`. Stages: `ingest, baseline, score, bench, grade, roi, report`.
+All commands take `-c path/to/evenpoint.yaml`; `--out` overrides the report path. Stages: `ingest, baseline, score, bench, grade, roi, report`.
 
 ## Privacy and security
 
