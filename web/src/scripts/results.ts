@@ -45,10 +45,12 @@ export async function renderResults(el: HTMLElement, ctx: Ctx) {
     }));
   $("#firm-up", el)?.addEventListener("click", () => ctx.go("review"));
   $("#edit-assumptions", el)?.addEventListener("click", (e) => { e.preventDefault(); ctx.go("setup"); });
-  $("#more-models", el)?.addEventListener("click", (e) => { e.preventDefault(); ctx.go("run"); });
+  $("#more-models", el)?.addEventListener("click", (e) => {
+    e.preventDefault();
+    ctx.go("setup");
+    setTimeout(() => document.getElementById("advanced")?.scrollIntoView({ behavior: "smooth", block: "center" }), 400);
+  });
 }
-
-const HOW: Record<string, string> = { auto: "fully automatic", draft_review: "AI drafts and a person approves" };
 
 /** Money range from the hours range: same bootstrap interval, priced with the user's hourly rate. */
 const valueAt = (d: Row, r: Row, hours: number) => hours * d.assumptions.hourly_rate - r.ai_cost_month;
@@ -61,15 +63,15 @@ function answer(d: Row): Raw {
   const q = d.quality;
   const sentence = worth.length
     ? html`Automating <strong>${worth.length} of ${tested}</strong> tested ${tested === 1 ? "step" : "steps"} would save about
-        <strong>${hrs(sum((r) => r.net_hours_month))} a month</strong>, worth <strong>${usd(sum((r) => r.net_value_month))}</strong>.
-        <span class="soft">Likely between ${usd(sum((r) => r.net_value_low))} and ${usd(sum((r) => valueAt(d, r, r.net_hours_high)))}.</span>`
+        <strong>${hrs(sum((r) => r.net_hours_month))} a month</strong>, worth <strong>${usd(sum((r) => r.net_value_month))}</strong>.`
     : tested
-      ? html`Nothing is worth automating yet. <span class="soft">None of the ${tested} tested steps saves more than it costs with these models.</span>`
-      : html`No step could be tested. <span class="soft">See the steps below for why.</span>`;
+      ? html`Nothing is worth automating yet: none of the ${tested} tested steps saves more than it costs.`
+      : html`No step could be tested yet.`;
+  const range = worth.length ? `Likely ${usd(sum((r) => r.net_value_low))} to ${usd(sum((r) => valueAt(d, r, r.net_hours_high)))} · ` : "";
   return html`
     <section class="answer">
       <p class="answer-text">${sentence}</p>
-      <p class="answer-meta">${num(q.cases)} cases · ${dateShort(q.first_ts)} to ${dateShort(q.last_ts)} · analysis cost ${usd(d.total_cost, 2)}</p>
+      <p class="answer-meta">${range}${num(q.cases)} cases from ${dateShort(q.first_ts)} to ${dateShort(q.last_ts)} · cost ${usd(d.total_cost, 2)}</p>
     </section>`;
 }
 
@@ -91,7 +93,7 @@ function steps(d: Row): Raw {
             <div class="step-name">
               <strong>${stepName(r.activity)}</strong>${verdictBadge(r.verdict)}
             </div>
-            <p class="step-why">${modelName(r.model)}, ${HOW[r.mode]}. Right on ${pct(r.accuracy)} of ${n[`${r.activity}|${r.model}`] || "–"} past cases.</p>
+            <p class="step-why"><code>${modelName(r.model)}</code> was right on ${pct(r.accuracy)} of ${n[`${r.activity}|${r.model}`] || "–"} past cases</p>
           </div>
           <div class="step-bar">${bar(r, lo, hi)}</div>
           <div class="step-figures num">
@@ -189,18 +191,19 @@ function details(d: Row): Raw {
 
 const css = raw(`
 .answer { padding: 4px 0 8px; }
-.answer-text { font-size: 22px; line-height: 1.45; letter-spacing: -0.015em; max-width: 46ch; color: var(--text); text-wrap: pretty; }
+.answer-text { font-size: 24px; line-height: 1.45; letter-spacing: -0.015em; max-width: 46ch; color: var(--text); text-wrap: pretty; }
 .answer-text strong { font-weight: 620; }
 .answer .soft { display: block; margin-top: 6px; font-size: 15px; letter-spacing: 0; }
 .soft { color: var(--text-3); }
-.answer-meta { margin-top: 14px; color: var(--text-3); font-size: 13px; font-variant-numeric: tabular-nums; }
+.answer-meta { margin-top: 10px; color: var(--text-3); font-size: 13px; font-variant-numeric: tabular-nums; }
 .step-list { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); }
 .step-row { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(160px, 1fr) 110px 32px; gap: 8px 28px; align-items: center; padding: 18px 20px; }
 .step-row + .step-row { border-top: 1px solid var(--border); }
 .step-row.untested { grid-template-columns: 1fr; }
 .step-name { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
 .step-name strong { font-size: 15px; font-weight: 600; }
-.step-why { margin-top: 4px; color: var(--text-3); font-size: 13.5px; }
+.step-why { margin-top: 4px; color: var(--text-3); font-size: 14px; }
+.step-why code { font-size: 12.5px; color: var(--text-2); }
 .step-figures { display: grid; justify-items: end; gap: 1px; white-space: nowrap; }
 .step-figures strong { font-size: 19px; font-weight: 600; letter-spacing: -0.01em; }
 .step-figures span { color: var(--text-3); font-size: 13px; }

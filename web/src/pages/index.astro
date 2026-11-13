@@ -2,39 +2,37 @@
 import Shell from "../layouts/Shell.astro";
 ---
 <Shell title="Projects" active="projects">
-  <div class="page-head">
-    <div>
-      <h1>Projects</h1>
-      <p class="sub">Each project is one export of your team's work, analysed for what AI could take on.</p>
-    </div>
-    <div class="actions">
-      <a class="btn primary" id="new-btn" href="/start/"></a>
-    </div>
-  </div>
+  <div class="page-head"><h1>Projects</h1></div>
 
   <div id="key-panel"></div>
   <div id="projects"></div>
 </Shell>
 
 <style>
-  :global(.examples) { display: grid; gap: 8px; width: min(560px, 100%); margin-top: 28px; padding-top: 22px; border-top: 1px solid var(--border); text-align: left; }
-  :global(.examples > .hint) { text-align: center; margin-bottom: 4px; }
-  :global(.examples-below .examples) { margin: 28px auto 0; border-top: 0; padding-top: 0; }
-  :global(.example) { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 12px 14px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); font: inherit; color: var(--text-3); text-align: left; cursor: pointer; transition: border-color 120ms, background 120ms; }
+  :global(.cards) { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; }
+  :global(.card) { display: grid; gap: 20px; align-content: space-between; min-height: 168px; padding: 24px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); color: var(--text); text-decoration: none; transition: border-color 180ms, transform 180ms var(--ease), box-shadow 180ms; }
+  :global(.card:hover) { border-color: var(--border-strong); color: var(--text); transform: translateY(-2px); box-shadow: var(--shadow-2); }
+  :global(.card-name) { font-size: 17px; font-weight: 650; letter-spacing: -0.015em; }
+  :global(.card-meta) { margin-top: 4px; color: var(--text-3); font-size: 13px; }
+  :global(.card-answer) { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+  :global(.card-answer strong) { font-size: 26px; font-weight: 700; letter-spacing: -0.03em; }
+  :global(.card-answer span) { color: var(--text-3); font-size: 14px; }
+  :global(.card-answer.none) { color: var(--text-3); font-size: 14px; }
+  :global(.examples) { margin-top: 48px; }
+  :global(.examples h2) { font-size: 14px; color: var(--text-3); font-weight: 600; margin-bottom: 12px; }
+  :global(.example-list) { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 12px; }
+  :global(.example) { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 16px 18px; border: 1px dashed var(--border-strong); border-radius: var(--radius); background: transparent; font: inherit; color: var(--text-3); text-align: left; transition: border-color 180ms, background 180ms; }
   :global(.example:hover) { border-color: var(--accent); background: var(--accent-soft); }
   :global(.example[aria-busy="true"]) { opacity: 0.6; pointer-events: none; }
-  :global(.example > span:nth-child(2)) { display: grid; gap: 2px; }
-  :global(.example strong) { color: var(--text); font-weight: 550; }
-  :global(.example .file-icon) { width: 36px; height: 36px; border-radius: 9px; display: grid; place-items: center; background: var(--accent-soft); color: var(--accent); }
-  #key-panel:not(:empty) { margin-bottom: 20px; }
+  :global(.example > span:first-child) { display: grid; gap: 2px; }
+  :global(.example strong) { color: var(--text); font-weight: 600; }
+  #key-panel:not(:empty) { margin-bottom: 24px; }
 </style>
 
 <script>
   import { api, ApiError, type ProjectSummary, type Status } from "../lib/api";
   import { $, ago, busy, hrs, html, icon, mount, num, toast, usd } from "../lib/ui";
 
-  mount($("#new-btn")!, html`${icon("Plus")}New analysis`);
-  const openProject = (name: string) => (location.href = `/project/?p=${encodeURIComponent(name)}`);
 
   function keyPanel(status: Status) {
     const host = $("#key-panel")!;
@@ -94,45 +92,44 @@ import Shell from "../layouts/Shell.astro";
     const list = status.examples.filter((x) => !have.has(`example-${x.id}`));
     if (!list.length) return html``;
     return html`
-      <div class="examples">
-        <p class="hint">${title}</p>
-        ${list.map((x) => html`
-          <button class="example" type="button" data-example="${x.id}">
-            <span class="file-icon">${icon(x.id.startsWith("github") ? "Workflow" : "Sparkles")}</span>
-            <span><strong>${x.title}</strong><span class="hint">${x.about}</span></span>
-            ${icon("ArrowRight")}
-          </button>`)}
-      </div>`;
+      <section class="examples">
+        <h2>${title}</h2>
+        <div class="example-list">
+          ${list.map((x) => html`
+            <button class="example" type="button" data-example="${x.id}">
+              <span><strong>${x.title}</strong><span class="hint">${x.about}</span></span>
+              ${icon("ArrowRight")}
+            </button>`)}
+        </div>
+      </section>`;
   }
 
-  function table(projects: ProjectSummary[]) {
+  /** One card per project, leading with its answer. */
+  function cards(projects: ProjectSummary[]) {
     return html`
-      <div class="panel table-wrap">
-        <table class="table">
-          <thead><tr>
-            <th>Project</th><th>Last run</th><th class="r">Cases</th><th class="r">Steps worth automating</th>
-            <th class="r">Hours saved / month</th><th class="r">Value / month</th><th aria-hidden="true"></th>
-          </tr></thead>
-          <tbody>
-            ${projects.map((p) => html`
-              <tr class="link" data-name="${p.name}" tabindex="0">
-                <td class="strong">${p.name}<div class="sub">${p.sources.join(", ") || "No data yet"}</div></td>
-                <td>${p.run ? ago(p.run.started_at) : html`<span class="muted">Not run yet</span>`}</td>
-                <td class="r">${p.run ? num(p.run.cases) : "–"}</td>
-                <td class="r">${p.run ? num(p.run.worth_automating) : "–"}</td>
-                <td class="r">${p.run ? hrs(p.run.hours) : "–"}</td>
-                <td class="r">${p.run ? html`${usd(p.run.value)}${p.run.worth_automating ? html`<div class="sub">at least ${usd(p.run.value_low)}</div>` : ""}` : "–"}</td>
-                <td class="r muted">${icon("ChevronRight")}</td>
-              </tr>`)}
-          </tbody>
-        </table>
+      <div class="cards">
+        ${projects.map((p) => {
+          const r = p.run;
+          const answer = !r
+            ? html`<p class="card-answer none">Not run yet · <span style="color:var(--accent);font-weight:600">Continue ${icon("ArrowRight", "sm")}</span></p>`
+            : r.worth_automating
+              ? html`<p class="card-answer num"><strong>${hrs(r.hours)}</strong><span>saved a month · ${usd(r.value)}</span></p>`
+              : html`<p class="card-answer none">Nothing worth automating yet</p>`;
+          const href = r ? `/project/?p=${encodeURIComponent(p.name)}` : `/start/?p=${encodeURIComponent(p.name)}&step=1`;
+          return html`
+            <a class="card" href="${href}">
+              <div>
+                <div class="card-name">${p.name}</div>
+                <div class="card-meta">${p.sources[0] || "No data yet"}${r ? ` · ${num(r.cases)} cases · ${ago(r.started_at)}` : ""}</div>
+              </div>
+              ${answer}
+            </a>`;
+        })}
       </div>`;
   }
 
   function skeleton() {
-    return html`<div class="panel" style="padding:18px; display:grid; gap:12px">
-      ${[1, 2, 3].map(() => html`<div class="skeleton" style="height:22px"></div>`)}
-    </div>`;
+    return html`<div class="cards">${[1, 2].map(() => html`<div class="skeleton" style="height:168px;border-radius:12px"></div>`)}</div>`;
   }
 
   async function load() {
@@ -151,12 +148,8 @@ import Shell from "../layouts/Shell.astro";
         return;
       }
       mount(host, projects.length
-        ? html`${table(projects)}<div class="examples-below">${examples(status, projects, "See a finished example")}</div>`
+        ? html`${cards(projects)}${examples(status, projects, "Explore an example")}`
         : emptyState(status));
-      host.querySelectorAll<HTMLElement>("tr[data-name]").forEach((tr) => {
-        tr.addEventListener("click", () => openProject(tr.dataset.name!));
-        tr.addEventListener("keydown", (e) => e.key === "Enter" && openProject(tr.dataset.name!));
-      });
       host.querySelectorAll<HTMLButtonElement>("[data-example]").forEach((btn) => btn.addEventListener("click", async () => {
         btn.setAttribute("aria-busy", "true");
         try {

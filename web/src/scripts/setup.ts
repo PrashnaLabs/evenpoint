@@ -2,6 +2,7 @@
 import { api, upload, type Config, type Inspect } from "../lib/api";
 import { $, $$, busy, html, icon, modelName, mount, num, raw, stepName, toast, type Raw } from "../lib/ui";
 import type { Ctx } from "./project";
+import { advancedRun, wireAdvancedRun } from "./run";
 
 type Mapping = Record<string, any>;
 const ADAPTER_LABEL: Record<string, string> = { zendesk: "Zendesk export", jira: "Jira export", csv: "CSV file", mbox: "Email (mbox)" };
@@ -14,6 +15,7 @@ export async function renderSetup(el: HTMLElement, ctx: Ctx) {
   cfg.review_minutes ??= {};
   let info: Inspect | null = null;
   let dirty = false;
+  let colsOpen = false;
 
   const source = () => cfg.sources[0] as { adapter: string; path: string; mapping: Mapping } | undefined;
   const fileName = () => source()?.path.split("/").pop() || "";
@@ -42,6 +44,7 @@ export async function renderSetup(el: HTMLElement, ctx: Ctx) {
         ${source() ? stepsSection() : ""}
         ${modelsSection()}
         ${assumptionsSection()}
+        ${advancedRun(ctx)}
       </div>
       ${deleteSection()}
       <div class="savebar" id="savebar" ${dirty ? "" : "hidden"}>
@@ -148,8 +151,10 @@ export async function renderSetup(el: HTMLElement, ctx: Ctx) {
     }
     return html`
       <div class="settings-row">
-        <header><h2>Columns</h2><p>Tell Evenpoint which columns identify a case, when each step happened, and which text to test the AI on.</p></header>
-        <div class="stack">
+        <header><h2>Columns</h2><p>Which columns identify a case, mark each step, and hold text for the AI. Detected automatically.</p></header>
+        <details class="cols" ${colsOpen ? "open" : ""}>
+          <summary>${long ? "One row per event" : `${Object.keys(stamps).length} steps`} · ${Object.keys(fields).length} text fields · cases identified by ${m.case_id || "?"}<span class="cols-edit">Edit</span></summary>
+        <div class="stack" style="margin-top:20px">
           <div class="segmented" role="radiogroup" aria-label="File layout">
             <label class="check"><input type="radio" name="layout" value="wide" ${long ? "" : "checked"} /><span><strong>One row per ticket</strong><span class="hint">Each step has its own date column</span></span></label>
             <label class="check"><input type="radio" name="layout" value="long" ${long ? "checked" : ""} /><span><strong>One row per event</strong><span class="hint">A step column and a time column</span></span></label>
@@ -195,6 +200,7 @@ export async function renderSetup(el: HTMLElement, ctx: Ctx) {
               <input class="input mono" id="ts-format" value="${m.ts_format || ""}" placeholder="%d/%b/%y %I:%M %p" /></div>
           </details>
         </div>
+        </details>
       </div>`;
   }
 
@@ -224,7 +230,7 @@ export async function renderSetup(el: HTMLElement, ctx: Ctx) {
               const decide = !o.task_type;
               return html`<tr data-step="${s}">
                 <td class="strong">${stepName(s)}</td>
-                <td><input class="input num" style="width:110px" type="number" min="0" step="0.5" data-k="minutes" value="${o.minutes ?? ""}" placeholder="Measured" aria-label="Minutes of work for ${s}" /></td>
+                <td><input class="input num" style="width:76px" type="number" min="0" step="0.5" data-k="minutes" value="${o.minutes ?? ""}" placeholder="Measured" aria-label="Minutes of work for ${s}" /></td>
                 <td><select class="select" data-k="task_type" aria-label="Test type for ${s}">
                   <option value="" ${decide ? "selected" : ""}>Let Evenpoint decide</option>
                   <option value="classify" ${o.task_type === "classify" ? "selected" : ""}>Picking a label</option>
@@ -447,6 +453,9 @@ export async function renderSetup(el: HTMLElement, ctx: Ctx) {
   }
 
   function wire() {
+    const cols = $<HTMLDetailsElement>("details.cols", el);
+    cols?.addEventListener("toggle", () => (colsOpen = cols.open));
+    wireAdvancedRun(el, ctx);
     const input = $<HTMLInputElement>("#file-input", el)!;
     input.addEventListener("change", () => input.files?.[0] && handleFile(input.files[0]));
     const dz = $("#dropzone", el);
@@ -522,7 +531,7 @@ export async function renderSetup(el: HTMLElement, ctx: Ctx) {
   }
 
   // Any edit marks the form dirty (listeners live on the tab root, which survives redraws).
-  const counts = (e: Event) => !(e.target as HTMLElement).closest("[data-ignore-dirty], #delete-form");
+  const counts = (e: Event) => !(e.target as HTMLElement).closest("[data-ignore-dirty], #delete-form, #advanced");
   el.oninput = (e) => counts(e) && setDirty(true);
   el.onchange = (e) => {
     const id = (e.target as HTMLElement).id;
@@ -532,7 +541,10 @@ export async function renderSetup(el: HTMLElement, ctx: Ctx) {
 }
 
 const css = raw(`
-.setup .settings-row h2 { font-size: 14.5px; }
+.cols > summary { display: flex; width: 100%; padding: 12px 14px; border: 1px solid var(--border); border-radius: var(--radius-sm); color: var(--text-2); font-size: 14px; }
+.cols > summary:hover { border-color: var(--border-strong); }
+.cols-edit { margin-left: auto; color: var(--accent); font-weight: 600; }
+.cols[open] .cols-edit { display: none; }
 .file-card { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--subtle); }
 .file-card > div { flex: 1; min-width: 0; }
 .file-card strong { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
@@ -571,7 +583,8 @@ fieldset.field legend { display: grid; gap: 2px; margin-bottom: 6px; padding: 0;
 .steps-table { border: 1px solid var(--border); border-radius: var(--radius-sm); }
 .steps-table td { padding: 8px 12px; }
 .steps-table th { padding: 9px 12px; }
-.steps-table .select, .steps-table .input { height: 32px; font-size: 13px; min-width: 120px; }
+.steps-table .select, .steps-table .input { height: 36px; font-size: 14px; }
+.steps-table .select { min-width: 128px; }
 .model-list { display: grid; border: 1px solid var(--border); border-radius: var(--radius-sm); }
 .model-option { display: grid; grid-template-columns: 16px minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 11px 12px; border-top: 1px solid var(--border); cursor: pointer; }
 .model-option:first-child { border-top: 0; }

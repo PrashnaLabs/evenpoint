@@ -34,7 +34,7 @@ export async function renderReview(el: HTMLElement, ctx: Ctx) {
     return html`
       <div class="review-head">
         <div><h2>Check the AI's work</h2>
-          <p class="muted">Pass an answer if your team would send it as is; fail it if it needs changes. Your grades override the automatic ones and update the results.</p></div>
+          <p class="muted">Pass answers your team would send as they are. Your grades replace the automatic ones.</p></div>
         <div class="row">
           <label class="hint" for="per-model">Cases per model</label>
           <select class="select" id="per-model" style="width:90px">${[5, 10, 20, 40].map((n) => html`<option ${n === perModel ? "selected" : ""}>${n}</option>`)}</select>
@@ -153,6 +153,7 @@ const css = raw(`
 .dots .d.f { background: var(--bad); border-color: var(--bad); }
 .dots .d.cur { outline: 2px solid var(--accent); outline-offset: 1px; }
 .review-card .cap { text-transform: capitalize; }
+.review-card .panel-head { padding: 16px 24px; border-bottom: 1px solid var(--border); }
 .review-body { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
 .review-body section { padding: 16px 18px; display: grid; gap: 8px; align-content: start; }
 .review-body h3 { font-size: 12px; font-weight: 550; color: var(--text-3); }

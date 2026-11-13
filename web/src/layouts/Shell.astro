@@ -1,8 +1,8 @@
 ---
-import "@fontsource-variable/geist";
+import "@fontsource-variable/plus-jakarta-sans";
 import "@fontsource-variable/geist-mono";
 import "../styles/global.css";
-import { FolderOpen, Menu, Plus } from "lucide-static";
+import { Plus } from "lucide-static";
 
 interface Props { title: string; active?: "projects" | "start" }
 const { title, active } = Astro.props;
@@ -18,47 +18,32 @@ const svg = (s: string) => s.replace(/\s(width|height)="24"/g, "");
   </head>
   <body>
     <!--
-      THESIS: The category-standard analytics app, executed at Stripe-dashboard clarity: an ops lead sets up an export, runs it, and reads a defensible answer. Refuses novelty styling; refuses hiding uncertainty.
-      OWN-WORLD: Light neutral ground (#f4f5f7), white panels with hairline borders and soft shadows, one blue accent (#3451d1), verdict colors only for meaning (green automate, amber review, neutral grey don't). Geist for UI, Geist Mono only for logs, ids and model names. Lucide line icons.
-      STORY: See every project and its last answer; add a file, confirm columns and assumptions, run with the cost shown first, read recommendations with ranges, spot-check the AI's work.
-      FIRST VIEWPORT: Left sidebar (brand, Projects, current project's tabs, key status). Main: page title + primary action top right; projects table, or a project's results headline sentence above recommendation rows with range bars.
-      FORM: canon (category standard), chosen by the user; seed a131b98a.
-      FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, and DESIGN.md
+      THESIS: A modern, minimal tool that gets an ops lead from an export to a defensible answer in minutes. Only what helps the decision is on screen; evidence waits one click away.
+      OWN-WORLD: Minimalism & Swiss (ui-ux-pro-max). Slate neutrals (#f8fafc ground, white cards, #e2e8f0 hairlines), one blue (#2563eb), verdict colours only for meaning. Plus Jakarta Sans; Geist Mono for ids and model names. 12px cards, pill tabs, no decorative shadows. Lucide line icons.
+      STORY: Drop a file, confirm what was found, run; read the answer and one row per step; check a few AI answers.
+      FIRST VIEWPORT: Slim top bar (brand, Projects, key status, New analysis). Page: big title left, one primary action right; then the answer sentence and step rows, or project cards.
+      FORM: user-directed redesign with the ui-ux-pro-max design system (Minimalism & Swiss, light, low variance, subtle motion).
     -->
-    <div class="app" id="app">
-      <aside class="sidebar" aria-label="Main">
-        <a class="brand" href="/">
-          <span class="brand-mark" aria-hidden="true">
-            <svg width="16" height="16" viewBox="0 0 32 32"><path d="M5 18h22" stroke="#fff" stroke-width="3" stroke-linecap="round"/><path d="M16 18l-5 8h10z" fill="#8ea2f0"/><circle cx="9.5" cy="12" r="3.4" fill="#fff"/><circle cx="22.5" cy="12" r="3.4" fill="#fff"/></svg>
-          </span>
-          <span class="brand-name">Evenpoint</span>
+    <header class="topbar">
+      <a class="brand" href="/">
+        <span class="brand-mark" aria-hidden="true">
+          <svg width="16" height="16" viewBox="0 0 32 32"><path d="M5 18h22" stroke="#fff" stroke-width="3" stroke-linecap="round"/><path d="M16 18l-5 8h10z" fill="#93b4fb"/><circle cx="9.5" cy="12" r="3.4" fill="#fff"/><circle cx="22.5" cy="12" r="3.4" fill="#fff"/></svg>
+        </span>
+        Evenpoint
+      </a>
+      <nav class="topnav" aria-label="Main">
+        <a href="/" aria-current={active === "projects" ? "page" : undefined}>Projects</a>
+      </nav>
+      <div class="topbar-end">
+        <a class="key-status" href="/?settings=1" id="key-status" title="OpenAI key">
+          <span class="dot"></span><span>Checking key…</span>
         </a>
-        <nav class="nav">
-          <a href="/" aria-current={active === "projects" ? "page" : undefined}>
-            <span class="ico" set:html={svg(FolderOpen)} />Projects
-          </a>
-          <a href="/start/" aria-current={active === "start" ? "page" : undefined}>
-            <span class="ico" set:html={svg(Plus)} />New analysis
-          </a>
-          <div id="project-nav"></div>
-        </nav>
-        <div class="sidebar-foot">
-          <a class="key-status" href="/?settings=1" id="key-status">
-            <span class="dot"></span><span>Checking OpenAI key…</span>
-          </a>
-          <span class="version" id="version"></span>
-        </div>
-      </aside>
-      <div class="main">
-        <div class="topbar">
-          <button class="btn ghost sm" id="nav-toggle" aria-label="Open menu"><span class="ico" set:html={svg(Menu)} /></button>
-          <strong>Evenpoint</strong>
-        </div>
-        <main class="page" id="page">
-          <slot />
-        </main>
+        <a class="btn primary sm" href="/start/"><span class="ico" set:html={svg(Plus)} />New analysis</a>
       </div>
-    </div>
+    </header>
+    <main class="page" id="page">
+      <slot />
+    </main>
     <script>
       import { api, type Status } from "../lib/api";
       import { html, mount, $ } from "../lib/ui";
@@ -75,14 +60,11 @@ const svg = (s: string) => s.replace(/\s(width|height)="24"/g, "");
           } catch { /* server restarting */ }
         }
       }
-      $("#nav-toggle")?.addEventListener("click", () => $("#app")?.classList.toggle("nav-open"));
       api<Status>("/status").then((s) => {
         const el = $("#key-status");
         if (el) mount(el, s.openai_key
-          ? html`<span class="dot on"></span><span>OpenAI key connected</span>`
-          : html`<span class="dot off"></span><span>Add your OpenAI key</span>`);
-        const v = $("#version");
-        if (v) v.textContent = `v${s.version} · runs on this computer${s.dev ? " · auto-reload on" : ""}`;
+          ? html`<span class="dot on"></span><span>Key connected</span>`
+          : html`<span class="dot off"></span><span>Add OpenAI key</span>`);
         if (s.dev) watchForChanges();
       }).catch(() => {
         const el = $("#key-status");
