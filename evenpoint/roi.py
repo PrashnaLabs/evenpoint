@@ -62,7 +62,10 @@ def bootstrap(passes: list[int], n: int = 1000, seed: int = 0) -> tuple[float, f
 
 
 def net_hours(volume: float, baseline_min: float, review_min: float, accuracy: float, failure_min: float) -> float:
-    return volume * (baseline_min - review_min) / 60 - volume * (1 - accuracy) * failure_min / 60
+    """Hours saved per month. Every output costs review_min; every wrong one is redone by a person
+    (baseline_min) plus failure_min of fallout when it reached the customer unreviewed (auto mode)."""
+    per_task = baseline_min - review_min - (1 - accuracy) * (baseline_min + failure_min)
+    return volume * per_task / 60
 
 
 def compute(con, run_id: str, cfg) -> list[dict]:
@@ -77,9 +80,10 @@ def compute(con, run_id: str, cfg) -> list[dict]:
         ai_cost = volume * s["cost_per_task"]
         for mode in MODES:
             review = cfg.review_minutes.for_mode(mode)
+            fallout = cfg.failure_minutes if mode == "auto" else 0.0  # review catches errors before customers
 
             def hours(acc):
-                return net_hours(volume, baseline_min, review, acc, cfg.failure_minutes)
+                return net_hours(volume, baseline_min, review, acc, fallout)
 
             value = hours(s["accuracy"]) * cfg.hourly_rate - ai_cost
             value_low = hours(lo_acc) * cfg.hourly_rate - ai_cost

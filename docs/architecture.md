@@ -205,14 +205,16 @@ For each step with at least `min_volume_per_month`, the labeler gets the step's 
 For each tested step × model × mode:
 
 ```
-net_hours_month = volume × (baseline_minutes − review_minutes(mode)) / 60
-                − volume × (1 − accuracy) × failure_minutes / 60
+per_task        = baseline_minutes − review_minutes(mode)
+                − (1 − accuracy) × (baseline_minutes + fallout(mode))
+net_hours_month = volume × per_task / 60
+fallout(auto) = failure_minutes; fallout(draft_review) = 0
 ai_cost_month   = volume × cost_per_task
 net_value_month = net_hours_month × hourly_rate − ai_cost_month
 payback_months  = setup_cost / net_value_month   (only when positive)
 ```
 
-- **Modes:** `auto` (no review; failures cost `failure_minutes`) and `draft_review` (a person checks every output for `review_minutes.draft_review`).
+- **Modes:** `auto` (no review; a wrong output reaches the customer, so it is redone *and* costs `failure_minutes` of fallout) and `draft_review` (a person checks every output for `review_minutes.draft_review` and redoes the wrong ones before they go out).
 - **Range:** bootstrap over the task results (1,000 resamples) gives a 95% interval for accuracy, hence `net_hours_low/high` and `net_value_low`.
 - **Verdict:** `dont_automate` if risk is 5 or the low-end value is below zero; otherwise `automate` for the auto row and `review` for the draft-and-review row. The report recommends the best row per step.
 
@@ -256,7 +258,7 @@ bench:
 review_minutes:            # human minutes per AI output, by mode
   auto: 0
   draft_review: 1.5
-failure_minutes: 10        # minutes to fix a wrong output
+failure_minutes: 10        # extra minutes when a wrong output reaches a customer (auto mode), on top of redoing it
 setup_cost_usd: 2000       # one-off cost to put automation in place
 min_volume_per_month: 20   # ignore rarer steps
 max_candidates: 5          # benchmark at most this many steps

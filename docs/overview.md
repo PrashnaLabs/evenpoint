@@ -49,7 +49,7 @@ Exports ──► Event log ──► Baseline ──► AI-fit scoring ──�
 - **Per model** results: accuracy, cost per *successful* task, latency, and the human review minutes needed.
 
 ### 6. ROI engine
-- **Net hours saved** = volume × (baseline time − review time) − failure cost.
+- **Net hours saved** = volume × (baseline time − review time − share wrong × (redo time + fallout if it reached a customer)).
 - Also reports AI cost per month, payback period, and a **don't-automate list** (steps where AI loses money or is too risky).
 
 ### 7. Outputs

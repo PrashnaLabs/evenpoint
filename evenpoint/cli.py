@@ -43,7 +43,7 @@ bench:
 review_minutes:            # human minutes per AI output
   auto: 0
   draft_review: 1.5
-failure_minutes: 10        # minutes to fix a wrong AI output
+failure_minutes: 10        # extra minutes when a wrong AI output reaches a customer, on top of redoing it
 setup_cost_usd: 2000       # one-off cost to put an automation in place
 """
 

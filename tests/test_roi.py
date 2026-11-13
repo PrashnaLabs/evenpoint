@@ -5,8 +5,10 @@ from evenpoint.config import BenchConfig, ReviewMinutes
 
 
 def test_net_hours():
-    # 600 tasks/month, 6 min -> 1 min review, 90% right, 10 min to fix a failure
-    assert roi.net_hours(600, 6, 1, 0.9, 10) == 600 * 5 / 60 - 600 * 0.1 * 10 / 60  # 50 - 10 = 40
+    # 600 tasks/month, 6 min work, 1 min review, 90% right; wrong ones redone (6 min) + 10 min fallout
+    assert abs(roi.net_hours(600, 6, 1, 0.9, 10) - (50 - 600 * 0.1 * 16 / 60)) < 1e-9  # 50 - 16 = 34
+    # A model right 25% of the time can't save time when failures cost at least the work itself.
+    assert roi.net_hours(100, 10, 0, 0.25, 10) < 0
 
 
 def test_bootstrap_range():

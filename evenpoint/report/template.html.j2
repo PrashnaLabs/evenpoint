@@ -174,7 +174,7 @@
     <tr><td>Hourly rate (fully loaded)</td><td class="n">{{ cfg.hourly_rate | usd }}</td></tr>
     <tr><td>Review minutes per output, auto</td><td class="n">{{ cfg.review_minutes.auto | num(1) }}</td></tr>
     <tr><td>Review minutes per output, draft + review</td><td class="n">{{ cfg.review_minutes.draft_review | num(1) }}</td></tr>
-    <tr><td>Minutes to fix a wrong output</td><td class="n">{{ cfg.failure_minutes | num(1) }}</td></tr>
+    <tr><td>Extra minutes when a wrong output reaches a customer (auto mode, on top of redoing it)</td><td class="n">{{ cfg.failure_minutes | num(1) }}</td></tr>
     <tr><td>One-off setup cost</td><td class="n">{{ cfg.setup_cost_usd | usd }}</td></tr>
     <tr><td>Test cases per step</td><td class="n">{{ cfg.bench.tasks_per_candidate }}</td></tr>
     <tr><td>Judge model</td><td class="n"><code>{{ cfg.judge_model }}</code></td></tr>
