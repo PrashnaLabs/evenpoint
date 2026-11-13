@@ -28,6 +28,7 @@ from .config import Config
 from .report import render
 
 WEB_DIST = Path(__file__).parent / "web_dist"
+STARTED = str(time.time())  # changes on every (re)start, so reloading pages notice
 BIZBENCH = Path(__file__).parent.parent / "bizbench"  # present in a source checkout
 EXAMPLES = {
     "github-issue-triage": ("Real GitHub issues", "544 real issues from the uv project's tracker, with the labels "
@@ -405,6 +406,7 @@ class Handler(BaseHTTPRequestHandler):
             case ("GET", ["status"]):
                 return {"version": __version__, "workspace": str(ws.root), "openai_key": bool(os.environ.get(
                     "OPENAI_API_KEY")), "job": _job.json() if _job else None, "stages": db.STAGES,
+                    "dev": bool(os.environ.get("EVENPOINT_RELOAD")),
                     "examples": [{"id": k, "title": t, "about": a} for k, (t, a) in EXAMPLES.items()
                                  if (BIZBENCH / k / "evenpoint.yaml").exists()],
                     "models": [{"id": m, "about": about, **{k: v * 1e6 for k, v in llm.price(m).items()}}
@@ -418,6 +420,9 @@ class Handler(BaseHTTPRequestHandler):
                 set_key(str(env), "OPENAI_API_KEY", key)
                 os.environ["OPENAI_API_KEY"] = key
                 return {"openai_key": True}
+            case ("GET", ["dev", "stamp"]):
+                built = max((f.stat().st_mtime for f in WEB_DIST.rglob("*") if f.is_file()), default=0)
+                return {"stamp": f"{STARTED}-{built}"}
             case ("GET", ["projects"]):
                 return ws.list()
             case ("POST", ["projects"]):

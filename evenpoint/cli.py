@@ -128,6 +128,11 @@ def cmd_report(args) -> None:
 
 
 def cmd_ui(args) -> None:
+    if args.reload:
+        from . import reload
+
+        reload.run(["ui", "--dir", args.dir, "--port", str(args.port)], args.port, open_browser=not args.no_open)
+        return
     from .server import serve
 
     serve(Path(args.dir), args.port, open_browser=not args.no_open)
@@ -172,6 +177,8 @@ def main(argv: list[str] | None = None) -> None:
     s.add_argument("--dir", default="projects", help="folder holding your projects (default: ./projects)")
     s.add_argument("--port", type=int, default=8765)
     s.add_argument("--no-open", action="store_true", help="don't open a browser")
+    s.add_argument("--reload", action="store_true",
+                   help="restart on Python changes, rebuild the UI on web/ changes, refresh open pages")
     s.set_defaults(fn=cmd_ui)
 
     args = p.parse_args(argv)

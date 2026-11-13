@@ -7,7 +7,7 @@ export type Job = {
 };
 export type ModelInfo = { id: string; about: string; input_cost_per_token?: number; output_cost_per_token?: number };
 export type Status = {
-  version: string; workspace: string; openai_key: boolean; job: Job | null; stages: string[];
+  version: string; workspace: string; openai_key: boolean; job: Job | null; stages: string[]; dev: boolean;
   examples: { id: string; title: string; about: string }[];
   models: ModelInfo[];
 };

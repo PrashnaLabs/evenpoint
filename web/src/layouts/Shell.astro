@@ -63,6 +63,18 @@ const svg = (s: string) => s.replace(/\s(width|height)="24"/g, "");
       import { api, type Status } from "../lib/api";
       import { html, mount, $ } from "../lib/ui";
 
+      /** `evenpoint ui --reload`: refresh when the server restarts or the UI is rebuilt (skipped while a form is unsaved). */
+      async function watchForChanges() {
+        let first: string | null = null;
+        for (;;) {
+          await new Promise((r) => setTimeout(r, 1000));
+          try {
+            const { stamp } = await api<{ stamp: string }>("/dev/stamp");
+            if (first === null) first = stamp;
+            else if (stamp !== first && !document.querySelector("[data-dirty='true']")) location.reload();
+          } catch { /* server restarting */ }
+        }
+      }
       $("#nav-toggle")?.addEventListener("click", () => $("#app")?.classList.toggle("nav-open"));
       api<Status>("/status").then((s) => {
         const el = $("#key-status");
@@ -70,7 +82,8 @@ const svg = (s: string) => s.replace(/\s(width|height)="24"/g, "");
           ? html`<span class="dot on"></span><span>OpenAI key connected</span>`
           : html`<span class="dot off"></span><span>Add your OpenAI key</span>`);
         const v = $("#version");
-        if (v) v.textContent = `v${s.version} · runs on this computer`;
+        if (v) v.textContent = `v${s.version} · runs on this computer${s.dev ? " · auto-reload on" : ""}`;
+        if (s.dev) watchForChanges();
       }).catch(() => {
         const el = $("#key-status");
         if (el) mount(el, html`<span class="dot"></span><span>Server not reachable</span>`);
