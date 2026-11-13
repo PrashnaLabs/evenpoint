@@ -29,12 +29,12 @@ sources:
 #   solved:   {{ minutes: 8, task_type: draft, input: text, expected: reply }}
 
 models:                    # any LiteLLM model string; API keys come from .env next to this file, or the environment
-  - anthropic/claude-haiku-5-5
   - openai/gpt-5.4-mini
+  - openai/gpt-5.4-nano
   # - ollama/llama3.2       # local: nothing leaves your machine
 
-labeler_model: anthropic/claude-haiku-5-5
-judge_model: anthropic/claude-sonnet-5-5
+labeler_model: openai/gpt-5.4-mini
+judge_model: openai/gpt-5.4
 
 bench:
   tasks_per_candidate: 50

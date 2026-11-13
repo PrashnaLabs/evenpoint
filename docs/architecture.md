@@ -240,12 +240,11 @@ steps:                     # optional, per step
   solved:   { minutes: 8, task_type: draft, input: text, expected: reply }
 
 models:                    # any LiteLLM model string
-  - anthropic/claude-haiku-5-5
   - openai/gpt-5.4-mini
-  - ollama/llama3.2
+  - openai/gpt-5.4-nano
 
-labeler_model: anthropic/claude-haiku-5-5
-judge_model: anthropic/claude-sonnet-5-5
+labeler_model: openai/gpt-5.4-mini
+judge_model: openai/gpt-5.4
 
 bench:
   tasks_per_candidate: 50
@@ -264,7 +263,7 @@ max_candidates: 5          # benchmark at most this many steps
 output_dir: output         # report.html and review.csv go here
 ```
 
-API keys (`OPENAI_API_KEY`, `ANTHROPIC_API_KEY`, ...) are read from `.env` next to `evenpoint.yaml`, then `.env` in the current folder, via python-dotenv; variables already set in the shell win. `.env` is git-ignored and `.env.example` lists the names. Keys are never written to config or DuckDB.
+API keys (`OPENAI_API_KEY` by default; other LiteLLM providers work if you add their keys) are read from `.env` next to `evenpoint.yaml`, then `.env` in the current folder, via python-dotenv; variables already set in the shell win. `.env` is git-ignored and `.env.example` lists the names. Keys are never written to config or DuckDB.
 
 ## CLI
 
