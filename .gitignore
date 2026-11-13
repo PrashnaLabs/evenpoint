@@ -10,3 +10,7 @@ output/
 report.html
 review.csv
 .env
+evenpoint/web_dist/
+projects/
+node_modules/
+.impeccable/

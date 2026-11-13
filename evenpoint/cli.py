@@ -127,6 +127,12 @@ def cmd_report(args) -> None:
     print(render.render(con, db.latest_run(con), cfg, args.out))
 
 
+def cmd_ui(args) -> None:
+    from .server import serve
+
+    serve(Path(args.dir), args.port, open_browser=not args.no_open)
+
+
 def main(argv: list[str] | None = None) -> None:
     p = argparse.ArgumentParser(prog="evenpoint", description="Exports in, ROI out: what to automate with AI.")
     p.add_argument("--version", action="version", version=__version__)
@@ -161,6 +167,12 @@ def main(argv: list[str] | None = None) -> None:
     s = sub.add_parser("report", help="re-render the report for the latest run")
     s.add_argument("--out", help="default: <output_dir>/report.html")
     s.set_defaults(fn=cmd_report)
+
+    s = sub.add_parser("ui", help="open the web interface")
+    s.add_argument("--dir", default="projects", help="folder holding your projects (default: ./projects)")
+    s.add_argument("--port", type=int, default=8765)
+    s.add_argument("--no-open", action="store_true", help="don't open a browser")
+    s.set_defaults(fn=cmd_ui)
 
     args = p.parse_args(argv)
     try:
