@@ -1,0 +1,38 @@
+# bizbench: support triage for a small outdoor-gear shop (synthetic data).
+# From the repo root: uv run evenpoint -c bizbench/support-triage/evenpoint.yaml run
+project: support-triage
+hourly_rate: 30
+
+sources:
+  - adapter: zendesk
+    path: tickets.csv
+    mapping:
+      fields:
+        subject: Subject
+        text: Description
+        group: Group
+        priority: Priority
+        reply: Public reply
+
+steps:
+  created:  { minutes: 0 }    # the customer opens the ticket; no staff time
+  assigned: { minutes: 2, task_type: classify, input: text, expected: group }
+  solved:   { minutes: 8, task_type: draft, input: text, expected: reply }
+
+models:
+  - anthropic/claude-haiku-5-5
+  - openai/gpt-5.4-mini
+
+labeler_model: anthropic/claude-haiku-5-5
+judge_model: anthropic/claude-sonnet-5-5
+
+bench:
+  tasks_per_candidate: 30
+  max_cost_usd: 2
+
+review_minutes:
+  auto: 0
+  draft_review: 1.5
+failure_minutes: 10
+setup_cost_usd: 1500
+min_volume_per_month: 10
