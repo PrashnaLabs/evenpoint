@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Evenpoint report · {{ cfg.project }}</title>
+<style>
+  :root {
+    --bg: #fbfaf7; --fg: #1d1d1b; --muted: #6b6a66; --line: #e4e1da; --card: #ffffff;
+    --good: #1f7a4d; --warn: #9a6200; --bad: #b3261e;
+    --good-bg: #e6f3ec; --warn-bg: #fbf0dc; --bad-bg: #fbe7e5;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #161614; --fg: #ecebe6; --muted: #a09f99; --line: #33322e; --card: #1e1e1b;
+      --good: #6fcf9b; --warn: #e8b660; --bad: #f08a80;
+      --good-bg: #183225; --warn-bg: #352a14; --bad-bg: #3a1c19;
+    }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--fg);
+         font: 15px/1.55 ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif; }
+  main { max-width: 1040px; margin: 0 auto; padding: 40px 16px 80px; }
+  h1 { font-size: 28px; margin: 0 0 4px; letter-spacing: -0.01em; }
+  h2 { font-size: 19px; margin: 48px 0 8px; padding-top: 16px; border-top: 1px solid var(--line); }
+  p.lead, .muted { color: var(--muted); }
+  p.lead { margin-top: 0; }
+  .scroll { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; margin: 12px 0; font-variant-numeric: tabular-nums; }
+  th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { font-size: 12px; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); font-weight: 600; }
+  td.n, th.n { text-align: right; white-space: nowrap; }
+  .tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin: 20px 0; }
+  .tile { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; }
+  .tile b { display: block; font-size: 24px; }
+  .tile span { color: var(--muted); font-size: 13px; }
+  .pill { display: inline-block; padding: 1px 8px; border-radius: 999px; font-size: 12px; font-weight: 600; white-space: nowrap; }
+  .automate { background: var(--good-bg); color: var(--good); }
+  .review { background: var(--warn-bg); color: var(--warn); }
+  .dont_automate { background: var(--bad-bg); color: var(--bad); }
+  .warn { background: var(--warn-bg); color: var(--fg); border-radius: 8px; padding: 10px 14px; margin: 8px 0; }
+  code { font-size: 13px; }
+  @media print { h2 { break-after: avoid; } table { break-inside: auto; } }
+</style>
+</head>
+<body>
+<main>
+  <h1>{{ cfg.project }}: what to automate</h1>
+  <p class="lead">Run {{ meta.run_id }} · data from {{ quality.first_ts.date() if quality.first_ts else "–" }} to {{ quality.last_ts.date() if quality.last_ts else "–" }} · Evenpoint {{ version }} · generated {{ generated.strftime("%Y-%m-%d %H:%M") }}</p>
+
+  {% set top = best[0] if best else None %}
+  <div class="tiles">
+    <div class="tile"><b>{{ quality.cases | num }}</b><span>cases analysed</span></div>
+    <div class="tile"><b>{{ candidates | length }}</b><span>steps scored</span></div>
+    <div class="tile"><b>{{ best | selectattr("verdict", "ne", "dont_automate") | list | length }}</b><span>steps worth automating</span></div>
+    <div class="tile"><b>{{ (best | selectattr("verdict", "ne", "dont_automate") | sum(attribute="net_hours_month")) | num }} h</b><span>net hours saved per month</span></div>
+    <div class="tile"><b>{{ total_cost | usd(2) }}</b><span>spent on this analysis</span></div>
+  </div>
+
+  <h2>Recommendations</h2>
+  <p class="muted">Best option per tested step. Ranges are 95% intervals from the benchmark sample.</p>
+  {% if best %}
+  <div class="scroll"><table>
+    <tr><th>Step</th><th>Verdict</th><th>Model</th><th>Mode</th><th class="n">Accuracy</th><th class="n">Net hours / month</th><th class="n">Net value / month</th><th class="n">Payback</th><th>Why</th></tr>
+    {% for r in best %}
+    <tr>
+      <td>{{ r.activity }}</td>
+      <td><span class="pill {{ r.verdict }}">{{ r.verdict | replace("_", " ") }}</span></td>
+      <td><code>{{ r.model }}</code></td>
+      <td>{{ r.mode | replace("_", " + ") }}</td>
+      <td class="n">{{ r.accuracy | pct }}</td>
+      <td class="n">{{ r.net_hours_month | num(1) }} <span class="muted">({{ r.net_hours_low | num(1) }} to {{ r.net_hours_high | num(1) }})</span></td>
+      <td class="n">{{ r.net_value_month | usd }}</td>
+      <td class="n">{{ (r.payback_months | num(1)) ~ " mo" if r.payback_months is not none else "–" }}</td>
+      <td>{{ r.reason }}</td>
+    </tr>
+    {% endfor %}
+  </table></div>
+  {% else %}
+  <p>No step could be benchmarked. Check the candidates below for why.</p>
+  {% endif %}
+
+  <h2>Don't automate</h2>
+  {% if dont %}
+  <table>
+    <tr><th>Step</th><th>Why</th></tr>
+    {% for d in dont %}<tr><td>{{ d.activity }}</td><td>{{ d.reason }}</td></tr>{% endfor %}
+  </table>
+  {% else %}<p class="muted">Nothing flagged.</p>{% endif %}
+
+  <h2>Model comparison</h2>
+  <div class="scroll"><table>
+    <tr><th>Step</th><th>Model</th><th class="n">Tasks</th><th class="n">Accuracy</th><th class="n">Cost / task</th><th class="n">Cost / success</th><th class="n">Latency p50 / p95</th><th class="n">Errors</th><th class="n">Judge vs human</th></tr>
+    {% for s in summaries %}
+    <tr>
+      <td>{{ s.activity }}</td><td><code>{{ s.model }}</code></td>
+      <td class="n">{{ s.n }}</td>
+      <td class="n">{{ s.accuracy | pct }}</td>
+      <td class="n">{{ s.cost_per_task | usd(4) }}</td>
+      <td class="n">{{ s.cost_per_success | usd(4) }}</td>
+      <td class="n">{{ s.latency_p50_ms | num }} / {{ s.latency_p95_ms | num }} ms</td>
+      <td class="n">{{ s.error_rate | pct }}</td>
+      <td class="n">{{ s.judge_human_agreement | pct }}</td>
+    </tr>
+    {% endfor %}
+  </table></div>
+
+  <h2>All ROI options</h2>
+  <div class="scroll"><table>
+    <tr><th>Step</th><th>Model</th><th>Mode</th><th>Verdict</th><th class="n">Net hours / month</th><th class="n">Net value / month</th><th class="n">Low-end value</th><th class="n">AI cost / month</th></tr>
+    {% for r in roi %}
+    <tr>
+      <td>{{ r.activity }}</td><td><code>{{ r.model }}</code></td><td>{{ r.mode | replace("_", " + ") }}</td>
+      <td><span class="pill {{ r.verdict }}">{{ r.verdict | replace("_", " ") }}</span></td>
+      <td class="n">{{ r.net_hours_month | num(1) }}</td>
+      <td class="n">{{ r.net_value_month | usd }}</td>
+      <td class="n">{{ r.net_value_low | usd }}</td>
+      <td class="n">{{ r.ai_cost_month | usd(2) }}</td>
+    </tr>
+    {% endfor %}
+  </table></div>
+
+  <h2>Candidates</h2>
+  <p class="muted">Every step above {{ cfg.min_volume_per_month | num }} cases/month, ranked by hours at stake × AI fit. Scores 1–5 from the labeler model <code>{{ cfg.labeler_model }}</code>.</p>
+  <div class="scroll"><table>
+    <tr><th class="n">#</th><th>Step</th><th class="n">Repetitive</th><th class="n">Structured</th><th class="n">Risk</th><th>Test</th><th class="n">Fit</th><th>Reason</th></tr>
+    {% for c in candidates %}
+    <tr>
+      <td class="n">{{ c.rank }}</td><td>{{ c.activity }}</td>
+      <td class="n">{{ c.repetitive }}</td><td class="n">{{ c.structured }}</td><td class="n">{{ c.risk }}</td>
+      <td>{% if c.testable %}{{ c.task_type }}: <code>{{ c.input_field }}</code> → <code>{{ c.expected_field }}</code>{% else %}<span class="muted">not tested</span>{% endif %}</td>
+      <td class="n">{{ c.fit_score | num(1) }}</td>
+      <td>{{ c.reason }}</td>
+    </tr>
+    {% endfor %}
+  </table></div>
+
+  <h2>Baseline</h2>
+  <p class="muted">Measured from the event log. Minutes from timestamps include waiting time; steps marked "config" use minutes you set.</p>
+  <div class="scroll"><table>
+    <tr><th>Step</th><th class="n">Volume / month</th><th class="n">Minutes</th><th>Source</th><th class="n">Handoffs</th><th class="n">Rework</th><th class="n">Hours / month</th></tr>
+    {% for s in steps %}
+    <tr>
+      <td>{{ s.activity }}</td>
+      <td class="n">{{ s.volume_per_month | num }}</td>
+      <td class="n">{{ s.median_minutes | num(1) }}</td>
+      <td>{{ s.minutes_source }}</td>
+      <td class="n">{{ s.handoff_rate | pct }}</td>
+      <td class="n">{{ s.rework_rate | pct }}</td>
+      <td class="n">{{ s.baseline_hours_month | num(1) }}</td>
+    </tr>
+    {% endfor %}
+  </table></div>
+
+  <h3>Process map</h3>
+  <p class="muted">Most common transitions between steps.</p>
+  <table>
+    <tr><th>From</th><th>To</th><th class="n">Cases</th></tr>
+    {% for e in edges %}<tr><td>{{ e.source_activity }}</td><td>{{ e.target_activity }}</td><td class="n">{{ e.n | num }}</td></tr>{% endfor %}
+  </table>
+
+  <h2>Data quality</h2>
+  <table>
+    <tr><td>Events</td><td class="n">{{ quality.events | num }}</td></tr>
+    <tr><td>Cases</td><td class="n">{{ quality.cases | num }}</td></tr>
+    <tr><td>Distinct steps</td><td class="n">{{ quality.activities | num }}</td></tr>
+    <tr><td>Cases with a single event</td><td class="n">{{ quality.single_event_cases | num }}</td></tr>
+    <tr><td>Cases without text fields</td><td class="n">{{ quality.cases_without_text | num }}</td></tr>
+  </table>
+  {% for w in quality.warnings %}<div class="warn">{{ w }}</div>{% endfor %}
+
+  <h2>Assumptions</h2>
+  <table>
+    <tr><td>Hourly rate (fully loaded)</td><td class="n">{{ cfg.hourly_rate | usd }}</td></tr>
+    <tr><td>Review minutes per output, auto</td><td class="n">{{ cfg.review_minutes.auto | num(1) }}</td></tr>
+    <tr><td>Review minutes per output, draft + review</td><td class="n">{{ cfg.review_minutes.draft_review | num(1) }}</td></tr>
+    <tr><td>Minutes to fix a wrong output</td><td class="n">{{ cfg.failure_minutes | num(1) }}</td></tr>
+    <tr><td>One-off setup cost</td><td class="n">{{ cfg.setup_cost_usd | usd }}</td></tr>
+    <tr><td>Test cases per step</td><td class="n">{{ cfg.bench.tasks_per_candidate }}</td></tr>
+    <tr><td>Judge model</td><td class="n"><code>{{ cfg.judge_model }}</code></td></tr>
+  </table>
+  {% if unpriced %}<div class="warn">No price was known for {{ unpriced | join(", ") }}, so their cost counts as $0.</div>{% endif %}
+
+  <h2>Privacy and audit trail</h2>
+  <p>Redacted case text was sent to: <b>{{ providers | join(", ") or "no one" }}</b>. Redaction is pattern-based (emails, phone numbers, cards, IBANs, secret URLs, staff names) and can miss things such as customer names or addresses in free text.</p>
+  <table>
+    <tr><th>Calls</th><th>Model</th><th class="n">Count</th><th class="n">Errors</th><th class="n">Cost</th></tr>
+    {% for c in calls %}<tr><td>{{ c.kind }}</td><td><code>{{ c.model }}</code></td><td class="n">{{ c.n | num }}</td><td class="n">{{ c.errors | num }}</td><td class="n">{{ c.cost | usd(4) }}</td></tr>{% endfor %}
+  </table>
+  <p class="muted">Every prompt, output and grade is stored in <code>.evenpoint/project.duckdb</code> (tables <code>runs</code> and <code>grades</code>).</p>
+</main>
+</body>
+</html>
