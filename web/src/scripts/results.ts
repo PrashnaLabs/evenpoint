@@ -173,7 +173,7 @@ function dontAutomate(d: Row): Raw {
 
 function models(d: Row): Raw {
   const order = (d.best as Row[]).map((r) => r.activity);
-  const chosen = new Set((d.best as Row[]).map((r) => `${r.activity}|${r.model}`));
+  const chosen = new Map((d.best as Row[]).map((r) => [`${r.activity}|${r.model}`, r.verdict as string]));
   const rows = [...(d.summaries as Row[])].sort((a, b) =>
     (order.indexOf(a.activity) + 99) % 99 - (order.indexOf(b.activity) + 99) % 99 || a.model.localeCompare(b.model));
   if (!rows.length) return html``;
@@ -188,7 +188,8 @@ function models(d: Row): Raw {
         <thead><tr><th>Step</th><th>Model</th><th class="r">Test cases</th><th class="r">Correct</th><th class="r">Cost per case</th>
           <th class="r">Cost per correct case</th><th class="r">Typical speed</th><th class="r">Errors</th>${humans ? html`<th class="r">Grader agrees with you</th>` : ""}</tr></thead>
         <tbody>${rows.map((s) => html`<tr>
-          <td>${stepName(s.activity)}</td><td><code>${modelName(s.model)}</code>${chosen.has(`${s.activity}|${s.model}`) ? html` <span class="badge outline">Recommended</span>` : ""}</td><td class="r">${s.n}</td>
+          <td>${stepName(s.activity)}</td><td><code>${modelName(s.model)}</code>${chosen.has(`${s.activity}|${s.model}`) ? (chosen.get(`${s.activity}|${s.model}`) === "dont_automate"
+            ? html` <span class="muted best-tested">Best tested</span>` : html` <span class="badge outline">Recommended</span>`) : ""}</td><td class="r">${s.n}</td>
           <td class="r"><span class="acc"><span class="acc-bar" style="--v:${s.accuracy}"></span>${pct(s.accuracy)}</span></td>
           <td class="r">${smallUsd(s.cost_per_task)}</td><td class="r">${smallUsd(s.cost_per_success)}</td>
           <td class="r">${num((s.latency_p50_ms || 0) / 1000, 1)} s</td><td class="r">${pct(s.error_rate)}</td>
@@ -339,6 +340,7 @@ const css = raw(`
 .flow-bar { height: 6px; border-radius: 4px; background: var(--hover); overflow: hidden; }
 .flow-bar span { display: block; height: 100%; background: #8ea2f0; border-radius: 4px; }
 .flow-n { text-align: right; color: var(--text-3); }
+.best-tested { font-size: 12px; margin-left: 4px; }
 .kv { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 10px 16px; margin: 0; }
 .kv dt { color: var(--text-2); }
 .kv dd { margin: 0; text-align: right; font-weight: 550; font-variant-numeric: tabular-nums; }
